@@ -1,0 +1,22 @@
+[package]
+name = "fiskus"
+version = "0.1.0-dev"
+edition = "2024"
+rust-version = "1.100"
+license = "AGPL-3.0-only"
+repository = "https://github.com/kondominium/fiskus"
+readme = "docs/README.md"
+description = "Einkommensteuer (German income tax) reference engine. Not official BMF software."
+keywords = ["tax", "einkommensteuer", "germany", "reference"]
+categories = ["finance"]
+include = [
+    "/src/**/*.rs",
+    "/Cargo.toml",
+    "/docs/README.md",
+    "/docs/logos/fiskus-dark-mode.svg",
+    "/docs/logos/fiskus-light-mode.svg",
+    "/LICENSE*",
+]
+
+[lints.rust]
+unsafe_code = "forbid"

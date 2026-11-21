@@ -1,0 +1,10 @@
+[tools]
+rust = { version = "1.100.0", components = "rustfmt,clippy" }
+
+[tasks.check]
+description = "fmt, clippy (deny warnings), test"
+run = [
+  "cargo fmt --all -- --check",
+  "cargo clippy --all-targets -- -D warnings",
+  "cargo test --all-targets",
+]

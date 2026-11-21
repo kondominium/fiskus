@@ -1,0 +1,9 @@
+
+# Agents
+.agents/*
+!.agents/.keep
+!.agents/AGENTS.md
+
+# Rust
+/target
+Cargo.lock
