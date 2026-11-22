@@ -26,6 +26,7 @@ Terms used in the guide, with their German originals. Each term is listed under 
 | English | German | Context |
 |---|---|---|
 | Child allowances | Freibeträge (for children) | Allowances for each child, subtracted from income to reach taxable income. Not yet in fiskus. |
+| Cold progression | kalte Progression | The extra tax from inflation alone: wages rise with prices, move into higher brackets and pay more tax, though real income has not risen. Not yet in fiskus. |
 
 ## E
 
@@ -49,6 +50,7 @@ Terms used in the guide, with their German originals. Each term is listed under 
 | Income tax | Einkommensteuer | The tax on the income a person earns in a year. |
 | Income Tax Act | Einkommensteuergesetz (EStG) | The statute behind every chapter. Its citations are written in German. |
 | Income types | Einkünfte | The seven types of income, such as work, investments, rent and business ([§ 2 Abs. 1 EStG](https://www.gesetze-im-internet.de/estg/__2.html)). Not yet in fiskus. |
+| Inflation | Inflation | The general rise in prices over time. Changes to the basic allowance and the tariff thresholds have responded to it since 2022. |
 
 ## J
 
@@ -72,6 +74,7 @@ Terms used in the guide, with their German originals. Each term is listed under 
 | Single assessment | Einzelveranlagung | Assessment of one person ([§ 26a EStG](https://www.gesetze-im-internet.de/estg/__26a.html)). In fiskus, `FilingStatus::Single`. |
 | Special expenses | Sonderausgaben | Expenses the law lets you subtract from income, such as certain insurance and donations. Not yet in fiskus. |
 | Splitting tariff | Splittingtarif | The tariff for joint assessment: tax on half the joint income, doubled ([§ 32a Abs. 5 EStG](https://www.gesetze-im-internet.de/estg/__32a.html)). |
+| Subsistence minimum | Existenzminimum | The income a person needs for basic living costs, which the tax system must leave untouched. The government estimates it in reports, and the basic allowance is set to match it. |
 
 ## T
 

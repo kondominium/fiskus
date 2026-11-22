@@ -1,0 +1,8 @@
+# Tax parameters for VZ 2024. Checked against the BGBl. PDF in docs/references.
+
+[basic_allowance]
+value_eur = 11784
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Gesetz zur steuerlichen Freistellung des Existenzminimums 2024, Art. 1 Nr. 2, BGBl. 2024 I Nr. 386)"
+source = "https://www.recht.bund.de/bgbl/1/2024/386/VO"
+retrieved = "2026-11-22"
+reference = "docs/references/bgbl-2024-I-386-existenzminimum-2024.pdf"

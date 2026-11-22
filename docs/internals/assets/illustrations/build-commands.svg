@@ -1,0 +1,27 @@
+<!-- Hand-drawn illustration, not generated from code. See docs/contributing/guide.md. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Illustration: one make command fans out to the tools behind it</title>
+<rect x="20" y="112" width="132" height="76" rx="8" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="86" y="144" text-anchor="middle" font-size="20" style="fill: var(--chart-ink, #0f3d2e)">make</text>
+<text x="86" y="168" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">one entry point</text>
+<path d="M152 150 C200 150 220 33 262 33" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; stroke-opacity: 0.6; fill: none"/>
+<path d="M152 150 C200 150 220 93 262 93" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; stroke-opacity: 0.6; fill: none"/>
+<path d="M152 150 H262" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; stroke-opacity: 0.6; fill: none"/>
+<path d="M152 150 C200 150 220 213 262 213" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; stroke-opacity: 0.6; fill: none"/>
+<path d="M152 150 C200 150 220 273 262 273" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; stroke-opacity: 0.6; fill: none"/>
+<rect x="262" y="10" width="358" height="46" rx="6" stroke-width="2" style="fill: var(--chart-zone, #f3f0e8); stroke: #e0391f"/>
+<text x="278" y="30" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">make check</text>
+<text x="278" y="46" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">formatting, lints, tests, guide and chart checks</text>
+<rect x="262" y="70" width="358" height="46" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="278" y="90" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">make verify</text>
+<text x="278" y="106" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">Kani proofs, run on their own in CI</text>
+<rect x="262" y="130" width="358" height="46" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="278" y="150" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">make build</text>
+<text x="278" y="166" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">library, examples and tests compiled together</text>
+<rect x="262" y="190" width="358" height="46" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="278" y="210" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">make charts</text>
+<text x="278" y="226" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">scripts/guide/charts.rs writes the guide SVGs</text>
+<rect x="262" y="250" width="358" height="46" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="278" y="270" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">make docs</text>
+<text x="278" y="286" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">mdBook builds the book into target/book</text>
+</svg>

@@ -1,6 +1,7 @@
 # Guide pages and the statute sections each one may cite, by article number (32a for § 32a).
 # scripts/guide/checks.rs enforces: every page is listed, pages cite only their listed sections, listed
-# sections are cited in src/ or rules/, and each parameter value appears on the page citing it.
+# sections are cited in src/ or rules/, and each parameter value of guide_year appears on the page citing it.
+guide_year = 2026
 
 [[chapter]]
 file = "guide/00-intro.md"

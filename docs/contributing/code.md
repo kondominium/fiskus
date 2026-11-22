@@ -6,7 +6,8 @@ Applies to humans and agents.
 
 - Scratch: research, drafts and plans go in `.agents/research/` and `.agents/plans/`. Both are git-ignored and never committed.
 - Commit: agents never commit. Hand over a staged diff (only the slice's files), a commit message draft, and the `make check` result.
-- Check: `make check` must pass before handover.
+- Check: `make check` must pass before handover. It runs every test, the lints and the guide chart check.
+- Quick loop: `make test` runs only the unit and property tests in `src/`.
 - Guide: a change that adds or alters a rule, parameter, zone or error updates `docs/guide/` in the same diff. See [guide](guide.md).
 
 ## Rules
@@ -56,7 +57,7 @@ pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error>
 
 Bad: `/// Assesses tax.`
 
-- Doc examples go in a `/// # Examples` section, run by `cargo test --doc`. Use only the public API, not `crate::` paths. Why: doc examples show the public call shape, so they must compile against what users import.
+- Doc examples go in a `/// # Examples` section, run by `make check` (`cargo test --doc`). Use only the public API, not `crate::` paths. Why: doc examples show the public call shape, so they must compile against what users import.
 - Pertinent changes ship with a runnable example in `examples/`. Pertinent means a new public entry point, a new tariff rule, or a new error variant. Examples must compile: `make check` builds them through `clippy --all-targets`. Agents read `examples/` before calling an API. Why: an example shows the call in a few lines, faster than reading signatures and tests.
 
 ## Tests
@@ -65,8 +66,9 @@ Bad: `/// Assesses tax.`
 - Each test has a one-line `//` comment above it naming the case it covers, e.g. `// Joint filers exactly at the zone limit stay tax-free.` Why: the test name says what runs, the comment says which case and why it matters.
 - Properties use `proptest` in the same module.
 - Proof harnesses use Kani, in a `#[cfg(kani)] mod verification` beside the code. Keep the proven function pure: parameters are passed in, not loaded, so Kani never parses TOML.
-- `make check` runs the unit and proptest tests on every push and pull request.
-- `make verify` runs the Kani harnesses in the `verify` CI job on every push and pull request.
+- `make test` runs the unit and proptest tests in `src/`.
+- `make check` runs every test (unit, property, guide and doc tests), plus fmt, clippy and the chart check, on every push and pull request.
+- `make verify` runs only the Kani harnesses, in the `verify` CI job on every push and pull request.
 - Kani needs integer ranges to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
 - Each tariff rule has a page in `docs/formulas/` first, and its tests cite the same section.
 

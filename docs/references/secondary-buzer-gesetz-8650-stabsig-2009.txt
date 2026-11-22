@@ -1,0 +1,259 @@
+
+ StabSiG Gesetz zur Sicherung von Beschäftigung und Stabilität in Deutschland 
+buzer.de
+ Bundesrecht - tagaktuell konsolidiert - alle Fassungen seit 2006
+Vorschriftensuche 
+§ / Artikel
+Gesetz
+Volltextsuche
+ nur in StabSiG
+↑ nach oben ↓ nach unten 
+Start
+Suchen
+Sachgebiete
+Aktuell
+Verkündet
+Über buzer.de
+Qualität
+Kontakt
+Datenschutz Impressum
+Tools:
+Blog-Plugin
+Mobilversion
+ Vorschau
+Update via: 
+Web-Widget
+Feed
+Rechtskataster
+Werben auf buzer.de
+Sie sind hier: Start > Inhaltsverzeichnis StabSiG
+Mail bei Änderungen 
+Gesetz zur Sicherung von Beschäftigung und Stabilität in Deutschland (StabSiG k.a.Abk.)
+G. v. 02.03.2009 BGBl. I S. 416 (Nr. 11); Geltung ab 06.03.2009, abweichend siehe Artikel 19
+21 Änderungen | 
+Drucksachen / Entwurf / Begründung | 
+wird in 15 Vorschriften zitiert 
+Eingangsformel
+Artikel 1 Änderung des Einkommensteuergesetzes
+Artikel 2 Änderung der Einkommensteuer-Durchführungsverordnung
+Artikel 3 Änderung des Bundeskindergeldgesetzes
+Artikel 4 Änderung des Finanzausgleichsgesetzes
+Artikel 5 Gesetz zur Nichtanrechnung des Kinderbonus
+Artikel 6 Gesetz zur Errichtung eines Sondervermögens „Investitions- und Tilgungsfonds"
+Artikel 7 Gesetz zur Umsetzung von Zukunftsinvestitionen der Kommunen und Länder
+Artikel 8 Änderung des Zweiten Buches Sozialgesetzbuch
+Artikel 9 Änderung des Zweiten Buches Sozialgesetzbuch zum 1. August 2009
+Artikel 10 Änderung des Dritten Buches Sozialgesetzbuch
+Artikel 11 Änderung des Dritten Buches Sozialgesetzbuch zum 1. August 2009
+Artikel 12 Änderung des Dritten Buches Sozialgesetzbuch zum Jahr 2011
+Artikel 13 Änderung des Fünften Buches Sozialgesetzbuch
+Artikel 14 Änderung der GKV-Beitragssatzverordnung
+Artikel 15 Änderung des Zweiten Gesetzes über die Krankenversicherung der Landwirte
+Artikel 16 Änderung des Arbeitnehmerüberlassungsgesetzes
+Artikel 17 Änderung der Regelsatzverordnung
+Artikel 18 Aufhebung der Beitragssatzverordnung 2009
+Artikel 19 Inkrafttreten, Außerkrafttreten
+Eingangsformel 
+Der Bundestag hat mit Zustimmung des Bundesrates das folgende Gesetz beschlossen:
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 1 Änderung des Einkommensteuergesetzes
+Artikel 1 wird in 2 Vorschriften zitiert und ändert mWv. 6. März 2009 EStG § 66, § 41c, § 52, § 32a, § 39b
+Das Einkommensteuergesetz in der Fassung der Bekanntmachung vom 19. Oktober 2002 (BGBl. I S. 4210; 2003 I S. 179), das zuletzt durch Artikel 15 Absatz 80 des Gesetzes vom 5. Februar 2009 (BGBl. I S. 160) geändert worden ist, wird wie folgt geändert:
+1. § 32a Absatz 1 wird wie folgt gefasst:
+„(1) Die tarifliche Einkommensteuer bemisst sich nach dem zu versteuernden Einkommen. Sie beträgt vorbehaltlich der §§ 32b, 32d, 34, 34a, 34b und 34c jeweils in Euro für zu versteuernde Einkommen
+1. bis 7.834 Euro (Grundfreibetrag):
+0;
+2. von 7.835 Euro bis 13.139 Euro:
+(939,68 • y + 1.400) • y;
+3. von 13.140 Euro bis 52.551 Euro:
+(228,74 • z + 2.397) • z + 1.007;
+4. von 52.552 Euro bis 250.400 Euro:
+0,42 • x - 8.064;
+5. von 250.401 Euro an:
+0,45 • x - 15.576.
+„y" ist ein Zehntausendstel des 7.834 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. „z" ist ein Zehntausendstel des 13.139 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. „x" ist das auf einen vollen Euro-Betrag abgerundete zu versteuernde Einkommen. Der sich ergebende Steuerbetrag ist auf den nächsten vollen Euro-Betrag abzurunden."
+2. In § 39b Absatz 2 Satz 7 zweiter Halbsatz wird die Angabe „15 Prozent" durch die Angabe „14 Prozent", die Angabe „9.144" durch die Angabe „9.225", die Angabe „25.812" durch die Angabe „26.276" und die Angabe „200.000" durch die Angabe „200.320" ersetzt.
+3. § 41c wird wie folgt geändert:
+a) Dem Absatz 1 wird folgender Satz angefügt:
+„In den Fällen des Satzes 1 Nummer 2 ist der Arbeitgeber jedoch verpflichtet, wenn ihm dies wirtschaftlich zumutbar ist."
+b) In Absatz 4 Satz 1 wird der Satzteil vor Nummer 1 wie folgt gefasst:
+„Der Arbeitgeber hat die Fälle, in denen er die Lohnsteuer nach Absatz 1 nicht nachträglich einbehält oder die Lohnsteuer nicht nachträglich einbehalten kann, weil".
+4. § 52 wird wie folgt geändert:
+a) Nach Absatz 40 wird folgender Absatz 41 eingefügt:
+„(41) § 32a Absatz 1 ist ab dem Veranlagungszeitraum 2010 in der folgenden Fassung anzuwenden:
+„(1) Die tarifliche Einkommensteuer bemisst sich nach dem zu versteuernden Einkommen. Sie beträgt vorbehaltlich der §§ 32b, 32d, 34, 34a, 34b und 34c jeweils in Euro für zu versteuernde Einkommen
+1. bis 8.004 Euro (Grundfreibetrag):
+0;
+2. von 8.005 Euro bis 13.469 Euro:
+(912,17 • y + 1.400) • y;
+3. von 13.470 Euro bis 52.881 Euro:
+(228,74 • z + 2.397) • z + 1.038;
+4. von 52.882 Euro bis 250.730 Euro:
+0,42 • x - 8.172;
+5. von 250.731 Euro an:
+0,45 • x - 15.694.
+„y” ist ein Zehntausendstel des 8.004 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. „z" ist ein Zehntausendstel des 13.469 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. „x" ist das auf einen vollen Euro-Betrag abgerundete zu versteuernde Einkommen. Der sich ergebende Steuerbetrag ist auf den nächsten vollen Euro-Betrag abzurunden.""
+b) Absatz 51 wird wie folgt gefasst:
+„(51) § 39b Absatz 2 Satz 7 zweiter Halbsatz ist auf den laufenden Arbeitslohn, der für einen nach dem 31. Dezember 2009 endenden Lohnzahlungszeitraum gezahlt wird, und auf sonstige Bezüge, die nach dem 31. Dezember 2009 zufließen, mit der Maßgabe anzuwenden, dass die Zahl „9.225" durch die Zahl „9.429", die Zahl „26.276" durch die Zahl „26.441" und die Zahl „200.320" durch die Zahl „200.584" ersetzt wird."
+5. Dem § 66 Absatz 1 wird folgender Satz angefügt:
+„Darüber hinaus wird für jedes Kind, für das im Kalenderjahr 2009 mindestens für einen Kalendermonat ein Anspruch auf Kindergeld besteht, für das Kalenderjahr 2009 ein Einmalbetrag in Höhe von 100 Euro gezahlt."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 2 Änderung der Einkommensteuer-Durchführungsverordnung
+Artikel 2 wird in 1 Vorschrift zitiert und ändert mWv. 6. März 2009 EStDV 2000 § 56
+§ 56 Satz 1 der Einkommensteuer-Durchführungsverordnung in der Fassung der Bekanntmachung vom 10. Mai 2000 (BGBl. I S. 717), die zuletzt durch Artikel 2 des Gesetzes vom 20. Dezember 2008 (BGBl. I S. 2850) geändert worden ist, wird wie folgt geändert:
+1. In Nummer 1a wird die Angabe „15.329 Euro" durch die Wörter „das Zweifache des Grundfreibetrages nach § 32a Absatz 1 Satz 2 Nummer 1 des Gesetzes in der jeweils geltenden Fassung" ersetzt.
+2. In Nummer 2a werden die Wörter „mehr als 7.664 Euro betragen hat" durch die Wörter „den Grundfreibetrag nach § 32a Absatz 1 Satz 2 Nummer 1 des Gesetzes in der jeweils geltenden Fassung überstiegen hat" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 3 Änderung des Bundeskindergeldgesetzes
+Artikel 3 wird in 1 Vorschrift zitiert und ändert mWv. 6. März 2009 BKGG § 6
+Dem § 6 des Bundeskindergeldgesetzes in der Fassung der Bekanntmachung vom 28. Januar 2009 (BGBl. I S. 142), das durch Artikel 15 Absatz 95 des Gesetzes vom 5. Februar 2009 (BGBl. I S. 160) geändert worden ist, wird folgender Absatz 3 angefügt:
+„(3) Für jedes Kind, für das im Kalenderjahr 2009 mindestens für einen Kalendermonat ein Anspruch auf Kindergeld besteht, wird für das Kalenderjahr 2009 ein Einmalbetrag in Höhe von 100 Euro gezahlt."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 4 Änderung des Finanzausgleichsgesetzes
+Artikel 4 wird in 1 Vorschrift zitiert und ändert mWv. 6. März 2009 FAG § 1
+In § 1 Satz 5 des Finanzausgleichsgesetzes vom 20. Dezember 2001 (BGBl. I S. 3955, 3956), das zuletzt durch Artikel 8 des Gesetzes vom 22. Dezember 2008 (BGBl. I S. 2955) geändert worden ist, werden die Wörter „im Jahr 2010 1.927.712.000 Euro" durch die Wörter „im Jahr 2010 1.047.712.000 Euro" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 5 Gesetz zur Nichtanrechnung des Kinderbonus
+Artikel 5 ändert mWv. 6. März 2009 KiBoNiAG 
+(gesamter Text siehe Gesetz zur Nichtanrechnung des Kinderbonus)
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 6 Gesetz zur Errichtung eines Sondervermögens „Investitions- und Tilgungsfonds"
+Artikel 6 ändert mWv. 6. März 2009 ITFG 
+(gesamter Text siehe Gesetz zur Errichtung eines Sondervermögens „Investitions- und Tilgungsfonds" - ITFG)
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 7 Gesetz zur Umsetzung von Zukunftsinvestitionen der Kommunen und Länder
+Artikel 7 wird in 1 Vorschrift zitiert und ändert mWv. 6. März 2009 ZuInvG 
+(gesamter Text siehe Zukunftsinvestitionsgesetz - ZuInvG)
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 8 Änderung des Zweiten Buches Sozialgesetzbuch
+Artikel 8 wird in 3 Vorschriften zitiert und ändert mWv. 6. März 2009 SGB II § 28, mWv. 1. Juli 2009 § 74 (neu), mWv. 1. Februar 2009 § 16
+Das Zweite Buch Sozialgesetzbuch - Grundsicherung für Arbeitsuchende - (Artikel 1 des Gesetzes vom 24. Dezember 2003, BGBl. I S. 2954, 2955), das zuletzt durch Artikel 2 des Gesetzes vom 22. Dezember 2008 (BGBl. I S. 2959) geändert worden ist, wird wie folgt geändert:
+abweichendes Inkrafttreten am 01.07.2009
+1. In der Inhaltsübersicht wird folgende Angabe angefügt:
+„§ 74 Gesetz zur Sicherung von Beschäftigung und Stabilität in Deutschland".
+Ende abweichendes Inkrafttreten
+abweichendes Inkrafttreten am 01.02.2009
+2. In § 16 Absatz 1 Satz 2 wird die Angabe „421p und 421q" durch die Wörter „421p, 421q und 421t Absatz 4 bis 6" ersetzt.
+Ende abweichendes Inkrafttreten
+3. In § 28 Absatz 1 Satz 3 Nummer 1 wird die Angabe „§ 20 Abs. 2" durch die Angabe „§ 20 Absatz 2 Satz 1" ersetzt.
+abweichendes Inkrafttreten am 01.07.2009
+4. Folgender § 74 wird angefügt:
+„§ 74 Gesetz zur Sicherung von Beschäftigung und Stabilität in Deutschland
+Abweichend von § 28 Absatz 1 Satz 3 Nummer 1 beträgt die Regelleistung ab Beginn des 7. Lebensjahres bis zur Vollendung des 14. Lebensjahres in der Zeit vom 1. Juli 2009 bis zum 31. Dezember 2011 70 vom Hundert der nach § 20 Absatz 2 Satz 1 maßgebenden Regelleistung."
+Ende abweichendes Inkrafttreten
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 9 Änderung des Zweiten Buches Sozialgesetzbuch zum 1. August 2009
+Artikel 9 wird in 2 Vorschriften zitiert und ändert mWv. 1. August 2009 SGB II § 16
+In § 16 Absatz 1 Satz 2 des Zweiten Buches Sozialgesetzbuch - Grundsicherung für Arbeitsuchende - (Artikel 1 des Gesetzes vom 24. Dezember 2003, BGBl. I S. 2954, 2955), das zuletzt durch Artikel 8 dieses Gesetzes geändert worden ist, werden nach der Angabe „421k" ein Komma und die Angabe „421n" eingefügt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 10 Änderung des Dritten Buches Sozialgesetzbuch
+Artikel 10 wird in 2 Vorschriften zitiert und ändert mWv. 1. Februar 2009 SGB III § 22, § 175, § 341, § 365, § 421t (neu)
+Das Dritte Buch Sozialgesetzbuch - Arbeitsförderung - (Artikel 1 des Gesetzes vom 24. März 1997, BGBl. I S. 594, 595), das zuletzt durch Artikel 15 Absatz 96 des Gesetzes vom 5. Februar 2009 (BGBl. I S. 160) geändert worden ist, wird wie folgt geändert:
+1. Die Inhaltsübersicht wird wie folgt geändert:
+a) Die Angabe zu § 365 wird wie folgt gefasst:
+„§ 365 Stundung von Darlehen".
+b) Nach der Angabe zu § 421s wird folgende Angabe eingefügt:
+„§ 421t Sonderregelungen zu Kurzarbeitergeld, Qualifizierung und Arbeitslosengeld".
+2. In § 22 Absatz 4 Satz 1 wird die Angabe „421o und 421p" durch die Wörter „421o, 421p und 421t Absatz 4 bis 6" ersetzt.
+3. § 175 Absatz 7 Satz 2 bis 5 wird aufgehoben.
+4. In § 341 Absatz 2 wird die Angabe „3,0" durch die Angabe „2,8" ersetzt.
+5. § 365 wird wie folgt gefasst:
+„§ 365 Stundung von Darlehen
+Kann die Bundesagentur als Liquiditätshilfen geleistete Darlehen des Bundes bis zum Schluss des Haushaltsjahres nicht zurückzahlen, gilt die Rückzahlung als bis zum Schluss des folgenden Haushaltsjahres gestundet."
+6. Nach § 421s wird folgender § 421t eingefügt:
+„§ 421t Sonderregelungen zu Kurzarbeitergeld, Qualifizierung und Arbeitslosengeld
+(1) Kurzarbeitergeld nach § 169 wird bis zum 31. Dezember 2010 mit folgenden Maßgaben geleistet:
+1. dem Arbeitgeber werden auf Antrag 50 Prozent der von ihm allein zu tragenden Beiträge zur Sozialversicherung in pauschalierter Form erstattet,
+2. für Zeiten der Teilnahme eines vom Arbeitsausfall betroffenen Arbeitnehmers an einer berücksichtigungsfähigen beruflichen Qualifizierungsmaßnahme, bei der die Teilnahme nicht der Rückkehr zur regelmäßigen wöchentlichen Arbeitszeit oder der Erhöhung der Arbeitszeit entgegensteht, werden dem Arbeitgeber die von ihm allein zu tragenden Beiträge zur Sozialversicherung für den jeweiligen Kalendermonat auf Antrag in voller Höhe in pauschalierter Form erstattet, wenn der zeitliche Umfang der Qualifizierungsmaßnahme mindestens 50 Prozent der Ausfallzeit beträgt. Berücksichtigungsfähig sind alle beruflichen Qualifizierungsmaßnahmen, die mit öffentlichen Mitteln gefördert werden. Nicht öffentlich geförderte Qualifizierungsmaßnahmen sind berücksichtigungsfähig, wenn ihre Durchführung weder im ausschließlichen oder erkennbar überwiegenden Interesse des Unternehmens liegt noch der Arbeitgeber gesetzlich zur Durchführung verpflichtet ist.
+Für die Pauschalierung wird die Sozialversicherungspauschale nach § 133 Absatz 1 Satz 2 Nummer 1 abzüglich des Beitrages zur Arbeitsförderung zu Grunde gelegt.
+(2) Kurzarbeitergeld nach § 169 und Saison-Kurzarbeitergeld nach § 175 werden bis zum 31. Dezember 2010 mit folgenden Maßgaben geleistet:
+1. neben den in § 170 Absatz 1 Nummer 4 genannten Voraussetzungen ist ein Arbeitsausfall auch dann erheblich, wenn im jeweiligen Kalendermonat weniger als ein Drittel der in dem Betrieb beschäftigten Arbeitnehmer von einem Entgeltausfall betroffen ist, soweit dieser jeweils mehr als 10 Prozent ihres monatlichen Bruttoentgelts betrifft,
+2. § 170 Absatz 4 Satz 2 Nummer 3 gilt nicht für den Fall negativer Arbeitszeitsalden,
+3. bei der Berechnung der Nettoentgeltdifferenz nach § 179 Absatz 1 bleiben auf Grund von kollektivrechtlichen Beschäftigungssicherungsvereinbarungen ab dem 1. Januar 2008 durchgeführte vorübergehende Änderungen der vertraglich vereinbarten Arbeitszeit außer Betracht; § 179 Absatz 2 findet insoweit keine Anwendung.
+(3) § 354 gilt bis zum 31. Dezember 2010 mit der Maßgabe, dass die Aufwendungen für die Erstattung der von den Arbeitgebern allein zu tragenden Beiträge zur Sozialversicherung für Bezieher von Saison-Kurzarbeitergeld nach § 175a Absatz 4 zu 50 Prozent von der Bundesagentur gezahlt werden. Die Verrechnung erfolgt für alle Bezieher von Saison-Kurzarbeitergeld zusammen, sobald die Aufwendungen nach Satz 1 feststehen.
+(4) Abweichend von den Voraussetzungen des § 417 Satz 1 Nummer 1 und 3 können Arbeitnehmer bei beruflicher Weiterbildung durch Übernahme der Weiterbildungskosten nach § 417 auch gefördert werden, wenn
+1. der Erwerb des Berufsabschlusses, für den nach bundes- oder landesrechtlichen Vorschriften eine Ausbildungsdauer von mindestens zwei Jahren festgelegt ist, zum Zeitpunkt der Antragstellung mindestens vier Jahre zurückliegt und
+2. der Arbeitnehmer in den letzten vier Jahren vor Antragstellung nicht an einer mit öffentlichen Mitteln geförderten beruflichen Weiterbildung teilgenommen hat.
+(5) Abweichend von den Voraussetzungen des § 417 Satz 1 Nummer 1 und 3 können Arbeitnehmer bei beruflicher Weiterbildung durch Übernahme der Weiterbildungskosten nach § 417 auch gefördert werden, wenn sie
+1. in den Jahren 2007 und 2008 als Leiharbeitnehmer im Sinne des § 1 Absatz 1 des Arbeitnehmerüberlassungsgesetzes sozialversicherungspflichtig beschäftigt waren und
+2. Arbeitslosigkeit durch Wiederaufnahme eines sozialversicherungspflichtigen Beschäftigungsverhältnisses bei demselben Verleiher im Sinne des § 1 Absatz 1 des Arbeitnehmerüberlassungsgesetzes beenden.
+(6) Abweichend von § 85 Absatz 2 Satz 2 ist die Dauer einer Vollzeitmaßnahme der beruflichen Weiterbildung, die bis zum 31. Dezember 2010 beginnt, auch dann angemessen, wenn sie nach dem Alten- oder Krankenpflegegesetz nicht um mindestens ein Drittel verkürzt werden kann. Insoweit ist § 85 Absatz 2 Satz 3 nicht anzuwenden.
+(7) Bei der Ermittlung des Bemessungsentgelts ist § 131 mit der Maßgabe anzuwenden, dass für Zeiten, in denen die durchschnittliche regelmäßige wöchentliche Arbeitszeit des Arbeitslosen auf Grund einer Beschäftigungssicherungsvereinbarung, die ab dem 1. Januar 2008 geschlossen oder wirksam geworden ist, vermindert war, als Arbeitsentgelt das Arbeitsentgelt zu Grunde zu legen ist, das der Arbeitslose ohne diese Vereinbarung und ohne Mehrarbeit erzielt hätte; insoweit gilt § 130 Absatz 2 Satz 1 Nummer 4 nicht. Satz 1 gilt für Zeiten bis zum 31. Dezember 2010."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 11 Änderung des Dritten Buches Sozialgesetzbuch zum 1. August 2009
+Artikel 11 wird in 2 Vorschriften zitiert und ändert mWv. 1. August 2009 SGB III § 22, § 421n
+Das Dritte Buch Sozialgesetzbuch - Arbeitsförderung - (Artikel 1 des Gesetzes vom 24. März 1997, BGBl. I S. 594, 595), das zuletzt durch Artikel 10 dieses Gesetzes geändert worden ist, wird wie folgt geändert:
+1. In der Inhaltsübersicht wird die Angabe zu § 421n wie folgt gefasst:
+„§ 421n Außerbetriebliche Berufsausbildung ohne vorherige Teilnahme an einer auf einen Beruf vorbereitenden Maßnahme".
+2. In § 22 Absatz 4 Satz 1 werden nach der Angabe „421k" ein Komma und die Angabe „421n" eingefügt.
+3. § 421n wird wie folgt gefasst:
+„§ 421n Außerbetriebliche Berufsausbildung ohne vorherige Teilnahme an einer auf einen Beruf vorbereitenden Maßnahme
+Abweichend von § 242 Absatz 1 Nummer 2 kann in begründeten Ausnahmefällen zugunsten von sozial benachteiligten Jugendlichen bis zum 31. Dezember 2010 vom Erfordernis der vorherigen Teilnahme an einer nach Bundes- oder Landesrecht auf einen Beruf vorbereitenden Maßnahme mit einer Dauer von mindestens sechs Monaten abgesehen werden."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 12 Änderung des Dritten Buches Sozialgesetzbuch zum Jahr 2011
+Artikel 12 wird in 1 Vorschrift zitiert und ändert mWv. 1. Januar 2011 SGB III § 341
+In § 341 Absatz 2 des Dritten Buches Sozialgesetzbuch - Arbeitsförderung - (Artikel 1 des Gesetzes vom 24. März 1997, BGBl. I S. 594, 595), das zuletzt durch Artikel 11 dieses Gesetzes geändert worden ist, wird die Angabe „2,8" durch die Angabe „3,0" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 13 Änderung des Fünften Buches Sozialgesetzbuch
+Artikel 13 wird in 2 Vorschriften zitiert und ändert mWv. 1. Juli 2009 SGB V § 221, § 271
+Das Fünfte Buch Sozialgesetzbuch - Gesetzliche Krankenversicherung - (Artikel 1 des Gesetzes vom 20. Dezember 1988, BGBl. I S. 2477, 2482), das zuletzt durch Artikel 6 Nummer 1 des Gesetzes vom 21. Dezember 2008 (BGBl. I S. 2940) geändert worden ist, wird wie folgt geändert:
+1. § 221 Absatz 1 wird wie folgt geändert:
+a) Satz 1 wird wie folgt gefasst:
+„Der Bund leistet zur pauschalen Abgeltung der Aufwendungen der Krankenkassen für versicherungsfremde Leistungen 7,2 Milliarden Euro für das Jahr 2009 und 11,8 Milliarden Euro für das Jahr 2010 in monatlich zum ersten Bankarbeitstag zu überweisenden Teilbeträgen an den Gesundheitsfonds."
+b) Satz 3 wird aufgehoben.
+2. In § 271 Absatz 3 Satz 4 wird die Angabe „2010" durch die Angabe „2011" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 14 Änderung der GKV-Beitragssatzverordnung
+Artikel 14 wird in 2 Vorschriften zitiert und ändert mWv. 1. Juli 2009 GKV-BSV § 1, § 2
+Die GKV-Beitragssatzverordnung vom 29. Oktober 2008 (BGBl. I S. 2109) wird wie folgt geändert:
+1. In § 1 Satz 1 wird die Angabe „14,6" durch die Angabe „14,0" ersetzt.
+2. In § 2 Satz 1 wird die Angabe „14,0" durch die Angabe „13,4" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 15 Änderung des Zweiten Gesetzes über die Krankenversicherung der Landwirte
+Artikel 15 wird in 1 Vorschrift zitiert und ändert mWv. 6. März 2009 KVLG 1989 § 66
+§ 66 des Zweiten Gesetzes über die Krankenversicherung der Landwirte vom 20. Dezember 1988 (BGBl. I S. 2477, 2557), das zuletzt durch Artikel 3 des Gesetzes vom 15. Dezember 2008 (BGBl. I S. 2426) geändert worden ist, wird wie folgt gefasst:
+ „§ 66 Maßnahmen zur Senkung des Beitrages in den Jahren 2009 und 2010
+(1) Zum 1. Juli 2009 und zum 1. Januar 2010 haben die landwirtschaftlichen Krankenkassen die Beiträge für die in § 2 Absatz 1 Nummer 1 bis 3 genannten Versicherungspflichtigen und die in § 6 genannten Versicherungsberechtigten neu festzusetzen. Bei der Neufestsetzung ist der in den Jahren 2009 und 2010 aufgrund von § 221 Absatz 1 Satz 1 des Fünften Buches Sozialgesetzbuch in der Fassung des Gesetzes vom 2. März 2009 (BGBl. I S. 416) zusätzlich auf die landwirtschaftliche Krankenversicherung entfallende Anteil für die Beteiligung des Bundes an Aufwendungen nach § 37 Absatz 4 in voller Höhe beitragssenkend zu berücksichtigen.
+(2) Die Beschlussfassung der Vertreterversammlung über die Änderung der Satzung soll abweichend von § 64 Absatz 3 Satz 2 des Vierten Buches Sozialgesetzbuch ohne Sitzung in schriftlicher Abstimmung erfolgen. Die beschlossene Satzungsänderung ist der zuständigen Aufsichtsbehörde bis zum 30. April 2009 zur Genehmigung vorzulegen."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 16 Änderung des Arbeitnehmerüberlassungsgesetzes
+Artikel 16 wird in 1 Vorschrift zitiert und ändert mWv. 1. Februar 2009 AÜG § 11
+Dem § 11 Absatz 4 des Arbeitnehmerüberlassungsgesetzes in der Fassung der Bekanntmachung vom 3. Februar 1995 (BGBl. I S. 158), das zuletzt durch Artikel 233 der Verordnung vom 31. Oktober 2006 (BGBl. I S. 2407) geändert worden ist, wird folgender Satz angefügt:
+ „Das Recht des Leiharbeitnehmers auf Vergütung kann durch Vereinbarung von Kurzarbeit für die Zeit aufgehoben werden, für die dem Leiharbeitnehmer Kurzarbeitergeld nach dem Dritten Buch Sozialgesetzbuch gezahlt wird; eine solche Vereinbarung kann das Recht des Leiharbeitnehmers auf Vergütung bis längstens zum 31. Dezember 2010 ausschließen."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 17 Änderung der Regelsatzverordnung
+Artikel 17 wird in 2 Vorschriften zitiert und ändert mWv. 1. Juli 2009 RSV § 3
+Dem § 3 Absatz 2 der Regelsatzverordnung vom 3. Juni 2004 (BGBl. I S. 1067), die durch die Verordnung vom 20. November 2006 (BGBl. I S. 2657) geändert worden ist, wird folgender Satz angefügt:
+ „Abweichend von Satz 1 betragen die Regelsätze für sonstige Haushaltsangehörige vom 1. Juli 2009 bis zum 31. Dezember 2011
+1. bis zur Vollendung des 6. Lebensjahres 60 vom Hundert,
+2. ab Beginn des 7. bis zur Vollendung des 14. Lebensjahres 70 vom Hundert und
+3. ab Beginn des 15. Lebensjahres 80 vom Hundert des Eckregelsatzes."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 18 Aufhebung der Beitragssatzverordnung 2009
+Artikel 18 wird in 1 Vorschrift zitiert und ändert mWv. 1. Februar 2009 BeitrV 2009 
+Die Beitragssatzverordnung 2009 vom 21. Dezember 2008 (BGBl. I S. 2979) wird aufgehoben.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 19 Inkrafttreten, Außerkrafttreten
+Artikel 19 wird in 2 Vorschriften zitiert und ändert mWv. 1. Januar 2011 AÜG § 11
+(1) Dieses Gesetz tritt vorbehaltlich der folgenden Absätze am Tag nach der Verkündung*) in Kraft.
+(2) Artikel 8 Nummer 2, Artikel 10, 16 und 18 treten mit Wirkung vom 1. Februar 2009 in Kraft.
+(3) Artikel 8 Nummer 1 und 4, Artikel 13, 14 und 17 treten am 1. Juli 2009 in Kraft.
+(4) Artikel 9 und 11 treten am 1. August 2009 in Kraft.
+(5) Artikel 12 tritt am 1. Januar 2011 in Kraft.
+(6) § 11 Absatz 4 Satz 3 des Arbeitnehmerüberlassungsgesetzes in der Fassung der Bekanntmachung vom 3. Februar 1995 (BGBl. I S. 158), das zuletzt durch Artikel 16 dieses Gesetzes geändert worden ist, tritt mit Ablauf des 31. Dezember 2010 außer Kraft.
+---
+*) Anm. d. Red.: Die Verkündung erfolgte am 5. März 2009.
+Link zu dieser Seite: https://www.buzer.de/gesetz/8650/index.htm 
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+StabSiG
+Rechtskataster 
+Änderungen
+überwachen 
+Sie werden über jede verkündete oder in Kraft tretende Änderung per Mail informiert, sofort, wöchentlich oder in dem Intervall, das Sie gewählt haben.
+Stellen Sie Ihr Paket zu überwachender Vorschriften beliebig zusammen.
+Jetzt anmelden!
+Weitere Vorteile:
+Konsolidierte Vorschriften selbst bei Inkrafttreten "am Tage nach der Verkündung", Synopse zu jeder Änderungen, Begründungen des Gesetzgebers
+Für Ihr Blog oder Forum - Gesetze verknüpfen
+Für Ihre Internetseite -
+Ticker aktuellste Gesetzesänderungen

@@ -1,0 +1,21 @@
+<!-- Hand-drawn illustration, not generated from code. See docs/contributing/guide.md. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Illustration: the test pyramid, many fast checks at the base and few slow proofs at the top</title>
+<polygon points="200,30 240,105 160,105" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<polygon points="160,105 240,105 280,180 120,180" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<polygon points="120,180 280,180 320,255 80,255" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<polygon points="80,255 320,255 360,330 40,330" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<path d="M226 67 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
+<path d="M266 142 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
+<path d="M306 217 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
+<path d="M346 292 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
+<text x="400" y="62" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Kani proofs</text>
+<text x="400" y="81" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">few and slow, every input in range</text>
+<text x="400" y="137" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Property tests</text>
+<text x="400" y="156" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">random inputs, rules must still hold</text>
+<text x="400" y="212" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Unit, doc and guide tests</text>
+<text x="400" y="231" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">one named case each, on every push</text>
+<text x="400" y="287" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Static checks</text>
+<text x="400" y="306" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">fmt, clippy, build.rs validation</text>
+<text x="20" y="350" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">Illustration: the shape shows the idea, not the number of tests.</text>
+</svg>

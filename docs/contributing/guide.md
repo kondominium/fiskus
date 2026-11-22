@@ -27,7 +27,7 @@ A release is complete when `make check` passes on it. The guide tests and the ch
 
 - `scripts/guide/charts.rs` draws the charts from the public `assess` API, so each chart shows what the code does. Charts stop at the implemented range and never draw a zone that fiskus does not compute.
 - Each chart is one SVG in `docs/guide/assets/charts/`, with no background. Its ink and zone colors are CSS variables (`--chart-ink`, `--chart-zone`) set per theme in `docs/theme/fiskus.css`, so it follows the book's light and navy themes. Colors come from [design](design.md), with `signal` used once per chart as the highlight.
-- Pages pull each chart in with `{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
+- Pages pull each chart in with `\{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
 - `make check` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG differs from the generated one.
 
 ## Illustrations
@@ -38,12 +38,14 @@ An illustration is a hand-drawn SVG in `docs/guide/assets/illustrations/`, for a
 - not be written by the generator, and not be checked by the chart drift check;
 - be replaced by a generated chart, with dated data in `rules/`, once the data exists.
 
+The same rules apply to the internals pages in `docs/internals/`, whose illustrations live in `docs/internals/assets/illustrations/`. The internals checks in `scripts/guide/checks.rs` enforce the icon and title rules.
+
 ## Icons
 
-- Every guide page has one icon, placed directly above its H1 as `{{#include assets/icons/<name>.svg}}`. `docs/theme/fiskus.css` floats it to the left of the title.
+- Every guide page has one icon, placed directly above its H1 as `\{{#include assets/icons/<name>.svg}}`. `docs/theme/fiskus.css` floats it to the left of the title. The internals pages in `docs/internals/` follow the same rule, with their icons in `docs/internals/assets/icons/`.
 - Icons come from [Lucide](https://lucide.dev), fetched from `lucide-static`, not drawn by hand. Keep Lucide's license comment at the top of each file.
 - Icons are 24-unit line icons. Each file sets `width` and `height` to 32, keeps `stroke="currentColor"`, and sets `style="color: var(--chart-ink, #0f3d2e)"` on the root `<svg>`, so the icon follows the theme.
-- The Lucide notice lives in `docs/guide/assets/icons/LICENSE-LUCIDE.txt`. Keep it when icons are added or removed.
+- The Lucide notice lives in `LICENSE-LUCIDE.txt`, next to the icons in `docs/guide/assets/icons/` and `docs/internals/assets/icons/`. Keep it when icons are added or removed.
 - `make check` fails if a page does not have exactly one icon, or if the icon file is missing.
 
 ## Page layout
@@ -69,7 +71,7 @@ Read this section before touching `docs/guide/`, `scripts/guide/charts.rs`, or `
 2. Use the helpers (`text`, `line`, `polyline`, `circle`, `bar`) and the `INK`, `ZONE`, and `SIGNAL` constants. Do not write hex colors inline.
 3. Register it in the `charts` array in `run()`.
 4. Run `mise run charts`, then commit the SVG.
-5. Embed it on the page with `{{#include assets/charts/<name>.svg}}` on its own line, with a blank line before and after.
+5. Embed it on the page with `\{{#include assets/charts/<name>.svg}}` on its own line, with a blank line before and after.
 6. Run `make check`.
 
 **Never**

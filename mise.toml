@@ -5,7 +5,7 @@ mdbook = "0.5.3"
 "cargo:kani-verifier" = "0.68.0"
 
 [tasks.check]
-description = "fmt, clippy (deny warnings), test"
+description = "fmt, clippy (deny warnings), all tests, doc tests, guide chart check"
 run = [
   "cargo fmt --all -- --check",
   "cargo clippy --all-targets -- -D warnings",
@@ -13,6 +13,10 @@ run = [
   "cargo test --doc",
   "cargo run --example guide_charts -- --check",
 ]
+
+[tasks.test]
+description = "Unit and property tests in src/"
+run = "cargo test --lib"
 
 [tasks.charts]
 description = "Regenerate the guide charts in docs/guide/assets/charts"

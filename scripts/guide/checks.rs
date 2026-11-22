@@ -1,6 +1,7 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
-//! Keeps the guide in `docs/guide` in step with the code. See `docs/contributing/guide.md`.
+//! Keeps the guide in `docs/guide` and the internals pages in `docs/internals` in step with the code.
+//! See `docs/contributing/guide.md`.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
@@ -10,6 +11,7 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 struct Coverage {
+    guide_year: u16,
     chapter: Vec<Chapter>,
 }
 
@@ -138,22 +140,26 @@ fn listed_sections_are_cited_by_the_code() {
 
 #[test]
 fn parameter_values_appear_on_the_page_that_cites_them() {
-    let chapters = coverage().chapter;
-    for entry in fs::read_dir(root().join("rules")).unwrap() {
-        let path = entry.unwrap().path().join("parameters.toml");
-        let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
-        for (name, parameter) in parameters {
-            let value = euros(parameter.value_eur);
-            let explained = chapters.iter().any(|chapter| {
-                let text = page(&chapter.file);
-                text.contains(&parameter.citation) && text.contains(&value)
-            });
-            assert!(
-                explained,
-                "{name}: no guide page cites `{}` together with {value}",
-                parameter.citation
-            );
-        }
+    let Coverage {
+        guide_year,
+        chapter: chapters,
+    } = coverage();
+    let path = root()
+        .join("rules")
+        .join(guide_year.to_string())
+        .join("parameters.toml");
+    let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
+    for (name, parameter) in parameters {
+        let value = euros(parameter.value_eur);
+        let explained = chapters.iter().any(|chapter| {
+            let text = page(&chapter.file);
+            text.contains(&parameter.citation) && text.contains(&value)
+        });
+        assert!(
+            explained,
+            "{name}: no guide page cites `{}` together with {value}",
+            parameter.citation
+        );
     }
 }
 
@@ -237,5 +243,142 @@ fn guide_writes_fiskus_in_lowercase() {
             "{}: write fiskus in lowercase",
             chapter.file
         );
+    }
+}
+
+fn internals_pages() -> Vec<PathBuf> {
+    let mut pages = Vec::new();
+    files_under(&root().join("docs/internals"), "md", &mut pages);
+    pages
+}
+
+// Paths of the `{{#include ...}}` lines in a page, relative to the page.
+fn included(text: &str) -> Vec<&str> {
+    text.lines()
+        .filter_map(|line| line.strip_prefix("{{#include ")?.strip_suffix("}}"))
+        .collect()
+}
+
+fn is_icon(line: &str) -> bool {
+    line.starts_with("{{#include") && line.contains("icons/")
+}
+
+// Targets named in backticks as `make <target>`. A `<name>` placeholder is skipped.
+fn named_make_targets(text: &str) -> Vec<String> {
+    text.match_indices("`make ")
+        .map(|(index, pattern)| {
+            text[index + pattern.len()..]
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric() || *c == '-' || *c == '_')
+                .collect::<String>()
+        })
+        .filter(|name| !name.is_empty() && !name.ends_with('-'))
+        .collect()
+}
+
+#[test]
+fn internals_pages_have_one_icon_above_the_title() {
+    for page in internals_pages() {
+        let text = read(&page);
+        let lines: Vec<&str> = text.lines().collect();
+        let icons = lines.iter().filter(|line| is_icon(line)).count();
+        assert_eq!(
+            icons,
+            1,
+            "{}: needs exactly one icon, found {icons}",
+            page.display()
+        );
+        let icon = included(&text)
+            .into_iter()
+            .find(|path| path.contains("icons/"))
+            .map(|path| page.parent().unwrap().join(path))
+            .unwrap_or_default();
+        assert!(
+            icon.exists(),
+            "{}: missing {}",
+            page.display(),
+            icon.display()
+        );
+        let icon_at = lines
+            .iter()
+            .position(|line| is_icon(line))
+            .unwrap_or(usize::MAX);
+        let heading_at = lines
+            .iter()
+            .position(|line| line.starts_with("# "))
+            .unwrap_or(usize::MAX);
+        assert!(
+            icon_at < heading_at,
+            "{}: the icon must sit above the H1",
+            page.display()
+        );
+    }
+}
+
+#[test]
+fn internals_illustrations_are_labelled_as_illustrations() {
+    for page in internals_pages() {
+        for path in included(&read(&page))
+            .into_iter()
+            .filter(|path| path.contains("illustrations/"))
+        {
+            let file = page.parent().unwrap().join(path);
+            assert!(
+                read(&file).contains("<title>Illustration"),
+                "{}: {} must be titled as an illustration",
+                page.display(),
+                file.display()
+            );
+        }
+    }
+}
+
+#[test]
+fn internals_test_page_names_every_kani_proof() {
+    let mut sources = Vec::new();
+    files_under(&root().join("src"), "rs", &mut sources);
+    let mut proofs = Vec::new();
+    for source in sources {
+        let text = read(&source);
+        let lines: Vec<&str> = text.lines().collect();
+        proofs.extend(
+            lines
+                .windows(2)
+                .filter(|pair| pair[0].trim() == "#[kani::proof]")
+                .filter_map(|pair| pair[1].trim().strip_prefix("fn ")?.split('(').next())
+                .map(str::to_string),
+        );
+    }
+    assert!(!proofs.is_empty(), "no Kani proofs found in src/");
+    let page = read(&root().join("docs/internals/test/README.md"));
+    for proof in proofs {
+        assert!(
+            page.contains(&proof),
+            "docs/internals/test/README.md does not name the Kani proof {proof}"
+        );
+    }
+}
+
+#[test]
+fn internals_pages_only_name_make_targets_that_exist() {
+    let makefile = read(&root().join("Makefile"));
+    let targets: BTreeSet<&str> = makefile
+        .lines()
+        .filter_map(|line| line.split_once(':').map(|(name, _)| name))
+        .filter(|name| {
+            name.starts_with(|c: char| c.is_ascii_lowercase())
+                && name
+                    .chars()
+                    .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-' || c == '_')
+        })
+        .collect();
+    for page in internals_pages() {
+        for target in named_make_targets(&read(&page)) {
+            assert!(
+                targets.contains(target.as_str()),
+                "{}: `make {target}` is not a Makefile target",
+                page.display()
+            );
+        }
     }
 }

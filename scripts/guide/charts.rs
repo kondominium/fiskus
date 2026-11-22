@@ -41,7 +41,11 @@ fn main() -> ExitCode {
 fn run() -> Result<ExitCode, Box<dyn StdError>> {
     let check = std::env::args().skip(1).any(|arg| arg == "--check");
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("docs/guide/assets/charts");
-    let charts: [(&str, Render); 2] = [("rounding", rounding), ("zero-zone", zero_zone)];
+    let charts: [(&str, Render); 3] = [
+        ("rounding", rounding),
+        ("zero-zone", zero_zone),
+        ("allowance-history", allowance_history),
+    ];
 
     let mut stale = Vec::new();
     for (name, render) in charts {
@@ -154,8 +158,8 @@ fn rounding() -> Result<String, Box<dyn StdError>> {
 }
 
 fn zero_zone() -> Result<String, Box<dyn StdError>> {
-    let single_end = zero_zone_end(FilingStatus::Single)?;
-    let joint_end = zero_zone_end(FilingStatus::Joint)?;
+    let single_end = zero_zone_end(TaxYear::Y2026, FilingStatus::Single)?;
+    let joint_end = zero_zone_end(TaxYear::Y2026, FilingStatus::Joint)?;
     let plot = Plot {
         x: (0.0, joint_end as f64),
         y: (0.0, 2.0),
@@ -209,16 +213,109 @@ fn zero_zone() -> Result<String, Box<dyn StdError>> {
 }
 
 /// Largest whole-euro taxable income that `assess` accepts, found by stepping up from zero.
-fn zero_zone_end(filing: FilingStatus) -> Result<i128, Box<dyn StdError>> {
+fn zero_zone_end(year: TaxYear, filing: FilingStatus) -> Result<i128, Box<dyn StdError>> {
     let mut last = None;
     for euros in 0..=100_000 {
-        match assess(TaxYear::Y2026, &unit(filing, Cents::from_euros(euros))) {
+        match assess(year, &unit(filing, Cents::from_euros(euros))) {
             Ok(_) => last = Some(euros),
             Err(Error::OutsideImplementedRange { .. }) => break,
             Err(error) => return Err(error.into()),
         }
     }
     last.ok_or_else(|| "no zero-tax zone found".into())
+}
+
+fn allowance_history() -> Result<String, Box<dyn StdError>> {
+    let mut points = Vec::new();
+    for year in TaxYear::ALL {
+        points.push((year, zero_zone_end(year, FilingStatus::Single)?));
+    }
+    let last = points.len().checked_sub(1).ok_or("no years listed")?;
+    let top = points.iter().map(|&(_, euros)| euros).max().unwrap_or(0) as f64 * 1.25;
+    let plot = Plot {
+        x: (0.0, last as f64 + 0.5),
+        y: (0.0, top),
+    };
+    let x_of = |index: usize| plot.px(index as f64);
+
+    let mut body = x_axis() + &y_axis();
+    body += &text(LEFT - 10.0, plot.py(0.0) + 4.0, "end", 12, "0 €");
+    for (index, pair) in points.windows(2).enumerate() {
+        let ((from, from_euros), (to, to_euros)) = (pair[0], pair[1]);
+        let solid = consecutive(from, to);
+        let (x1, y1) = (x_of(index), plot.py(from_euros as f64));
+        let (x2, y2) = (x_of(index + 1), plot.py(to_euros as f64));
+        body += &segment(x1, y1, x2, y2, solid);
+        if !solid {
+            body += &text(
+                (x1 + x2) / 2.0,
+                (y1 + y2) / 2.0 - 10.0,
+                "middle",
+                11,
+                &format!("{}–{} not yet in fiskus", from.year() + 1, to.year() - 1),
+            );
+        }
+    }
+
+    for (index, &(year, euros_value)) in points.iter().enumerate() {
+        let (x, y) = (x_of(index), plot.py(euros_value as f64));
+        body += &circle(x, y, 4.0, INK);
+        body += &rotated_text(x + 4.0, y - 8.0, -45.0, 11, &group(euros_value));
+        body += &text(
+            x,
+            HEIGHT - BOTTOM + 18.0,
+            "middle",
+            12,
+            &format!("{:02}", year.year() % 100),
+        );
+        if let Some(&(previous, previous_euros)) = index.checked_sub(1).and_then(|i| points.get(i))
+            && consecutive(previous, year)
+        {
+            body += &rotated_text(
+                x,
+                HEIGHT - BOTTOM + 30.0,
+                45.0,
+                11,
+                &change(euros_value - previous_euros),
+            );
+        }
+    }
+
+    body += &text(
+        LEFT,
+        TOP - 16.0,
+        "start",
+        13,
+        "Basic allowance in euros; change from the period before, under each year",
+    );
+
+    Ok(document(
+        "The basic allowance has risen in steps since 2009",
+        &body,
+    ))
+}
+
+fn consecutive(from: TaxYear, to: TaxYear) -> bool {
+    to.year() == from.year() + 1
+}
+
+fn change(delta: i128) -> String {
+    match delta {
+        0 => "0 €".to_string(),
+        _ if delta > 0 => format!("+{} €", group(delta)),
+        _ => format!("-{} €", group(-delta)),
+    }
+}
+
+fn segment(x1: f64, y1: f64, x2: f64, y2: f64, solid: bool) -> String {
+    let dash = if solid {
+        ""
+    } else {
+        " stroke-dasharray=\"4 3\""
+    };
+    format!(
+        "<line x1=\"{x1:.1}\" y1=\"{y1:.1}\" x2=\"{x2:.1}\" y2=\"{y2:.1}\" style=\"stroke: {INK}\" stroke-width=\"2\"{dash}/>\n"
+    )
 }
 
 fn unit(filing: FilingStatus, taxable_income: Cents) -> FilingUnit {
@@ -305,6 +402,12 @@ fn circle(x: f64, y: f64, radius: f64, fill: &str) -> String {
 fn text(x: f64, y: f64, anchor: &str, size: u32, content: &str) -> String {
     format!(
         "<text x=\"{x:.1}\" y=\"{y:.1}\" text-anchor=\"{anchor}\" font-size=\"{size}\" style=\"fill: {INK}\">{content}</text>\n"
+    )
+}
+
+fn rotated_text(x: f64, y: f64, angle: f64, size: u32, content: &str) -> String {
+    format!(
+        "<text x=\"{x:.1}\" y=\"{y:.1}\" text-anchor=\"start\" font-size=\"{size}\" transform=\"rotate({angle} {x:.1} {y:.1})\" style=\"fill: {INK}\">{content}</text>\n"
     )
 }
 

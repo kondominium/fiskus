@@ -28,3 +28,4 @@
 # Internals
 
 - [Build](internals/build/README.md)
+- [Test](internals/test/README.md)

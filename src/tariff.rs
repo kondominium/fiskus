@@ -121,7 +121,7 @@ mod tests {
     use super::*;
     use proptest::prelude::*;
 
-    // Grundfreibetrag for VZ 2026 (§ 32a Abs. 1 Satz 2 Nr. 1 EStG).
+    // Basic allowance (Grundfreibetrag) for VZ 2026 (§ 32a Abs. 1 Satz 2 Nr. 1 EStG).
     const BASIC_ALLOWANCE_EUR: i128 = 12_348;
     // Largest joint zvE still in the zone: the half (12 348.50) rounds down to 12 348.
     const JOINT_ZONE_EUR: i128 = 24_697;
@@ -174,7 +174,7 @@ mod tests {
         );
     }
 
-    // Joint filer at 24 697 €: the Splitting half is 12 348 €, so tax is 0 (§ 32a Abs. 5 EStG).
+    // Joint filer at 24 697 €: the splitting half is 12 348 €, so tax is 0 (§ 32a Abs. 5 EStG).
     #[test]
     fn joint_is_tax_free_up_to_the_split_zone_boundary() {
         let result = assess(TaxYear::Y2026, &joint(JOINT_ZONE_EUR * 100)).unwrap();
@@ -200,6 +200,88 @@ mod tests {
             assess(TaxYear::Y2026, &single(-1)).unwrap_err(),
             Error::NegativeTaxableIncome
         );
+    }
+
+    // Basic allowance (Grundfreibetrag) per verified VZ, with the law that set it; see docs/references/README.md.
+    const VERIFIED_BASIC_ALLOWANCES: [(TaxYear, i128); 21] = [
+        // VZ 2006 to 2008: value from the BMF withholding guidance (Programmablaufplan); setting law not yet traced.
+        (TaxYear::Y2006, 7_664),
+        (TaxYear::Y2007, 7_664),
+        (TaxYear::Y2008, 7_664),
+        // VZ 2009: financial stability act (StabSiG), BGBl. 2009 I S. 416.
+        (TaxYear::Y2009, 7_834),
+        // VZ 2010 to 2012: financial stability act (StabSiG) § 52 Abs. 41, kept by BGBl. 2013 I S. 283.
+        (TaxYear::Y2010, 8_004),
+        (TaxYear::Y2011, 8_004),
+        (TaxYear::Y2012, 8_004),
+        // VZ 2013: act to reduce cold progression (Gesetz zum Abbau der kalten Progression), BGBl. 2013 I S. 283.
+        (TaxYear::Y2013, 8_130),
+        // VZ 2014: same law as 2013.
+        (TaxYear::Y2014, 8_354),
+        // VZ 2015: act raising the basic allowance (KiGAnhG 2015), BGBl. 2015 I S. 1202.
+        (TaxYear::Y2015, 8_472),
+        // VZ 2016: same law as 2015.
+        (TaxYear::Y2016, 8_652),
+        // VZ 2017 and 2018: EU mutual assistance directive act (BGBl. 2016 I S. 3000).
+        (TaxYear::Y2017, 8_820),
+        (TaxYear::Y2018, 9_000),
+        // VZ 2019 and 2020: family relief act (Familienentlastungsgesetz, BGBl. 2018 I S. 2210).
+        (TaxYear::Y2019, 9_168),
+        (TaxYear::Y2020, 9_408),
+        // VZ 2021: second family relief act (BGBl. 2020 I S. 2616).
+        (TaxYear::Y2021, 9_744),
+        // VZ 2022: tax relief act 2022 (Steuerentlastungsgesetz 2022, BGBl. 2022 I S. 749).
+        (TaxYear::Y2022, 10_347),
+        // VZ 2023: inflation compensation act (Inflationsausgleichsgesetz, BGBl. 2022 I S. 2230).
+        (TaxYear::Y2023, 10_908),
+        // VZ 2024: act on the subsistence minimum 2024 (Gesetz zur steuerlichen Freistellung des Existenzminimums 2024), BGBl. 2024 I Nr. 386, Art. 1.
+        (TaxYear::Y2024, 11_784),
+        // VZ 2025: tax development act (Steuerfortentwicklungsgesetz, SteFeG), BGBl. 2024 I Nr. 449, Art. 1.
+        (TaxYear::Y2025, 12_096),
+        // VZ 2026: tax development act (Steuerfortentwicklungsgesetz, SteFeG), BGBl. 2024 I Nr. 449, Art. 2.
+        (TaxYear::Y2026, 12_348),
+    ];
+
+    // Every year in the verified table is listed in TaxYear::ALL, and the other way round.
+    #[test]
+    fn verified_years_match_the_listed_years() {
+        assert_eq!(
+            VERIFIED_BASIC_ALLOWANCES.map(|(year, _)| year),
+            TaxYear::ALL
+        );
+    }
+
+    // Each verified year's allowance is the zone edge: tax-free up to it, outside one euro above it.
+    #[test]
+    fn zone_edges_match_the_statute_for_every_verified_year() {
+        for (year, allowance_eur) in VERIFIED_BASIC_ALLOWANCES {
+            let edge = assess(year, &single(allowance_eur * 100)).unwrap();
+            assert_eq!(
+                edge.income_tax,
+                Cents::new(0),
+                "{year:?}: single at the edge"
+            );
+            assert_eq!(
+                assess(year, &single((allowance_eur + 1) * 100)).unwrap_err(),
+                Error::OutsideImplementedRange {
+                    taxable_income_eur: allowance_eur + 1
+                },
+                "{year:?}: single one euro above the edge"
+            );
+            let joint_edge = assess(year, &joint((2 * allowance_eur + 1) * 100)).unwrap();
+            assert_eq!(
+                joint_edge.income_tax,
+                Cents::new(0),
+                "{year:?}: joint at the edge"
+            );
+            assert_eq!(
+                assess(year, &joint((2 * allowance_eur + 2) * 100)).unwrap_err(),
+                Error::OutsideImplementedRange {
+                    taxable_income_eur: 2 * allowance_eur + 2
+                },
+                "{year:?}: joint one euro above the edge"
+            );
+        }
     }
 
     proptest! {

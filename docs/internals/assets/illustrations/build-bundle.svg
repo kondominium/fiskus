@@ -1,0 +1,30 @@
+<!-- Hand-drawn illustration, not generated from code. See docs/contributing/guide.md. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" width="640" height="240" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Illustration: how the tax data becomes part of the library at build time</title>
+<text x="18" y="30" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">From the data file to the library, at build time</text>
+<rect x="18" y="50" width="124" height="100" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="80" y="88" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">rules/2026/</text>
+<text x="80" y="110" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">parameters.toml</text>
+<text x="80" y="130" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">the data</text>
+<rect x="178" y="50" width="124" height="100" rx="6" stroke-width="2.5" style="fill: var(--chart-zone, #f3f0e8); stroke: #e0391f"/>
+<text x="240" y="88" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">build.rs</text>
+<text x="240" y="110" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">checks, then</text>
+<text x="240" y="130" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">writes the code</text>
+<rect x="338" y="50" width="124" height="100" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="400" y="88" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">parameters.rs</text>
+<text x="400" y="110" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">in OUT_DIR</text>
+<text x="400" y="130" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">not committed</text>
+<rect x="498" y="50" width="124" height="100" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="560" y="88" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">src/params.rs</text>
+<text x="560" y="110" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">include! pulls it in</text>
+<text x="560" y="130" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">into the library</text>
+<path d="M142 100 H170" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; fill: none"/>
+<path d="M170 96 L177 100 L170 104 Z" style="fill: var(--chart-ink, #0f3d2e)"/>
+<path d="M302 100 H330" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; fill: none"/>
+<path d="M330 96 L337 100 L330 104 Z" style="fill: var(--chart-ink, #0f3d2e)"/>
+<path d="M462 100 H490" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; fill: none"/>
+<path d="M490 96 L497 100 L490 104 Z" style="fill: var(--chart-ink, #0f3d2e)"/>
+<text x="240" y="172" text-anchor="middle" font-size="12" style="fill: #e0391f">bad data stops the build here</text>
+<path d="M18 190 V196 H622 V190" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.2; fill: none"/>
+<text x="320" y="218" text-anchor="middle" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">Nothing is read at runtime. The values are compiled into the binary.</text>
+</svg>
