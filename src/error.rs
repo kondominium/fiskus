@@ -2,13 +2,17 @@
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 use std::fmt;
 
+/// Errors returned by [`assess`](crate::assess).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Error {
-    /// Zu versteuerndes Einkommen cannot be negative (§ 2 Abs. 5 EStG).
+    /// Taxable income (zu versteuerndes Einkommen) is below zero (§ 2 Abs. 5 EStG).
     NegativeTaxableIncome,
-    /// Above the Grundfreibetrag, the tariff zones are not implemented yet.
-    OutsideImplementedRange { taxable_income_eur: i128 },
-    /// The bundled parameter file for the year could not be read.
+    /// Taxable income is above the basic allowance zone (Grundfreibetrag). The tariff zones beyond it are not implemented yet.
+    OutsideImplementedRange {
+        /// Taxable income in whole euros.
+        taxable_income_eur: i128,
+    },
+    /// The bundled parameter file for the year could not be parsed.
     Parameters(String),
 }
 

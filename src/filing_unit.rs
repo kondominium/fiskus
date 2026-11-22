@@ -2,19 +2,22 @@
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 use crate::Cents;
 
-/// Veranlagungsform (§ 26 EStG).
+/// Filing status (Veranlagungsform, § 26 EStG).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FilingStatus {
-    /// Einzelveranlagung (§ 26a EStG), Grundtarif.
+    /// Single assessment (Einzelveranlagung, § 26a EStG), basic tariff (Grundtarif).
     Single,
-    /// Zusammenveranlagung (§ 26b EStG), Splittingtarif.
+    /// Joint assessment (Zusammenveranlagung, § 26b EStG), splitting tariff (Splittingtarif).
     Joint,
 }
 
-/// Veranlagungseinheit: the one or two spouses assessed together. Taxable income
-/// (zu versteuerndes Einkommen) is given directly until the § 2 EStG computation exists.
+/// One filing unit (Veranlagungseinheit): one spouse, or two spouses filing jointly.
+///
+/// Taxable income is given directly until the § 2 EStG computation exists.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct FilingUnit {
+    /// Single or joint filing.
     pub filing: FilingStatus,
+    /// Taxable income (zu versteuerndes Einkommen), in cents.
     pub taxable_income: Cents,
 }

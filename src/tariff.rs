@@ -3,7 +3,24 @@
 use crate::params;
 use crate::{Assessment, Cents, Error, FilingStatus, FilingUnit, TaxYear};
 
-/// Tarifliche Einkommensteuer (§ 32a EStG). Implements only the basic allowance zone so far.
+/// Assesses income tax for one filing unit in `year`.
+///
+/// Taxable income is given in cents. Returns [`Error::NegativeTaxableIncome`] for negative
+/// income, and [`Error::OutsideImplementedRange`] above the basic allowance zone, where the
+/// tariff zones (tarifliche Einkommensteuer, § 32a EStG) are not implemented yet.
+///
+/// # Examples
+///
+/// ```
+/// use fiskus::{assess, Cents, FilingStatus, FilingUnit, TaxYear};
+///
+/// let unit = FilingUnit {
+///     filing: FilingStatus::Single,
+///     taxable_income: Cents::from_euros(12_348),
+/// };
+/// let assessment = assess(TaxYear::Y2026, &unit).unwrap();
+/// assert_eq!(assessment.income_tax, Cents::new(0));
+/// ```
 pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error> {
     let parameters = params::for_year(year)?;
     basic_allowance_zone(unit, parameters.basic_allowance.value_eur)
@@ -15,10 +32,7 @@ fn basic_allowance_zone(unit: &FilingUnit, basic_allowance_eur: i128) -> Result<
     }
 
     let taxable_income_eur = unit.taxable_income.whole_euros();
-    let basis_eur = match unit.filing {
-        FilingStatus::Single => taxable_income_eur,
-        FilingStatus::Joint => taxable_income_eur / 2,
-    };
+    let basis_eur = filing_basis_eur(unit.filing, taxable_income_eur);
 
     if basis_eur > basic_allowance_eur {
         return Err(Error::OutsideImplementedRange { taxable_income_eur });
@@ -30,16 +44,22 @@ fn basic_allowance_zone(unit: &FilingUnit, basic_allowance_eur: i128) -> Result<
     })
 }
 
+fn filing_basis_eur(filing: FilingStatus, taxable_income_eur: i128) -> i128 {
+    match filing {
+        FilingStatus::Single => taxable_income_eur,
+        FilingStatus::Joint => taxable_income_eur / 2,
+    }
+}
+
 #[cfg(kani)]
 mod verification {
     use super::*;
 
-    // 10^12 cents is 10 billion euros, far above any real taxable income. Kani
-    // with unbounded i128 division and multiplication does not finish in CI time,
-    // so the boundary proof is limited to this range. The no-panic harness covers
-    // the full i128 range.
+    // 10^12 cents (10 billion euros) keeps the proof fast enough for CI.
+    // The no-panic harness covers the full i128 range.
     const BOUND_CENTS: i128 = 1_000_000_000_000;
 
+    // For any cents within the bound, the zone check matches the exact boundary.
     #[kani::proof]
     fn basic_allowance_zone_boundary_is_exact() {
         let cents: i128 = kani::any();
@@ -65,10 +85,7 @@ mod verification {
         }
 
         let whole_euros = cents.div_euclid(100);
-        let basis_eur = match filing {
-            FilingStatus::Single => whole_euros,
-            FilingStatus::Joint => whole_euros / 2,
-        };
+        let basis_eur = filing_basis_eur(filing, whole_euros);
 
         if basis_eur <= basic_allowance_eur {
             let assessment = result.unwrap();
@@ -79,6 +96,7 @@ mod verification {
         }
     }
 
+    // For any i128 cents and allowance, the zone function returns without panicking.
     #[kani::proof]
     fn basic_allowance_zone_never_panics() {
         let cents: i128 = kani::any();
@@ -184,8 +202,8 @@ mod tests {
         );
     }
 
-    // Random inputs: the checks above, over the whole range, with any cents part.
     proptest! {
+        // Any single amount in the zone, with any cents part, is tax-free.
         #[test]
         fn single_zone_is_tax_free_for_any_cents(euros in 0..=BASIC_ALLOWANCE_EUR, cents in 0..100i128) {
             let result = assess(TaxYear::Y2026, &single(euros * 100 + cents)).unwrap();
@@ -193,6 +211,7 @@ mod tests {
             prop_assert_eq!(result.taxable_income, Cents::from_euros(euros));
         }
 
+        // Any joint amount in the zone, with any cents part, is tax-free.
         #[test]
         fn joint_zone_is_tax_free_for_any_cents(euros in 0..=JOINT_ZONE_EUR, cents in 0..100i128) {
             let result = assess(TaxYear::Y2026, &joint(euros * 100 + cents)).unwrap();
