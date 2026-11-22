@@ -1,5 +1,6 @@
 [tools]
-rust = { version = "1.100.0", components = "rustfmt,clippy" }
+rust = { version = "1.100.0", components = "rustfmt,clippy", targets = "wasm32-unknown-unknown" }
+node = "26"
 mdbook = "0.5.3"
 "cargo:mdbook-katex" = "0.10.0"
 "cargo:kani-verifier" = "0.68.0"
@@ -17,6 +18,19 @@ run = [
 [tasks.test]
 description = "Unit and property tests in src/"
 run = "cargo test --lib"
+
+[tasks.bench]
+description = "Criterion benchmarks in benches/"
+run = "cargo bench"
+
+[tasks.size]
+description = "Report the packaged crate size and the WebAssembly module size"
+run = [
+  "cargo package --no-verify",
+  "cargo build --release --manifest-path docs/calculator/wasm/Cargo.toml --target wasm32-unknown-unknown",
+  "ls -lh target/package/*.crate",
+  "ls -lh docs/calculator/wasm/target/wasm32-unknown-unknown/release/fiskus_web.wasm",
+]
 
 [tasks.charts]
 description = "Regenerate the guide charts in docs/guide/assets/charts"
@@ -43,8 +57,46 @@ run = [
 
 [tasks.docs]
 description = "Build the docs book into target/book"
-run = "mdbook build"
+run = ["rm -rf target/book/calculator", "mdbook build"]
 
 [tasks.docs-serve]
 description = "Serve the docs book locally with live reload"
 run = "mdbook serve --open"
+
+[tasks.web-wasm]
+description = "Build the Rust core for the browser and copy it, with the logos, into docs/calculator/app/public"
+run = [
+  "cargo build --release --manifest-path docs/calculator/wasm/Cargo.toml --target wasm32-unknown-unknown",
+  "mkdir -p docs/calculator/app/public/logo",
+  "cp docs/calculator/wasm/target/wasm32-unknown-unknown/release/fiskus_web.wasm docs/calculator/app/public/fiskus.wasm",
+  "cp docs/logos/fiskus-light-mode.svg docs/logos/fiskus-dark-mode.svg docs/calculator/app/public/logo/",
+]
+
+[tasks.web-install]
+description = "Install the calculator's npm dependencies from the lock file"
+run = "npm --prefix docs/calculator/app ci --no-audit --no-fund"
+
+[tasks.web-test]
+description = "Calculator tests: the wasm answers and the formats"
+depends = ["web-wasm"]
+run = "npm --prefix docs/calculator/app test"
+
+[tasks.web-build]
+description = "Type-check and build the calculator into docs/calculator/app/dist"
+depends = ["web-wasm"]
+run = "npm --prefix docs/calculator/app run build"
+
+[tasks.web-dev]
+description = "Serve the calculator locally with live reload"
+depends = ["web-wasm"]
+run = "npm --prefix docs/calculator/app run dev"
+
+[tasks.pages]
+description = "Build the docs book and the calculator, bundle them into target/book for GitHub Pages"
+depends = ["docs", "web-build"]
+run = [
+  "rm -rf target/book/calculator",
+  "mkdir -p target/book/calculator",
+  "cp -r docs/calculator/app/dist/. target/book/calculator/",
+]
+

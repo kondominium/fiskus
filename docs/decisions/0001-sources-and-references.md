@@ -19,7 +19,7 @@ Every parameter needs a source the reader can check. The Lohnsteuer repository (
 - The basic allowance history covers VZ 2006 to 2026. VZ 2002 to 2005 are not yet in fiskus.
 - These changes depart from the handoff plan (`.agents/plans/2026-11-21-fiskus-handoff.md`), and are recorded here:
   - Sources live in `docs/references/` with a README, not in `sources/` with `SHA256SUMS` (plan §2 Sources, §5 Checkpoint 0).
-  - Parameters are per year, `rules/<year>/parameters.toml`, and the history from 2006 to 2025 is in `rules/`. The plan had 2026 only and no 2020 to 2025 on day one (plan §2 Bundling, §6 traps). The owner asked for the history.
+  - Parameters are per year, `rules/<year>.toml`, and the history from 2006 to 2025 is in `rules/`. The plan had 2026 only and no 2020 to 2025 on day one (plan §2 Bundling, §6 traps). The owner asked for the history.
 
 ## Open
 
@@ -28,4 +28,4 @@ Every parameter needs a source the reader can check. The Lohnsteuer repository (
 - **BMF pseudocode (plan §3.1).** https://www.bmf-steuerrechner.de/interface/pseudocodes.xhtml returned HTTP 503 again during this check.
 - **PAP XML (plan §3.2).** The BMF publishes the PAPs as PDF. The repository links only PDFs, and no XML was found. The bmf-steuerrechner site is unreachable, so the check is incomplete.
 - **Provenance.** Plan §6 requires every number in `Assessment` to carry its § citation and parameter version. `docs/contributing/code.md` says provenance is a later feature. The two need one decision.
-- **ADRs from the plan.** License, repository topology, naming, verification strategy and non-affiliation wording are not yet written. This is the first ADR in `docs/decisions/`.
+- **Decisions from the plan.** License, repository topology, naming, verification strategy and non-affiliation wording are not yet written. This is the first file in `docs/decisions/`.

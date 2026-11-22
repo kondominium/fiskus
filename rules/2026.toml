@@ -1,0 +1,46 @@
+# Tax parameters for VZ 2026. Every value needs a citation and source.
+
+[basic_allowance]
+value_eur = 12348
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG"
+source = "https://www.gesetze-im-internet.de/estg/__32a.html"
+retrieved = "2026-11-22"
+reference = "docs/references/bgbl-2024-I-449-steuerfortentwicklungsgesetz.pdf"
+
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 2 Nr. 2, BGBl. 2024 I Nr. 449)"
+source = "https://www.recht.bund.de/bgbl/1/2024/449/VO"
+retrieved = "2026-11-22"
+reference = "docs/references/bgbl-2024-I-449-steuerfortentwicklungsgesetz.pdf"
+
+[[zone]]
+from_eur = 12349
+base_eur = 12348
+step_eur = 10000
+quadratic_h = 91451
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 17800
+base_eur = 17799
+step_eur = 10000
+quadratic_h = 17310
+linear_h = 239700
+constant_h = 103487
+
+[[zone]]
+from_eur = 69879
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -1113563
+
+[[zone]]
+from_eur = 277826
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1947038

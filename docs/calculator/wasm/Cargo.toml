@@ -1,0 +1,18 @@
+[package]
+name = "fiskus-web"
+version = "0.0.0"
+edition = "2024"
+publish = false
+description = "WebAssembly bridge between the fiskus core and the calculator front end."
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+fiskus = { path = "../../.." }
+serde_json = "1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1

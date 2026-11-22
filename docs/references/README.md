@@ -1,6 +1,6 @@
 # References
 
-Shadow copies of the sources behind `rules/<year>/parameters.toml`. Government sites move or change without notice, so each source is copied here, with its hash, to keep the build reproducible. Each parameter's `reference` field points at its file here.
+Shadow copies of the sources behind `rules/<year>.toml`. Government sites move or change without notice, so each source is copied here, with its hash, to keep the build reproducible. Each parameter's `reference` field points at its file here.
 
 Source tiers, strongest first:
 
@@ -75,6 +75,12 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 - **VZ 2002 to 2005.** Not archived. The Lohnsteuer repository lists PAPs from 2006 on, so the sources for these years still need a search.
 - **Dates and sources to check later.** The 2014 PAP is a draft. The 2006 to 2008 setting laws are not traced yet, although their values are confirmed.
 - **bgbl.de and recht.bund.de.** recht.bund.de serves issues from 2023 on, such as BGBl. 2024 I Nr. 386 above. It returned 404 for BGBl. 2022 I Nr. 49 and Nr. 17, two issues that dejure.org lists, so pre-2023 issues are not there. bgbl.de serves a JavaScript page for every URL form tried.
+
+## Tariff sources (`rules/<year>.toml`)
+
+- **BMF withholding guidance (PAP), VZ 2006 to 2023.** The coefficients were checked against each year's PAP text in `docs/references`. The Lohnsteuer repository (Apache-2.0) mirrors the BMF's XML and generated Java for each year. We read the tariff method from that Java and copied no code.
+- **Statute, VZ 2024 to 2026.** BGBl. 2024 I Nr. 386 and Nr. 449, in `docs/references`.
+- **Not stored:** the repository's XML and Java files. Their origin at the BMF is not yet verified, because the bmf-steuerrechner.de site returned HTTP 503 during this work.
 
 ## Lead sources (not stored)
 

@@ -30,23 +30,26 @@ $$
 
 The zone applies when $b \le 12\,348$. In that zone the tariff tax is $0$, and for joint filing $2 \cdot 0 = 0$.
 
-Outside the zone, the code returns an error. The next tariff zones are not implemented yet.
+Above the zone, the tariff zones apply, see [Formulas: tariff](tariff.md).
 
 ## Boundaries (VZ 2026)
 
-| Filing | Last zero-tax zvE (whole euros) | First zvE outside the zone |
+The basic allowance is 12 348 € (single) and 24 697 € (joint). Tax is rounded down to whole euros, so the tax stays at 0 € for a few euros further.
+
+| Filing | Last zvE with zero tax (whole euros) | First zvE with tax |
 |---|---|---|
-| Single | 12 348 | 12 349 |
-| Joint | 24 697 | 24 698 |
+| Single | 12 355 | 12 356 |
+| Joint | 24 711 | 24 712 |
 
 The joint boundary is 24 697, not 24 696. The half of 24 697 is 12 348.50, which rounds down to 12 348, still inside the zone. A joint boundary of 24 696 would only follow if the half were not rounded down before the zone check, which § 32a Abs. 1 Satz 1 does not allow.
 
 ## Basic allowance by year
 
-Each year's amount is in `rules/<year>/parameters.toml`, with its source in [docs/references](../references/README.md). A year is listed only once its amount has been checked.
+Each year's amount is in `rules/<year>.toml`, with its source in [docs/references](../references/README.md). A year is listed only once its amount has been checked.
 
 The laws in the table:
 
+- Withholding program flowchart (Programmablaufplan, PAP), published by the Federal Ministry of Finance (BMF) for each year. Official, but not the statute.
 - Financial Stability Act (Gesetz zur Sicherung von Beschäftigung und Stabilität in Deutschland, StabSiG), BGBl. 2009 I S. 416.
 - Act to Reduce Cold Progression (Gesetz zum Abbau der kalten Progression), BGBl. 2013 I S. 283.
 - Act to Raise the Basic Allowance and Child Allowances (Gesetz zur Anhebung des Grundfreibetrags, des Kinderfreibetrags, des Kindergeldes und des Kinderzuschlags, KiGAnhG 2015), BGBl. 2015 I S. 1202.
@@ -78,8 +81,9 @@ The laws in the table:
 
 VZ 2002 to 2005 are not yet in fiskus.
 
-## Not covered here
+## Not yet in fiskus
 
-- Zones 2 to 5 of § 32a Abs. 1 (tax above the Grundfreibetrag).
+- Years before 2006.
 - How zu versteuerndes Einkommen is computed from income (§ 2 EStG).
-- Solidaritätszuschlag, Kirchensteuer, and the §§ 32b, 32d, 34 and 34a exceptions named in § 32a Abs. 1 Satz 2.
+- Solidarity surcharge (Solidaritätszuschlag) and church tax (Kirchensteuer). Not yet in fiskus.
+- The special cases named in § 32a Abs. 1 Satz 2 EStG. Not yet in fiskus.

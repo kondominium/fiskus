@@ -38,9 +38,9 @@ Each unit test covers one case, and the comment above it says why that case matt
 Here is one case from `src/tariff.rs`:
 
 ```rust
-// Joint filer at 24 698 €: the half is 12 349 €, just outside the zone.
+// Joint filer at 24 698 €: the half is 12 349 €, whose tax rounds down to 0 €.
 #[test]
-fn joint_one_euro_above_the_split_zone_is_outside_the_implemented_range() {
+fn joint_one_euro_above_the_split_zone_is_still_tax_free() {
 ```
 
 ## Property tests
@@ -49,13 +49,15 @@ A property test states a rule and lets the test runner try many inputs. For exam
 
 ## Proofs
 
-Kani checks a function against every input in a bound, rather than against a sample. Three proofs run today:
+Kani checks a function against every input in a bound, rather than against a sample. Five proofs run today:
 
-- `basic_allowance_zone_boundary_is_exact` in `src/tariff.rs`
-- `basic_allowance_zone_never_panics` in `src/tariff.rs`
+- `zero_zone_is_exact` in `src/tariff.rs`: up to the basic allowance the tariff is zero, for any allowance and income within ±10^12 euros
+- `tariff_never_panics` in `src/tariff.rs`: for any allowance within the bound and any income that `Cents` can hold, the VZ 2026 tariff returns a non-negative tax without overflow
+- `filing_basis_non_negative` in `src/tariff.rs`: the tariff basis is non-negative for non-negative taxable income, single and joint
 - `from_euros_saturates_instead_of_overflowing` in `src/money.rs`
+- `whole_euros_is_floor_division` in `src/money.rs`: `whole_euros` equals floor division by 100 for every cents value
 
-The bound is part of the claim. The boundary proof covers cents within ±10^12, which is 10 billion euros. The no-panic proof covers the whole `i128` range, so the function is checked for any input at all. Proven functions take their parameters as arguments, so a proof never has to read the TOML.
+The bound is part of the claim. The zero-zone proof covers euros within ±10^12, which is 1 trillion euros. The no-panic proof covers every income `Cents` can hold, so the tariff is checked for any input at all. Proven functions take their parameters as arguments, so a proof never has to read the TOML.
 
 Proofs suit small functions with a clear boundary. Where a rule is too large for a proof to finish, the property tests carry it.
 
@@ -98,6 +100,7 @@ Changes are handed over with their gate results recorded, and a commit is made o
 
 ## What we do not claim
 
-- The code implements only the basic allowance zone for VZ 2026. Above it, the code returns an error, and no tax figure is computed or tested.
+- The tariff is implemented for every year in `TaxYear`, VZ 2006 to 2026. Years before 2006 are not in `TaxYear`.
+- Every year's coefficients are checked against the text of its BMF withholding guidance (PAP), and every zone join is checked for continuity. The unit tests compare five incomes per year with an independent calculation. A comparison of every whole euro from 0 to 300 000 € was run for VZ 2026 only, outside the repository.
 - Proofs hold inside their bounds. Property tests sample, and unit tests check named cases.
 - The tests check consistency with `rules/`, not the statute itself. See [where the figures come from](#where-the-tax-figures-come-from).

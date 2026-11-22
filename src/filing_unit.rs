@@ -21,3 +21,35 @@ pub struct FilingUnit {
     /// Taxable income (zu versteuerndes Einkommen), in cents.
     pub taxable_income: Cents,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn filing_status_variants_are_distinct() {
+        assert_ne!(FilingStatus::Single, FilingStatus::Joint);
+        assert_eq!(FilingStatus::Single, FilingStatus::Single);
+    }
+
+    #[test]
+    fn filing_unit_is_copy_and_equal() {
+        let u = FilingUnit {
+            filing: FilingStatus::Joint,
+            taxable_income: Cents::from_euros(100),
+        };
+        let v = u;
+        assert_eq!(u, v);
+        assert_eq!(v.filing, FilingStatus::Joint);
+        assert_eq!(v.taxable_income, Cents::from_euros(100));
+    }
+
+    #[test]
+    fn filing_unit_stores_cents_exactly() {
+        let u = FilingUnit {
+            filing: FilingStatus::Single,
+            taxable_income: Cents::new(12_345),
+        };
+        assert_eq!(u.taxable_income.get(), 12_345);
+    }
+}

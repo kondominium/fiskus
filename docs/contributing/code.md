@@ -9,6 +9,7 @@ Applies to humans and agents.
 - Check: `make check` must pass before handover. It runs every test, the lints and the guide chart check.
 - Quick loop: `make test` runs only the unit and property tests in `src/`.
 - Guide: a change that adds or alters a rule, parameter, zone or error updates `docs/guide/` in the same diff. See [guide](guide.md).
+- Web: a change under `docs/calculator/` passes `make web`, which runs the calculator's tests against the wasm core and builds the app.
 
 ## Rules
 
@@ -50,8 +51,8 @@ Good:
 ```rust
 /// Assesses income tax for one filing unit in `year`.
 ///
-/// Income is in cents. Returns [`Error::NegativeTaxableIncome`] for negative income
-/// and [`Error::OutsideImplementedRange`] above the implemented zone.
+/// Income is in cents. Returns [`Error::NegativeTaxableIncome`] for negative income.
+/// Every year in [`TaxYear`] has its tariff.
 pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error>
 ```
 

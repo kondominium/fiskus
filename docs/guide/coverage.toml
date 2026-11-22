@@ -30,3 +30,7 @@ sections = ["32a"]
 [[chapter]]
 file = "guide/04-basic-allowance.md"
 sections = ["32a"]
+
+[[chapter]]
+file = "guide/05-tariff.md"
+sections = ["32a"]

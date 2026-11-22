@@ -1,8 +1,0 @@
-# Tax parameters for VZ 2021. The value is in the BMF Programmablaufplan, archived in docs/references.
-
-[basic_allowance]
-value_eur = 9744
-citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Zweites Familienentlastungsgesetz, BGBl. 2020 I S. 2616)"
-source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2020-11-09-PAP-2021-anlage-1.pdf?__blob=publicationFile&v=2"
-retrieved = "2026-11-22"
-reference = "docs/references/bmf-pap-2021.pdf"

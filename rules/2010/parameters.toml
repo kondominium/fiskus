@@ -1,8 +1,0 @@
-# Tax parameters for VZ 2010. The value is in the BMF Programmablaufplan, archived in docs/references.
-
-[basic_allowance]
-value_eur = 8004
-citation = "§ 52 Abs. 41 EStG (StabSiG, BGBl. 2009 I S. 416)"
-source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/005_c_PAP_2010_Austausch.pdf?__blob=publicationFile&v=3"
-retrieved = "2026-11-22"
-reference = "docs/references/bmf-pap-2010.pdf"

@@ -10,12 +10,15 @@
 - [The tax year](guide/02-tax-year.md)
 - [Taxable income](guide/03-taxable-income.md)
 - [The basic allowance](guide/04-basic-allowance.md)
+- [The tariff](guide/05-tariff.md)
 - [Glossary](guide/glossary.md)
 
 # Using
 
 - [Using fiskus](usage/README.md)
-- [Formulas](formulas/grundfreibetrag.md)
+- [Calculator](calculator.md)
+- [Formulas: basic allowance](formulas/grundfreibetrag.md)
+- [Formulas: tariff](formulas/tariff.md)
 
 # Contributing
 
@@ -29,3 +32,4 @@
 
 - [Build](internals/build/README.md)
 - [Test](internals/test/README.md)
+- [Calculator](internals/calculator.md)

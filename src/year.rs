@@ -100,3 +100,42 @@ impl TaxYear {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use proptest::prelude::*;
+
+    #[test]
+    fn year_mapping_is_correct() {
+        assert_eq!(TaxYear::Y2006.year(), 2006);
+        assert_eq!(TaxYear::Y2026.year(), 2026);
+        for y in TaxYear::ALL {
+            assert_eq!(y.year() as usize, 2006 + (y as usize));
+        }
+    }
+
+    #[test]
+    fn all_has_21_years_in_order() {
+        assert_eq!(TaxYear::ALL.len(), 21);
+        for (i, y) in TaxYear::ALL.iter().enumerate() {
+            assert_eq!(y.year(), (2006 + i) as u16);
+        }
+    }
+
+    #[test]
+    fn all_years_are_unique() {
+        let mut seen = std::collections::BTreeSet::new();
+        for y in TaxYear::ALL {
+            assert!(seen.insert(y.year()));
+        }
+    }
+
+    proptest! {
+        #[test]
+        fn index_maps_to_year(index in 0..TaxYear::ALL.len()) {
+            let y = TaxYear::ALL[index];
+            prop_assert_eq!(y.year(), (2006 + index) as u16);
+        }
+    }
+}

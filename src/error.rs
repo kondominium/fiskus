@@ -7,23 +7,34 @@ use std::fmt;
 pub enum Error {
     /// Taxable income (zu versteuerndes Einkommen) is below zero (§ 2 Abs. 5 EStG).
     NegativeTaxableIncome,
-    /// Taxable income is above the basic allowance zone (Grundfreibetrag). The tariff zones beyond it are not implemented yet.
-    OutsideImplementedRange {
-        /// Taxable income in whole euros.
-        taxable_income_eur: i128,
-    },
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::NegativeTaxableIncome => write!(f, "taxable income is negative"),
-            Self::OutsideImplementedRange { taxable_income_eur } => write!(
-                f,
-                "taxable income {taxable_income_eur} EUR is above the implemented tariff range"
-            ),
         }
     }
 }
 
 impl std::error::Error for Error {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn error_display() {
+        assert_eq!(
+            Error::NegativeTaxableIncome.to_string(),
+            "taxable income is negative"
+        );
+    }
+
+    #[test]
+    fn error_debug_and_equality() {
+        let e = Error::NegativeTaxableIncome;
+        assert_eq!(e, Error::NegativeTaxableIncome);
+        assert!(format!("{e:?}").contains("NegativeTaxableIncome"));
+    }
+}

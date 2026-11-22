@@ -1,8 +1,0 @@
-# Tax parameters for VZ 2008. The value is in the BMF Programmablaufplan, archived in docs/references.
-
-[basic_allowance]
-value_eur = 7664
-citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Programmablaufplan 2008, BMF)"
-source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/011_PAP_2008_a.pdf?__blob=publicationFile&v=3"
-retrieved = "2026-11-22"
-reference = "docs/references/bmf-pap-2008.pdf"

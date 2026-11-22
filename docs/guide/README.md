@@ -34,7 +34,7 @@ The outlined box is the input today. Blue boxes are not yet in fiskus. The red b
 1. Total income. Your income from the seven income types (Einkünfte), such as work, investments, rent and business. *Not yet in fiskus.*
 2. Minus allowances and special expenses. First some allowances, then special expenses and extraordinary burdens (Sonderausgaben, außergewöhnliche Belastungen). *Not yet in fiskus.*
 3. Minus child allowances. The allowances for each child (Freibeträge). What is left is taxable income (zu versteuerndes Einkommen, zvE). *Not yet in fiskus.*
-4. Tariff tax on taxable income. The tariff is applied to taxable income. Its first part, the basic allowance (Grundfreibetrag), has zero tax. The basic allowance is not subtracted from income. It is a zone of the tariff.
+4. Tariff tax on taxable income. The tariff is applied to taxable income. Its first part, the basic allowance (Grundfreibetrag), has zero tax. The basic allowance is not subtracted from income. It is a zone of the tariff. fiskus computes all five zones for VZ 2026, see [the tariff](05-tariff.md).
 
 **In short: taxable income is total income, minus allowances and special expenses, minus child allowances.** The tariff tax is calculated from taxable income.
 

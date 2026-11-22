@@ -20,5 +20,7 @@ pub use assessment::Assessment;
 pub use error::Error;
 pub use filing_unit::{FilingStatus, FilingUnit};
 pub use money::Cents;
-pub use tariff::assess;
+pub use tariff::{
+    Explanation, Fraction, ZoneStep, assess, basic_allowance_eur, explain, tariff_zones,
+};
 pub use year::TaxYear;

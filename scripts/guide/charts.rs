@@ -13,7 +13,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use fiskus::{Cents, Error, FilingStatus, FilingUnit, TaxYear, assess};
+use fiskus::{Cents, FilingStatus, FilingUnit, TaxYear, assess, basic_allowance_eur, explain};
 
 const WIDTH: f64 = 640.0;
 const HEIGHT: f64 = 360.0;
@@ -41,10 +41,12 @@ fn main() -> ExitCode {
 fn run() -> Result<ExitCode, Box<dyn StdError>> {
     let check = std::env::args().skip(1).any(|arg| arg == "--check");
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("docs/guide/assets/charts");
-    let charts: [(&str, Render); 3] = [
+    let charts: [(&str, Render); 5] = [
         ("rounding", rounding),
         ("zero-zone", zero_zone),
         ("allowance-history", allowance_history),
+        ("tariff-curve", tariff_curve),
+        ("tariff-rates", tariff_rates),
     ];
 
     let mut stale = Vec::new();
@@ -75,15 +77,12 @@ fn run() -> Result<ExitCode, Box<dyn StdError>> {
 fn rounding() -> Result<String, Box<dyn StdError>> {
     const START: i128 = 1_234_700;
     let mut points = Vec::new();
-    for cents in START..START + 300 {
-        match assess(
+    for cents in START..=1_234_899 {
+        let assessment = assess(
             TaxYear::Y2026,
             &unit(FilingStatus::Single, Cents::new(cents)),
-        ) {
-            Ok(assessment) => points.push((cents, assessment.taxable_income.whole_euros())),
-            Err(Error::OutsideImplementedRange { .. }) => break,
-            Err(error) => return Err(error.into()),
-        }
+        )?;
+        points.push((cents, assessment.taxable_income.whole_euros()));
     }
     let &(end, end_euros) = points.last().ok_or("no amounts in the implemented range")?;
     let (low, high) = points
@@ -217,8 +216,8 @@ fn zero_zone_end(year: TaxYear, filing: FilingStatus) -> Result<i128, Box<dyn St
     let mut last = None;
     for euros in 0..=100_000 {
         match assess(year, &unit(filing, Cents::from_euros(euros))) {
-            Ok(_) => last = Some(euros),
-            Err(Error::OutsideImplementedRange { .. }) => break,
+            Ok(assessment) if assessment.income_tax.get() == 0 => last = Some(euros),
+            Ok(_) => break,
             Err(error) => return Err(error.into()),
         }
     }
@@ -228,7 +227,7 @@ fn zero_zone_end(year: TaxYear, filing: FilingStatus) -> Result<i128, Box<dyn St
 fn allowance_history() -> Result<String, Box<dyn StdError>> {
     let mut points = Vec::new();
     for year in TaxYear::ALL {
-        points.push((year, zero_zone_end(year, FilingStatus::Single)?));
+        points.push((year, basic_allowance_eur(year)));
     }
     let last = points.len().checked_sub(1).ok_or("no years listed")?;
     let top = points.iter().map(|&(_, euros)| euros).max().unwrap_or(0) as f64 * 1.25;
@@ -291,6 +290,141 @@ fn allowance_history() -> Result<String, Box<dyn StdError>> {
 
     Ok(document(
         "The basic allowance has risen in steps since 2009",
+        &body,
+    ))
+}
+
+fn tariff_rates() -> Result<String, Box<dyn StdError>> {
+    const MAX_EUROS: i128 = 120_000;
+    let mut average = Vec::new();
+    let mut marginal = Vec::new();
+    for euros in (0..=MAX_EUROS).step_by(500) {
+        let explanation = explain(
+            TaxYear::Y2026,
+            &unit(FilingStatus::Single, Cents::from_euros(euros)),
+        )?;
+        average.push((euros, explanation.average_rate));
+        marginal.push((euros, explanation.marginal_rate));
+    }
+    let plot = Plot {
+        x: (0.0, MAX_EUROS as f64),
+        y: (0.0, 0.5),
+    };
+    let average_points: Vec<(f64, f64)> = average
+        .iter()
+        .map(|&(euros, rate)| (plot.px(euros as f64), plot.py(rate)))
+        .collect();
+    let marginal_points: Vec<(f64, f64)> = marginal
+        .iter()
+        .map(|&(euros, rate)| (plot.px(euros as f64), plot.py(rate)))
+        .collect();
+
+    let mut body = x_axis() + &y_axis() + &polyline(&average_points, INK, 2.5);
+    body += &polyline(&marginal_points, SIGNAL, 2.5);
+
+    for amount in (0..=MAX_EUROS).step_by(20_000) {
+        body += &text(
+            plot.px(amount as f64),
+            HEIGHT - BOTTOM + 20.0,
+            "middle",
+            12,
+            &euros(amount),
+        );
+    }
+    for fraction in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+        body += &text(
+            LEFT - 10.0,
+            plot.py(fraction) + 4.0,
+            "end",
+            12,
+            &format!("{:.0} %", fraction * 100.0),
+        );
+    }
+    body += &text(
+        WIDTH / 2.0,
+        HEIGHT - 16.0,
+        "middle",
+        13,
+        "Taxable income (zvE), single filer, whole euros",
+    );
+    body += &text(LEFT, TOP - 16.0, "start", 13, "Tax rate, VZ 2026");
+
+    Ok(document(
+        "The average and marginal rates rise with income",
+        &body,
+    ))
+}
+
+fn tariff_curve() -> Result<String, Box<dyn StdError>> {
+    const MAX_EUROS: i128 = 120_000;
+    const EXAMPLE_EUROS: i128 = 30_000;
+    let mut curve = Vec::new();
+    for euros in (0..=MAX_EUROS).step_by(500) {
+        let tax = assess(
+            TaxYear::Y2026,
+            &unit(FilingStatus::Single, Cents::from_euros(euros)),
+        )?
+        .income_tax
+        .whole_euros();
+        curve.push((euros, tax));
+    }
+    let example_tax = assess(
+        TaxYear::Y2026,
+        &unit(FilingStatus::Single, Cents::from_euros(EXAMPLE_EUROS)),
+    )?
+    .income_tax
+    .whole_euros();
+    let top = curve.iter().map(|&(_, tax)| tax).max().unwrap_or(0) as f64 * 1.1;
+    let plot = Plot {
+        x: (0.0, MAX_EUROS as f64),
+        y: (0.0, top),
+    };
+    let points: Vec<(f64, f64)> = curve
+        .iter()
+        .map(|&(euros, tax)| (plot.px(euros as f64), plot.py(tax as f64)))
+        .collect();
+
+    let mut body = x_axis() + &y_axis() + &polyline(&points, INK, 2.5);
+    for amount in (0..=MAX_EUROS).step_by(20_000) {
+        body += &text(
+            plot.px(amount as f64),
+            HEIGHT - BOTTOM + 20.0,
+            "middle",
+            12,
+            &euros(amount),
+        );
+    }
+    body += &text(LEFT - 10.0, plot.py(0.0) + 4.0, "end", 12, "0 €");
+    body += &circle(
+        plot.px(EXAMPLE_EUROS as f64),
+        plot.py(example_tax as f64),
+        5.0,
+        SIGNAL,
+    );
+    body += &text(
+        plot.px(EXAMPLE_EUROS as f64) - 10.0,
+        plot.py(example_tax as f64) - 12.0,
+        "end",
+        13,
+        &format!("{} at {}", euros(example_tax), euros(EXAMPLE_EUROS)),
+    );
+    body += &text(
+        WIDTH / 2.0,
+        HEIGHT - 16.0,
+        "middle",
+        13,
+        "Taxable income (zvE), single filer, whole euros",
+    );
+    body += &text(
+        LEFT,
+        TOP - 16.0,
+        "start",
+        13,
+        "Income tax in euros, VZ 2026",
+    );
+
+    Ok(document(
+        "Income tax rises faster than income, zone by zone",
         &body,
     ))
 }

@@ -10,3 +10,30 @@ pub struct Assessment {
     /// Income tax (tarifliche Einkommensteuer), in cents. Always a whole number of euros.
     pub income_tax: Cents,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Cents;
+
+    #[test]
+    fn assessment_equality_and_debug() {
+        let a = Assessment {
+            taxable_income: Cents::from_euros(100),
+            income_tax: Cents::from_euros(10),
+        };
+        let b = a.clone();
+        assert_eq!(a, b);
+        assert!(format!("{a:?}").contains("Assessment"));
+    }
+
+    #[test]
+    fn assessment_fields_store_cents() {
+        let a = Assessment {
+            taxable_income: Cents::new(123),
+            income_tax: Cents::new(456),
+        };
+        assert_eq!(a.taxable_income.get(), 123);
+        assert_eq!(a.income_tax.get(), 456);
+    }
+}

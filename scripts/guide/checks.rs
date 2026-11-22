@@ -144,11 +144,15 @@ fn parameter_values_appear_on_the_page_that_cites_them() {
         guide_year,
         chapter: chapters,
     } = coverage();
-    let path = root()
-        .join("rules")
-        .join(guide_year.to_string())
-        .join("parameters.toml");
-    let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
+    #[derive(Deserialize)]
+    struct YearFile {
+        basic_allowance: Parameter,
+    }
+
+    let path = root().join("rules").join(format!("{guide_year}.toml"));
+    let year_file: YearFile = toml::from_str(&read(&path)).unwrap();
+    let mut parameters = BTreeMap::new();
+    parameters.insert("basic_allowance".to_string(), year_file.basic_allowance);
     for (name, parameter) in parameters {
         let value = euros(parameter.value_eur);
         let explained = chapters.iter().any(|chapter| {
