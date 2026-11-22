@@ -4,9 +4,10 @@
 
 Independent reference engine for German income tax (Einkommensteuer), tax year 2026. Not official BMF or ELSTER software. Not tax advice.
 
+- [Guide](guide/README.md)
 - [Usage](usage/README.md)
 - [Formulas](formulas/grundfreibetrag.md)
-- [Contributing](contributing/code.md)
+- [Contributing](contributing/index.md)
 - [Design](contributing/design.md)
 
 AGPL-3.0-only. Commercial license on request: contact@kondominium.app

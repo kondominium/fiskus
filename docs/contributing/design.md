@@ -65,7 +65,9 @@ Unit `u` = the logo font size (the wordmark was drawn at 96 units).
 | `logo.min-size` | ascender height of 12px recommended; verified legible at about 10px |
 | `logo.aspect` | about 2.1:1 width to height of the text, excluding padding |
  
-## 5. Usage rules
+## 5. Logo usage rules
+
+These rules are about the logo only. Icons and charts follow the [guide](guide.md) rules.
  
 - Use `fiskus-light-mode.svg` on light surfaces and `fiskus-dark-mode.svg` on dark surfaces. Never recolor outside the core pairs.
 - No gradients, shadows, outlines, effects, rotation or stretching.

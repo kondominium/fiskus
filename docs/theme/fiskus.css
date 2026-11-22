@@ -28,11 +28,20 @@
   --searchresults-border-color: rgba(15, 61, 46, 0.2);
   --searchresults-header-fg: #0f3d2e;
   --searchresults-li-bg: #f3f0e8;
+  --chart-ink: #0f3d2e;
+  --chart-zone: #f3f0e8;
 }
 
 .light .content h1,
 .light .content h2 {
   color: #0f3d2e;
+}
+
+.content main > svg.lucide {
+  float: left;
+  width: 32px;
+  height: 32px;
+  margin: 0.2em 0.6em 0 0;
 }
 
 .menu-title .logo {
@@ -76,6 +85,8 @@
   --searchresults-border-color: rgba(243, 240, 232, 0.2);
   --searchresults-header-fg: #f3f0e8;
   --searchresults-li-bg: rgba(243, 240, 232, 0.08);
+  --chart-ink: #f3f0e8;
+  --chart-zone: rgba(243, 240, 232, 0.18);
 }
 
 /* Only the fiskus light and dark themes are offered. */

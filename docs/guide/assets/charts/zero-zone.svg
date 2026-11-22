@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>The basic allowance is the zero-tax zone of the tariff</title>
+<line x1="96.0" y1="288.0" x2="608.0" y2="288.0" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<rect x="96.0" y="64.8" width="256.0" height="74.4" style="fill: var(--chart-ink, #0f3d2e)"/>
+<rect x="96.0" y="188.8" width="512.0" height="74.4" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="86.0" y="106.0" text-anchor="end" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">Single</text>
+<text x="352.0" y="56.8" text-anchor="end" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">12 348 €</text>
+<text x="86.0" y="230.0" text-anchor="end" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">Joint</text>
+<text x="608.0" y="180.8" text-anchor="end" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">24 697 €</text>
+<circle cx="608.0" cy="226.0" r="6" style="fill: #e0391f"/>
+<text x="96.0" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">0 €</text>
+<text x="178.9" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">4 000 €</text>
+<text x="261.9" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">8 000 €</text>
+<text x="344.8" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">12 000 €</text>
+<text x="427.7" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">16 000 €</text>
+<text x="510.6" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">20 000 €</text>
+<text x="593.6" y="308.0" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e)">24 000 €</text>
+<text x="320.0" y="344.0" text-anchor="middle" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">Taxable income (zvE), whole euros</text>
+<text x="96.0" y="24.0" text-anchor="start" font-size="13" style="fill: var(--chart-ink, #0f3d2e)">Zero tax up to this taxable income</text>
+</svg>

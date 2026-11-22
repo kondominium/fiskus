@@ -1,0 +1,31 @@
+# Guide pages and the statute sections each one may cite, by article number (32a for § 32a).
+# scripts/guide/checks.rs enforces: every page is listed, pages cite only their listed sections, listed
+# sections are cited in src/ or rules/, and each parameter value appears on the page citing it.
+
+[[chapter]]
+file = "guide/00-intro.md"
+sections = []
+
+[[chapter]]
+file = "guide/glossary.md"
+sections = ["2", "26", "26a", "26b", "32a"]
+
+[[chapter]]
+file = "guide/README.md"
+sections = []
+
+[[chapter]]
+file = "guide/01-who-is-taxed-together.md"
+sections = ["26", "26a", "26b"]
+
+[[chapter]]
+file = "guide/02-tax-year.md"
+sections = ["32a"]
+
+[[chapter]]
+file = "guide/03-taxable-income.md"
+sections = ["32a"]
+
+[[chapter]]
+file = "guide/04-basic-allowance.md"
+sections = ["32a"]

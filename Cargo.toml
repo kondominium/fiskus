@@ -33,3 +33,11 @@ toml = "1.2.2"
 proptest = "1.12.0"
 serde = { version = "1.0.229", features = ["derive"] }
 toml = "1.2.2"
+
+[[example]]
+name = "guide_charts"
+path = "scripts/guide/charts.rs"
+
+[[test]]
+name = "guide_checks"
+path = "scripts/guide/checks.rs"

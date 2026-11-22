@@ -7,6 +7,7 @@ Applies to humans and agents.
 - Scratch: research, drafts and plans go in `.agents/research/` and `.agents/plans/`. Both are git-ignored and never committed.
 - Commit: agents never commit. Hand over a staged diff (only the slice's files), a commit message draft, and the `make check` result.
 - Check: `make check` must pass before handover.
+- Guide: a change that adds or alters a rule, parameter, zone or error updates `docs/guide/` in the same diff. See [guide](guide.md).
 
 ## Rules
 
@@ -16,7 +17,7 @@ Applies to humans and agents.
 - Provenance (the § citation and parameter version behind each number) is a planned separate feature. It is not in the code yet. The citations and sources stay in `rules/` as reference: readers shouldn't assume the code tracks sources it doesn't yet.
 - Verify tax figures against the statute before relying on them: tax law changes, and numbers from memory or an LLM are often wrong.
 - Identifiers are English. Types, functions, fields, variables, constants, files, test names and parameter keys never use German, even where German is the precise tax term: one language keeps code consistent and searchable.
-- German terms go in docs and doc comments as aliases, in parentheses after the English term, for example `FilingUnit` (Veranlagungseinheit). Statute citations stay in German: readers find the German term, while code keeps the English name.
+- Docs and doc comments follow the [language rules](language.md), including German aliases in parentheses after the English term. Why: readers find the German term, while code keeps the English name.
 
 ## Style and docs
 

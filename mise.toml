@@ -11,7 +11,12 @@ run = [
   "cargo clippy --all-targets -- -D warnings",
   "cargo test --all-targets",
   "cargo test --doc",
+  "cargo run --example guide_charts -- --check",
 ]
+
+[tasks.charts]
+description = "Regenerate the guide charts in docs/guide/assets/charts"
+run = "cargo run --example guide_charts"
 
 [tasks.build]
 description = "Build the library, examples and tests"
@@ -20,6 +25,10 @@ run = "cargo build --all-targets"
 [tasks.run-example-basic_allowance]
 description = "Run examples/basic_allowance.rs"
 run = "cargo run --example basic_allowance"
+
+[tasks.run-example-guide_charts]
+description = "Run scripts/guide/charts.rs (writes the SVG charts)"
+run = "cargo run --example guide_charts"
 
 [tasks.verify]
 description = "Kani proof harnesses"
