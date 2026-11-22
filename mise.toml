@@ -1,5 +1,6 @@
 [tools]
 rust = { version = "1.100.0", components = "rustfmt,clippy" }
+"cargo:kani-verifier" = "0.68.0"
 
 [tasks.check]
 description = "fmt, clippy (deny warnings), test"
@@ -7,4 +8,11 @@ run = [
   "cargo fmt --all -- --check",
   "cargo clippy --all-targets -- -D warnings",
   "cargo test --all-targets",
+]
+
+[tasks.verify]
+description = "Kani proof harnesses"
+run = [
+  "cargo kani setup",
+  "cargo kani",
 ]

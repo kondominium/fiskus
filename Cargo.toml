@@ -11,12 +11,20 @@ keywords = ["tax", "einkommensteuer", "germany", "reference"]
 categories = ["finance"]
 include = [
     "/src/**/*.rs",
+    "/rules/**/*.toml",
     "/Cargo.toml",
     "/docs/README.md",
-    "/docs/logos/fiskus-dark-mode.svg",
-    "/docs/logos/fiskus-light-mode.svg",
+    "/docs/logos/fiskus-light-mode-on-white.svg",
     "/LICENSE*",
 ]
 
 [lints.rust]
 unsafe_code = "forbid"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(kani)"] }
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+toml = "1.2.2"
+
+[dev-dependencies]
+proptest = "1.12.0"
