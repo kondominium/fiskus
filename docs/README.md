@@ -1,14 +1,12 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="logos/fiskus-dark-mode.svg">
-    <img src="logos/fiskus-light-mode.svg" alt="fiskus" width="320">
-  </picture>
+  <img src="logos/fiskus-light-mode-on-white.svg" alt="fiskus" width="320">
 </p>
 
-## Disclaimer
+Independent reference engine for German income tax (Einkommensteuer), tax year 2026. Not official BMF or ELSTER software. Not tax advice.
 
-Independent reference engine. Not official BMF or ELSTER software. Not tax advice.
+- [Usage](usage/README.md)
+- [Formulas](formulas/grundfreibetrag.md)
+- [Contributing](contributing/code.md)
+- [Design](contributing/design.md)
 
-## License
-
-AGPL-3.0-only. A commercial license is available on request, contact@kondominium.app for inquiries.
+AGPL-3.0-only. Commercial license on request: contact@kondominium.app

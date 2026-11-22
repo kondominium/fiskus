@@ -1,0 +1,86 @@
+/* Colors from docs/contributing/design.md. Light: anthrazit text, fir accents, on white. Dark: paper on fir. */
+
+:root,
+.light {
+  --bg: #ffffff;
+  --fg: #2b2f33;
+  --links: #0f3d2e;
+  --inline-code-color: #0f3d2e;
+  --sidebar-bg: #f3f0e8;
+  --sidebar-fg: #2b2f33;
+  --sidebar-active: #0f3d2e;
+  --sidebar-header-border-color: #0f3d2e;
+  --sidebar-non-existant: rgba(15, 61, 46, 0.5);
+  --icons: #0f3d2e;
+  --icons-hover: #0f3d2e;
+  --scrollbar: #0f3d2e;
+  --theme-popup-bg: #ffffff;
+  --theme-popup-border: #0f3d2e;
+  --theme-hover: #f3f0e8;
+  --quote-bg: #f3f0e8;
+  --quote-border: #0f3d2e;
+  --table-border-color: rgba(15, 61, 46, 0.2);
+  --table-header-bg: #f3f0e8;
+  --table-alternate-bg: rgba(243, 240, 232, 0.5);
+  --searchbar-fg: #0f3d2e;
+  --searchbar-bg: #f3f0e8;
+  --searchbar-border-color: rgba(15, 61, 46, 0.2);
+  --searchresults-border-color: rgba(15, 61, 46, 0.2);
+  --searchresults-header-fg: #0f3d2e;
+  --searchresults-li-bg: #f3f0e8;
+}
+
+.light .content h1,
+.light .content h2 {
+  color: #0f3d2e;
+}
+
+.menu-title .logo {
+  height: 44px;
+  vertical-align: middle;
+}
+
+.logo-dark,
+.navy .logo-light {
+  display: none;
+}
+
+.navy .logo-dark {
+  display: inline;
+}
+
+.navy {
+  --bg: #0f3d2e;
+  --fg: #f3f0e8;
+  --links: #f3f0e8;
+  --inline-code-color: #f3f0e8;
+  --sidebar-bg: #0f3d2e;
+  --sidebar-fg: #f3f0e8;
+  --sidebar-active: #f3f0e8;
+  --sidebar-header-border-color: #f3f0e8;
+  --sidebar-non-existant: rgba(243, 240, 232, 0.5);
+  --icons: #f3f0e8;
+  --icons-hover: #ffffff;
+  --scrollbar: #f3f0e8;
+  --theme-popup-bg: #0f3d2e;
+  --theme-popup-border: #f3f0e8;
+  --theme-hover: rgba(243, 240, 232, 0.1);
+  --quote-bg: rgba(243, 240, 232, 0.08);
+  --quote-border: #f3f0e8;
+  --table-border-color: rgba(243, 240, 232, 0.2);
+  --table-header-bg: rgba(243, 240, 232, 0.08);
+  --table-alternate-bg: rgba(243, 240, 232, 0.04);
+  --searchbar-fg: #f3f0e8;
+  --searchbar-bg: #0f3d2e;
+  --searchbar-border-color: rgba(243, 240, 232, 0.2);
+  --searchresults-border-color: rgba(243, 240, 232, 0.2);
+  --searchresults-header-fg: #f3f0e8;
+  --searchresults-li-bg: rgba(243, 240, 232, 0.08);
+}
+
+/* Only the fiskus light and dark themes are offered. */
+#mdbook-theme-rust,
+#mdbook-theme-coal,
+#mdbook-theme-ayu {
+  display: none;
+}

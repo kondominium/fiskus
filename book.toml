@@ -1,0 +1,16 @@
+[book]
+title = "fiskus"
+language = "en"
+src = "docs"
+
+[build]
+build-dir = "target/book"
+
+[preprocessor.katex]
+after = ["links"]
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+theme = "docs/theme"
+additional-css = ["docs/theme/fiskus.css"]

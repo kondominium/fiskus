@@ -1,5 +1,7 @@
 [tools]
 rust = { version = "1.100.0", components = "rustfmt,clippy" }
+mdbook = "0.5.3"
+"cargo:mdbook-katex" = "0.10.0"
 "cargo:kani-verifier" = "0.68.0"
 
 [tasks.check]
@@ -17,3 +19,11 @@ run = [
   "cargo kani setup",
   "cargo kani",
 ]
+
+[tasks.docs]
+description = "Build the docs book into target/book"
+run = "mdbook build"
+
+[tasks.docs-serve]
+description = "Serve the docs book locally with live reload"
+run = "mdbook serve --open"
