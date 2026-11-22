@@ -22,7 +22,7 @@ use crate::{Assessment, Cents, Error, FilingStatus, FilingUnit, TaxYear};
 /// assert_eq!(assessment.income_tax, Cents::new(0));
 /// ```
 pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error> {
-    let parameters = params::for_year(year)?;
+    let parameters = params::for_year(year);
     basic_allowance_zone(unit, parameters.basic_allowance.value_eur)
 }
 

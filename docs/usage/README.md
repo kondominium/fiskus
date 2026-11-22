@@ -69,7 +69,6 @@ Read the amount in euros with `income_tax.whole_euros()`, or in cents with `inco
 |---|---|
 | `NegativeTaxableIncome` | `taxable_income` is below zero |
 | `OutsideImplementedRange { taxable_income_eur }` | Above the Grundfreibetrag zone (joint: above 24 697 € of joint income) |
-| `Parameters(String)` | The bundled parameter file could not be read |
 
 `Error` implements `std::error::Error` and `Display`.
 

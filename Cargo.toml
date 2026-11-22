@@ -11,6 +11,7 @@ keywords = ["tax", "einkommensteuer", "germany", "reference"]
 categories = ["finance"]
 include = [
     "/src/**/*.rs",
+    "/build.rs",
     "/rules/**/*.toml",
     "/Cargo.toml",
     "/docs/README.md",
@@ -23,8 +24,12 @@ unsafe_code = "forbid"
 unexpected_cfgs = { level = "warn", check-cfg = ["cfg(kani)"] }
 
 [dependencies]
+
+[build-dependencies]
 serde = { version = "1.0.229", features = ["derive"] }
 toml = "1.2.2"
 
 [dev-dependencies]
 proptest = "1.12.0"
+serde = { version = "1.0.229", features = ["derive"] }
+toml = "1.2.2"

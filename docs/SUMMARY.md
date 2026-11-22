@@ -11,3 +11,7 @@
 
 - [Code gates and rules](contributing/code.md)
 - [Design](contributing/design.md)
+
+# Internals
+
+- [Build](internals/build/README.md)

@@ -13,6 +13,14 @@ run = [
   "cargo test --doc",
 ]
 
+[tasks.build]
+description = "Build the library, examples and tests"
+run = "cargo build --all-targets"
+
+[tasks.run-example-basic_allowance]
+description = "Run examples/basic_allowance.rs"
+run = "cargo run --example basic_allowance"
+
 [tasks.verify]
 description = "Kani proof harnesses"
 run = [

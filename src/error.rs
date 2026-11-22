@@ -12,8 +12,6 @@ pub enum Error {
         /// Taxable income in whole euros.
         taxable_income_eur: i128,
     },
-    /// The bundled parameter file for the year could not be parsed.
-    Parameters(String),
 }
 
 impl fmt::Display for Error {
@@ -24,7 +22,6 @@ impl fmt::Display for Error {
                 f,
                 "taxable income {taxable_income_eur} EUR is above the implemented tariff range"
             ),
-            Self::Parameters(reason) => write!(f, "invalid tax parameters: {reason}"),
         }
     }
 }
