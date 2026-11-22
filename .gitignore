@@ -3,6 +3,7 @@
 .agents/*
 !.agents/.keep
 !.agents/AGENTS.md
+!.agents/skills/
 
 # Rust
 /target
