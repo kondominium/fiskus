@@ -61,13 +61,71 @@ Bad: `/// Assesses tax.`
 
 ## Tests
 
-- Unit tests sit beside the code in `#[cfg(test)] mod tests`, and check behaviour (values and errors), not declarations.
-- Each test has a one-line `//` comment above it naming the case it covers, e.g. `// Joint filers exactly at the zone limit stay tax-free.` Why: the test name says what runs, the comment says which case and why it matters.
-- Properties use `proptest` in the same module.
-- Proof harnesses use Kani, in a `#[cfg(kani)] mod verification` beside the code. Keep the proven function pure: parameters are passed in, not loaded, so Kani never parses TOML.
-- `make check` runs the unit and proptest tests on every push and pull request.
-- `make verify` runs the Kani harnesses in the `verify` CI job on every push and pull request.
-- Kani needs integer ranges to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
+This section says which test layer proves a claim, and when to add tests.
+
+### Pick the layer that proves the claim
+
+- One value or error for one case: a unit test beside the code, in `#[cfg(test)] mod tests`.
+- A property that must hold for many inputs (no panic, rounding, zone membership): `proptest` in the same module.
+- A pure function that must hold over a bounded domain or all inputs: a Kani harness in `#[cfg(kani)] mod verification`. Pass parameters in, so Kani never parses TOML.
+- What users import (conversions, error text, the public call shape): a black-box test in `tests/`, using only `fiskus::` paths.
+- Doc claims and examples: a doc test on the public item. A new entry point, tariff rule or error variant also gets a runnable example.
+- Guide and code agreeing: `scripts/guide/checks.rs`. Extend it when a new rule needs a check. Do not work around it.
+
+Test a claim in one layer. Repeat it in another only when the second layer checks something different.
+
+### When to add what
+
+| Change | Add |
+|---|---|
+| New tariff rule or zone | A formula page in `docs/formulas/` first. Unit tests on both sides of each boundary, with cents. One proptest for the rule's property. A Kani harness if the function is pure. A public test if users see it. A guide update. |
+| New public item | A `///` doc with units and errors, and a doc example. A `tests/` test that calls it. |
+| New error variant | A test for its `Display` text, a test that returns it, and an example. |
+| Bug fix | A failing test that reproduces the bug, committed with the fix. |
+| Parameter value change | The `rules/` citation and source, the formula page and the guide. Update every test that cites the value, with the same citation. |
+| Refactor with no behaviour change | Nothing new. The existing tests must pass. Do not add tests that only pin internals. |
+| Docs only | The guide checks. New tests only if a claim changed. |
+
+### How many
+
+- For each threshold, test the value just below, at, and just above it, with cents where they matter. Add one interior value. That is the whole table, not a grid.
+- Keep proptest to one or two properties per rule. Use a table of cases where a few examples say it clearly.
+- Write Kani harnesses only for pure functions, and state the bound in a comment.
+
+### Good and bad patterns
+
+Each test has a one-line `//` comment above it that names the case and cites its section. Why: the test name says what runs, the comment says which case and why it matters.
+
+Good:
+
+```rust
+// Joint filer at 24 698 €: the half is 12 349 €, just outside the zone (§ 32a Abs. 5 EStG).
+#[test]
+fn joint_one_euro_above_the_split_zone_is_outside_the_implemented_range() {
+    let error = assess(TaxYear::Y2026, &joint((JOINT_ZONE_EUR + 1) * 100)).unwrap_err();
+    assert_eq!(error, Error::OutsideImplementedRange { taxable_income_eur: JOINT_ZONE_EUR + 1 });
+}
+```
+
+Bad: `assert!(result.is_ok());` on its own. It passes for any amount. Assert the value.
+
+Bad: expected values copied from fiskus's own output. Take them from the statute, or from the BMF calculator for conformance tests. A value copied from our output tests nothing.
+
+Bad: a proptest that re-implements the rule to compare against. It repeats the same mistake. Assert a property instead: zone membership, rounding direction, no panic.
+
+Bad: one test that covers several zones and several cases. Split it, so a failure names the case.
+
+Bad: `#[ignore]` without a linked issue. Ignored tests hide gaps.
+
+Bad: a test that reads a file or TOML. The library reads no files at runtime, and tests should not hide a dependency on one.
+
+Bad: asserting on `Debug` output. Assert values and `Display` text, which users see.
+
+### Gates
+
+- `make check` runs fmt, clippy with warnings denied, and the unit, proptest, doc, public API and guide tests.
+- `make verify` runs the Kani harnesses. The `verify` CI job runs it on every push and pull request.
+- Kani needs bounded integers to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
 - Each tariff rule has a page in `docs/formulas/` first, and its tests cite the same section.
 
 ## Commit messages
