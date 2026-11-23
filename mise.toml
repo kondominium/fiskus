@@ -43,6 +43,10 @@ run = [
   "cargo llvm-cov report --summary-only --ignore-filename-regex \"$COVERAGE_IGNORE_REGEX\" --fail-under-lines \"${COVERAGE_MIN_LINES:-90}\"",
 ]
 
+[tasks.bench]
+description = "Criterion benchmarks in benches/, run locally (writes target/criterion)"
+run = "cargo bench"
+
 [tasks.verify]
 description = "Kani proof harnesses"
 run = [

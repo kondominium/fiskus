@@ -30,6 +30,7 @@ serde = { version = "1.0.229", features = ["derive"] }
 toml = "1.2.2"
 
 [dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
 proptest = "1.12.0"
 serde = { version = "1.0.229", features = ["derive"] }
 toml = "1.2.2"
@@ -41,3 +42,7 @@ path = "scripts/guide/charts.rs"
 [[test]]
 name = "guide_checks"
 path = "scripts/guide/checks.rs"
+
+[[bench]]
+name = "tariff"
+harness = false

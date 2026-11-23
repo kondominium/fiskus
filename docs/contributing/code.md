@@ -129,6 +129,39 @@ Bad: asserting on `Debug` output. Assert values and `Display` text, which users 
 - Kani needs bounded integers to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
 - Each tariff rule has a page in `docs/formulas/` first, and its tests cite the same section.
 
+## Benchmarks
+
+Benchmarks in `benches/` measure the calculation path for speed. They assert nothing and do not gate a change. Run them with `make bench`. The reasons for publishing the figures are in `docs/internal/benchmarks.md`.
+
+### When to add one
+
+- A new public function on the calculation path, or a public call that users may run in bulk.
+- A new zone. Add its boundary inputs to the existing `assess` group, not a new function per zone.
+- A change that rewrites the hot path (zone check, parameter lookup, rounding, error construction) and needs evidence that it did not get slower.
+
+### When not to add one
+
+- Docs, guide, error text or tooling changes.
+- Code off the calculation path, or private helpers. Benchmark the public call that uses them.
+- To justify an optimisation before there is a measured problem. Measure first, then benchmark that case.
+- To give a number we have no reason to publish. Every benchmark is a number someone may quote.
+- To put timings in CI. Shared runners are too noisy, and a timing gate would flake.
+
+### How to write one
+
+- Use `Throughput::Elements`, so the output is calls per second.
+- Wrap inputs and outputs in `black_box`, so the compiler cannot skip the call.
+- Take inputs from the statute boundaries and interior values, not from fiskus's own outputs.
+- Keep inputs fixed, so runs are comparable.
+- Group cases under the public function's name.
+- Benchmarks compile under `make check`, since clippy runs with `--all-targets`. A broken benchmark fails the gate even though `make check` does not run it.
+
+### Running and recording
+
+- `make bench` writes the criterion report to `target/criterion`. Criterion prints the change against the last run, so compare before and after a hot-path change.
+- A change that moves the hot path also updates the Performance section of `README.md`: the machine, the date and the figures, as the ADR describes.
+- Peak memory uses macOS `time -l`. Build the bench binary with `mise exec -- cargo bench --bench tariff --no-run`, and the last line of that output names the executable. Run `/usr/bin/time -l <executable> --bench --profile-time 10` and read the **peak memory footprint** line. Do not publish the **maximum resident set size** line, since it counts shared system libraries.
+
 ## Commit messages
 
 - Title: imperative mood, verb first, 72 characters or fewer, no type prefix. Examples: `Pande viam fisci`, `Bootstrap repo fundamentals`.

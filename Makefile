@@ -1,7 +1,7 @@
 .SILENT:
 MISE ?= $(shell which mise)
 
-.PHONY: help check build verify coverage docs docs-serve charts run-example-basic_allowance run-example-guide_charts
+.PHONY: help check build verify coverage bench docs docs-serve charts run-example-basic_allowance run-example-guide_charts
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {name[NR] = $$1; desc[NR] = $$2; if (length($$1) > width) width = length($$1)} END {fmt = "  %-" width "s %s\n"; for (i = 1; i <= NR; i++) printf fmt, name[i], desc[i]}'
@@ -14,6 +14,9 @@ verify: ## Run Kani proof harnesses
 
 coverage: ## Line coverage report, fails below 90% (writes target/llvm-cov/lcov.info)
 	$(MISE) run coverage
+
+bench: ## Run criterion benchmarks in benches/ locally (writes target/criterion)
+	$(MISE) run bench
 
 docs: ## Build the docs book into target/book
 	$(MISE) run docs
