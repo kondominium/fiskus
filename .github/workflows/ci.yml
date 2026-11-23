@@ -28,3 +28,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v5
       - run: make docs
+
+  coverage:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v5
+      - run: make coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lcov
+          path: target/llvm-cov/lcov.info

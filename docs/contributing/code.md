@@ -125,6 +125,7 @@ Bad: asserting on `Debug` output. Assert values and `Display` text, which users 
 
 - `make check` runs fmt, clippy with warnings denied, and the unit, proptest, doc, public API and guide tests.
 - `make verify` runs the Kani harnesses. The `verify` CI job runs it on every push and pull request.
+- `make coverage` writes a line coverage report to `target/llvm-cov/lcov.info` and fails below 90% line coverage. The `coverage` CI job runs it on every push, blocks the build on failure, and uploads the file as an artifact. The threshold can be overridden with `COVERAGE_MIN_LINES` in the environment. The excluded paths (`scripts/`, `build.rs`) are set in `COVERAGE_IGNORE_REGEX` in `mise.toml`.
 - Kani needs bounded integers to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
 - Each tariff rule has a page in `docs/formulas/` first, and its tests cite the same section.
 

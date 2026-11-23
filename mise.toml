@@ -1,8 +1,9 @@
 [tools]
-rust = { version = "1.100.0", components = "rustfmt,clippy" }
+rust = { version = "1.100.0", components = "rustfmt,clippy,llvm-tools" }
 mdbook = "0.5.3"
 "cargo:mdbook-katex" = "0.10.0"
 "cargo:kani-verifier" = "0.68.0"
+"cargo:cargo-llvm-cov" = "0.9.2"
 
 [tasks.check]
 description = "fmt, clippy (deny warnings), test"
@@ -29,6 +30,15 @@ run = "cargo run --example basic_allowance"
 [tasks.run-example-guide_charts]
 description = "Run scripts/guide/charts.rs (writes the SVG charts)"
 run = "cargo run --example guide_charts"
+
+[tasks.coverage]
+description = "Line coverage report, informational for now (writes target/llvm-cov/lcov.info)"
+run = [
+  "mkdir -p target/llvm-cov",
+  "cargo llvm-cov --all-targets --no-report",
+  "cargo llvm-cov report --summary-only --ignore-filename-regex '(scripts/|build\\.rs)'",
+  "cargo llvm-cov report --lcov --output-path target/llvm-cov/lcov.info --ignore-filename-regex '(scripts/|build\\.rs)'",
+]
 
 [tasks.verify]
 description = "Kani proof harnesses"
