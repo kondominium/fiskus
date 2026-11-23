@@ -131,7 +131,7 @@ Bad: asserting on `Debug` output. Assert values and `Display` text, which users 
 
 ## Benchmarks
 
-Benchmarks in `benches/` measure the calculation path for speed. They assert nothing and do not gate a change. Run them with `make bench`. The reasons for publishing the figures are in `docs/internal/benchmarks.md`.
+Benchmarks in `benches/` measure the calculation path for speed. They assert nothing and do not gate a change. Run them with `make bench`. The `nightly` CI workflow runs them every night and puts the throughput in the job summary, and the reasons for publishing the figures are in `docs/internal/benchmarks.md`.
 
 ### When to add one
 
@@ -145,7 +145,7 @@ Benchmarks in `benches/` measure the calculation path for speed. They assert not
 - Code off the calculation path, or private helpers. Benchmark the public call that uses them.
 - To justify an optimisation before there is a measured problem. Measure first, then benchmark that case.
 - To give a number we have no reason to publish. Every benchmark is a number someone may quote.
-- To put timings in CI. Shared runners are too noisy, and a timing gate would flake.
+- To gate a change on timings in CI. Shared runners are too noisy for a gate, and it would flake. The nightly run records timings as a trend and never fails on speed.
 
 ### How to write one
 

@@ -1,0 +1,44 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bench:
+    name: Benchmarks (nightly)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Install pinned tools with mise
+        uses: jdx/mise-action@v5
+      - name: Run the benchmarks (make bench)
+        run: make bench
+      - name: Write throughput to the job summary
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import glob, json
+          print("## Benchmark throughput (ubuntu-latest, nightly)")
+          print()
+          print("Shared CI runners vary from run to run. Read these as a trend, not as the figures in the README.")
+          print()
+          print("| Benchmark | Calls per second |")
+          print("|---|---|")
+          for path in sorted(glob.glob("target/criterion/assess/*/new/benchmark.json")):
+              name = path.split("/")[3]
+              elements = json.load(open(path))["throughput"]["Elements"]
+              mean_ns = json.load(open(path.replace("benchmark.json", "estimates.json")))["mean"]["point_estimate"]
+              print(f"| {name} | {elements * 1e9 / mean_ns / 1e6:.1f} million |")
+          EOF
+      - name: Upload the criterion report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: criterion
+          path: target/criterion
+          retention-days: 90

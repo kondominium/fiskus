@@ -6,6 +6,8 @@ Performance matters to us. A tax engine has to be correct first, but people run 
 
 So we measure performance over time, not once. The benchmark in `benches/tariff.rs` runs the same calls on the same kind of input each time, and we record the results with the machine, the software versions and the date. A single figure tells you little. A series of dated figures on a known machine tells you whether the calculation path got faster or slower.
 
+A scheduled CI run executes the same benchmark every night on GitHub's Linux runners and publishes the throughput in the run's job summary, so the series keeps growing without anyone having to remember to run it. Those runners are shared, so their figures show a trend. They are not results, and they do not replace the figures in the README.
+
 We aim to cover every code path the calculator has: each filing status, each tariff zone, and the error path for inputs it rejects. Today that is narrower than the goal. The benchmark covers both filing statuses at the edges of the basic allowance zone, which is the only zone implemented so far, plus the error path. As each new zone lands, its boundary and interior cases will join the benchmark, and the published figures will say which zones they include.
 
 The current figures were measured on 2026-11-23 on an Apple M2 Pro (12 cores, 32 GB memory, macOS 26.6.2) with Rust 1.100.0, using one thread and a release build. Inside the implemented zone, `assess` ran at about 199 million calls per second. On the error path it ran at about 300 million calls per second. The peak memory footprint while the benchmark ran was 1.6 MB.
