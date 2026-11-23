@@ -12,7 +12,7 @@ check: ## Run fmt, clippy (deny warnings) and tests
 verify: ## Run Kani proof harnesses
 	$(MISE) run verify
 
-coverage: ## Line coverage report (informational, writes target/llvm-cov/lcov.info)
+coverage: ## Line coverage report, fails below 90% (writes target/llvm-cov/lcov.info)
 	$(MISE) run coverage
 
 docs: ## Build the docs book into target/book

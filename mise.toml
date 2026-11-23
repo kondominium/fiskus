@@ -5,6 +5,9 @@ mdbook = "0.5.3"
 "cargo:kani-verifier" = "0.68.0"
 "cargo:cargo-llvm-cov" = "0.9.2"
 
+[env]
+COVERAGE_IGNORE_REGEX = '(scripts/|build\.rs)'
+
 [tasks.check]
 description = "fmt, clippy (deny warnings), test"
 run = [
@@ -32,12 +35,12 @@ description = "Run scripts/guide/charts.rs (writes the SVG charts)"
 run = "cargo run --example guide_charts"
 
 [tasks.coverage]
-description = "Line coverage report, informational for now (writes target/llvm-cov/lcov.info)"
+description = "Line coverage report, fails below COVERAGE_MIN_LINES (default 90; writes target/llvm-cov/lcov.info)"
 run = [
   "mkdir -p target/llvm-cov",
   "cargo llvm-cov --all-targets --no-report",
-  "cargo llvm-cov report --summary-only --ignore-filename-regex '(scripts/|build\\.rs)'",
-  "cargo llvm-cov report --lcov --output-path target/llvm-cov/lcov.info --ignore-filename-regex '(scripts/|build\\.rs)'",
+  "cargo llvm-cov report --lcov --output-path target/llvm-cov/lcov.info --ignore-filename-regex \"$COVERAGE_IGNORE_REGEX\"",
+  "cargo llvm-cov report --summary-only --ignore-filename-regex \"$COVERAGE_IGNORE_REGEX\" --fail-under-lines \"${COVERAGE_MIN_LINES:-90}\"",
 ]
 
 [tasks.verify]
