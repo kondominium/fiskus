@@ -13,7 +13,7 @@ fiskus = { path = "../fiskus" }
 
 ## What it computes today
 
-For tax year 2026, `assess` returns the income tax (Einkommensteuer) for taxable income (zu versteuerndes Einkommen, zvE) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. In that zone the tax is 0 €.
+For tax years 2005 to 2026, `assess` returns the income tax (Einkommensteuer) for taxable income (zu versteuerndes Einkommen, zvE) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. In that zone the tax is 0 €. Pass the year as `TaxYear::Y2005` to `TaxYear::Y2026`.
 
 - Single filing, basic tariff (Grundtarif): zero tax up to 12 348 € of taxable income.
 - Joint filing, splitting tariff (Splittingtarif, § 32a Abs. 5 EStG): zero tax up to 24 697 € of joint taxable income.
@@ -91,7 +91,7 @@ match assess(TaxYear::Y2026, &unit) {
 
 ## Tax year
 
-`TaxYear` currently has one variant, `TaxYear::Y2026`. Other years are added when their parameter files exist. Do not assume another year works.
+`TaxYear` has one variant per implemented year, `TaxYear::Y2006` to `TaxYear::Y2026`. Do not assume a year outside that range works.
 
 ## Not covered yet
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-This page lists the features and domains fiskus plans to cover, in planned order. Everything here is not yet in fiskus, except the basic allowance (Grundfreibetrag) for tax year 2026, which fiskus implements today.
+This page lists the features and domains fiskus plans to cover, in planned order. Everything here is not yet in fiskus, except the basic allowance (Grundfreibetrag) for tax years 2005 to 2026, which fiskus implements today.
 
 The order is deliberate. Each milestone depends on the ones before it. The build and the test process are proved on simple values before the complex formulas arrive.
 
@@ -8,7 +8,7 @@ The order is deliberate. Each milestone depends on the ones before it. The build
 
 **Goal:** the build and the test process work for every tax year, using only the basic allowance.
 
-- Add one `rules/<year>/parameters.toml` for each tax year, with the value, citation, source and retrieval date.
+- Add one `rules/<year>.toml` for each tax year, with the value, citation, source and retrieval date.
 - Run the build check and the year tests for every year.
 - Check that the packaged crate builds with every year file in it.
 - Follow the steps in [Tax parameters](contributing/code.md#tax-parameters) for each new year.

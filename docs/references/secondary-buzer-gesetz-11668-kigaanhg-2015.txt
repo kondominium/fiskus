@@ -1,0 +1,203 @@
+
+ KiGAnhG 2015 Gesetz zur Anhebung des Grundfreibetrags, des Kinderfreibetrags, des Kindergeldes und des Kinderzuschlags 
+buzer.de
+ Bundesrecht - tagaktuell konsolidiert - alle Fassungen seit 2006
+Vorschriftensuche 
+§ / Artikel
+Gesetz
+Volltextsuche
+ nur in KiGAnhG 2015
+↑ nach oben ↓ nach unten 
+Start
+Suchen
+Sachgebiete
+Aktuell
+Verkündet
+Über buzer.de
+Qualität
+Kontakt
+Datenschutz Impressum
+Tools:
+Blog-Plugin
+Mobilversion
+ Vorschau
+Update via: 
+Web-Widget
+Feed
+Rechtskataster
+Werben auf buzer.de
+Sie sind hier: Start > Inhaltsverzeichnis KiGAnhG 2015
+Mail bei Änderungen 
+Gesetz zur Anhebung des Grundfreibetrags, des Kinderfreibetrags, des Kindergeldes und des Kinderzuschlags (KiGAnhG 2015 k.a.Abk.)
+G. v. 16.07.2015 BGBl. I S. 1202 (Nr. 30); Geltung ab 23.07.2015, abweichend siehe Artikel 10
+9 Änderungen | 
+Drucksachen / Entwurf / Begründung | 
+wird in 4 Vorschriften zitiert 
+Eingangsformel
+Artikel 1 Änderung des Einkommensteuergesetzes
+Artikel 2 Weitere Änderung des Einkommensteuergesetzes
+Artikel 3 Änderung des Solidaritätszuschlaggesetzes 1995
+Artikel 4 Weitere Änderung des Solidaritätszuschlaggesetzes 1995
+Artikel 5 Änderung des Bundeskindergeldgesetzes
+Artikel 6 Weitere Änderung des Bundeskindergeldgesetzes
+Artikel 7 Weitere Änderung des Bundeskindergeldgesetzes
+Artikel 8 Gesetz zur Nichtanrechnung rückwirkender Erhöhungen des Kindergeldes
+Artikel 9 Änderung des Unterhaltsvorschussgesetzes
+Artikel 10 Inkrafttreten
+Schlussformel
+Eingangsformel 
+Der Bundestag hat mit Zustimmung des Bundesrates das folgende Gesetz beschlossen:
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 1 Änderung des Einkommensteuergesetzes
+Artikel 1 wird in 2 Vorschriften zitiert und ändert mWv. 23. Juli 2015 EStG § 24b, § 32, § 32a, § 33a, § 39a, § 39b, § 46, § 51a, § 52, § 66
+Das Einkommensteuergesetz in der Fassung der Bekanntmachung vom 8. Oktober 2009 (BGBl. I S. 3366, 3862), das zuletzt durch Artikel 3 Absatz 11 des Gesetzes vom 29. Juni 2015 (BGBl. I S. 1061) geändert worden ist, wird wie folgt geändert:
+1. § 24b wird wie folgt geändert:
+a) Absatz 1 wird durch folgende Absätze 1 und 2 ersetzt:
+„(1) Allein stehende Steuerpflichtige können einen Entlastungsbetrag von der Summe der Einkünfte abziehen, wenn zu ihrem Haushalt mindestens ein Kind gehört, für das ihnen ein Freibetrag nach § 32 Absatz 6 oder Kindergeld zusteht. Die Zugehörigkeit zum Haushalt ist anzunehmen, wenn das Kind in der Wohnung des allein stehenden Steuerpflichtigen gemeldet ist. Ist das Kind bei mehreren Steuerpflichtigen gemeldet, steht der Entlastungsbetrag nach Satz 1 demjenigen Alleinstehenden zu, der die Voraussetzungen auf Auszahlung des Kindergeldes nach § 64 Absatz 2 Satz 1 erfüllt oder erfüllen würde in Fällen, in denen nur ein Anspruch auf einen Freibetrag nach § 32 Absatz 6 besteht. Voraussetzung für die Berücksichtigung ist die Identifizierung des Kindes durch die an dieses Kind vergebene Identifikationsnummer (§ 139b der Abgabenordnung). Ist das Kind nicht nach einem Steuergesetz steuerpflichtig (§ 139a Absatz 2 der Abgabenordnung), ist es in anderer geeigneter Weise zu identifizieren. Die nachträgliche Vergabe der Identifikationsnummer wirkt auf Monate zurück, in denen die Voraussetzungen der Sätze 1 bis 3 vorliegen.
+(2) Gehört zum Haushalt des allein stehenden Steuerpflichtigen ein Kind im Sinne des Absatzes 1, beträgt der Entlastungsbetrag im Kalenderjahr 1.908 Euro. Für jedes weitere Kind im Sinne des Absatzes 1 erhöht sich der Betrag nach Satz 1 um 240 Euro je weiterem Kind."
+b) Der bisherige Absatz 2 wird Absatz 3.
+c) Der bisherige Absatz 3 wird Absatz 4 und wie folgt gefasst:
+„(4) Für jeden vollen Kalendermonat, in dem die Voraussetzungen des Absatzes 1 nicht vorgelegen haben, ermäßigt sich der Entlastungsbetrag nach Absatz 2 um ein Zwölftel."
+2. In § 32 Absatz 6 Satz 1 wird die Angabe „2.184 Euro" durch die Angabe „2.256 Euro" ersetzt.
+3. § 32a Absatz 1 wird wie folgt gefasst:
+„(1) Die tarifliche Einkommensteuer im Veranlagungszeitraum 2015 bemisst sich nach dem zu versteuernden Einkommen. Sie beträgt vorbehaltlich der §§ 32b, 32d, 34, 34a, 34b und 34c jeweils in Euro für zu versteuernde Einkommen
+1. bis 8.472 Euro (Grundfreibetrag):
+0;
+2. von 8.473 Euro bis 13.469 Euro:
+(997,6 · y + 1.400) · y;
+3. von 13.470 Euro bis 52.881 Euro:
+(228,74 · z + 2.397) · z + 948,68;
+4. von 52.882 Euro bis 250.730 Euro:
+0,42 · x - 8.261,29;
+5. von 250.731 Euro an:
+0,45 · x - 15.783,19.
+Die Größe „y" ist ein Zehntausendstel des den Grundfreibetrag übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. Die Größe „z" ist ein Zehntausendstel des 13.469 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. Die Größe „x" ist das auf einen vollen Euro-Betrag abgerundete zu versteuernde Einkommen. Der sich ergebende Steuerbetrag ist auf den nächsten vollen Euro-Betrag abzurunden."
+4. In § 33a Absatz 1 Satz 1 wird die Angabe „8.354" durch die Angabe „8.472" ersetzt.
+5. § 39a wird wie folgt geändert:
+a) Absatz 1 wird wie folgt geändert:
+aa) In Satz 1 wird nach Nummer 4 folgende Nummer 4a eingefügt:
+„4a. der Erhöhungsbetrag nach § 24b Absatz 2 Satz 2,".
+bb) In Satz 3 wird die Angabe „5 bis 8" durch die Angabe „4a bis 8" ersetzt.
+b) In Absatz 3 Satz 1 werden die Wörter „Nummer 2 bis 5 und 8" durch die Wörter „Nummer 2 bis 4 und 5" ersetzt.
+6. § 39b Absatz 2 wird wie folgt geändert:
+a) In Satz 5 Nummer 4 werden die Wörter „den Entlastungsbetrag für Alleinerziehende (§ 24b)" durch die Wörter „den Entlastungsbetrag für Alleinerziehende für ein Kind (§ 24b Absatz 2 Satz 1)" ersetzt.
+b) In Satz 7 zweiter Halbsatz wird die Angabe „9.763 Euro" durch die Angabe „9.873 Euro" ersetzt.
+7. § 46 Absatz 2 wird wie folgt geändert:
+a) In Nummer 3 wird die Angabe „10.700 Euro" durch die Angabe „10.800 Euro" und die Angabe „20.200 Euro" durch die Angabe „20.500 Euro" ersetzt.
+b) In Nummer 4 wird die Angabe „10.700 Euro" durch die Angabe „10.800 Euro" und die Angabe „20.200 Euro" durch die Angabe „20.500 Euro" ersetzt.
+8. § 51a Absatz 2a Satz 1 wird wie folgt gefasst:
+„Vorbehaltlich des § 40a Absatz 2 ist beim Steuerabzug vom Arbeitslohn Bemessungsgrundlage die Lohnsteuer; beim Steuerabzug vom laufenden Arbeitslohn und beim Jahresausgleich ist die Lohnsteuer maßgebend, die sich ergibt, wenn der nach § 39b Absatz 2 Satz 5 zu versteuernde Jahresbetrag für die Steuerklassen I, II und III um den Kinderfreibetrag von 4.512 Euro sowie den Freibetrag für den Betreuungs- und Erziehungs- oder Ausbildungsbedarf von 2.640 Euro und für die Steuerklasse IV um den Kinderfreibetrag von 2.256 Euro sowie den Freibetrag für den Betreuungs- und Erziehungs- oder Ausbildungsbedarf von 1.320 Euro für jedes Kind vermindert wird, für das eine Kürzung der Freibeträge für Kinder nach § 32 Absatz 6 Satz 4 nicht in Betracht kommt."
+9. § 52 wird wie folgt geändert:
+a) Nach Absatz 32 wird folgender Absatz 32a eingefügt:
+„(32a) § 32a Absatz 1 und § 51a Absatz 2a Satz 1 in der am 23. Juli 2015 geltenden Fassung sind beim Steuerabzug vom Arbeitslohn erstmals anzuwenden auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015 endenden Lohnzahlungszeitraum gezahlt wird, und auf sonstige Bezüge, die nach dem 30. November 2015 zufließen. Bei der Lohnsteuerberechnung auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015, aber vor dem 1. Januar 2016 endenden täglichen, wöchentlichen und monatlichen Lohnzahlungszeitraum gezahlt wird, ist zu berücksichtigen, dass § 32a Absatz 1 und § 51a Absatz 2a Satz 1 in der am 23. Juli 2015 geltenden Fassung bis zum 30. November 2015 nicht angewandt wurden (Nachholung). Das Bundesministerium der Finanzen hat im Einvernehmen mit den obersten Finanzbehörden der Länder entsprechende Programmablaufpläne aufzustellen und bekannt zu machen (§ 39b Absatz 6 und § 51 Absatz 4 Nummer 1a)."
+b) Nach Absatz 37 wird folgender Absatz 37b eingefügt:
+„(37b) § 39b Absatz 2 Satz 5 Nummer 4 in der am 23. Juli 2015 geltenden Fassung ist erstmals anzuwenden auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015 endenden Lohnzahlungszeitraum gezahlt wird, und auf sonstige Bezüge, die nach dem 30. November 2015 zufließen. Bei der Lohnsteuerberechnung auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015, aber vor dem 1. Januar 2016 endenden täglichen, wöchentlichen und monatlichen Lohnzahlungszeitraum gezahlt wird, ist zu berücksichtigen, dass § 39b Absatz 2 Satz 5 Nummer 4 in der am 23. Juli 2015 geltenden Fassung bis zum 30. November 2015 nicht angewandt wurde (Nachholung). Das Bundesministerium der Finanzen hat dies im Einvernehmen mit den obersten Finanzbehörden der Länder bei der Aufstellung und Bekanntmachung der geänderten Programmablaufpläne für 2015 zu berücksichtigen (§ 39b Absatz 6 und § 51 Absatz 4 Nummer 1a). In den Fällen des § 24b Absatz 4 ist für das Kalenderjahr 2015 eine Veranlagung durchzuführen, wenn die Nachholung nach Satz 2 durchgeführt wurde."
+c) Dem Absatz 49a wird folgender Satz angefügt:
+„§ 66 Absatz 1 in der am 23. Juli 2015 geltenden Fassung ist für Kindergeldfestsetzungen anzuwenden, die Zeiträume betreffen, die nach dem 31. Dezember 2014 beginnen."
+10. § 66 Absatz 1 wird wie folgt gefasst:
+„(1) Das Kindergeld beträgt monatlich für erste und zweite Kinder jeweils 188 Euro, für dritte Kinder 194 Euro und für das vierte und jedes weitere Kind jeweils 219 Euro."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 2 Weitere Änderung des Einkommensteuergesetzes
+Artikel 2 wird in 2 Vorschriften zitiert und ändert mWv. 1. Januar 2016 EStG § 32, § 32a, § 33a, § 39b, § 46, § 51a, § 52, § 66
+Das Einkommensteuergesetz in der Fassung der Bekanntmachung vom 8. Oktober 2009 (BGBl. I S. 3366, 3862), das zuletzt durch Artikel 1 dieses Gesetzes geändert worden ist, wird wie folgt geändert:
+1. In § 32 Absatz 6 Satz 1 wird die Angabe „2.256 Euro" durch die Angabe „2.304 Euro"ersetzt.
+2. § 32a Absatz 1 wird wie folgt gefasst:
+„(1) Die tarifliche Einkommensteuer in den Veranlagungszeiträumen ab 2016 bemisst sich nach dem zu versteuernden Einkommen. Sie beträgt vorbehaltlich der §§ 32b, 32d, 34, 34a, 34b und 34c jeweils in Euro für zu versteuernde Einkommen
+1. bis 8.652 Euro (Grundfreibetrag):
+0;
+2. von 8.653 Euro bis 13.669 Euro:
+(993,62 · y + 1.400) · y;
+3. von 13.670 Euro bis 53.665 Euro:
+(225,40 · z + 2.397) · z + 952,48;
+4. von 53.666 Euro bis 254.446 Euro:
+0,42 · x - 8.394,14;
+5. von 254.447 Euro an:
+0,45 · x - 16.027,52.
+Die Größe „y" ist ein Zehntausendstel des den Grundfreibetrag übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. Die Größe „z" ist ein Zehntausendstel des 13.669 Euro übersteigenden Teils des auf einen vollen Euro-Betrag abgerundeten zu versteuernden Einkommens. Die Größe „x" ist das auf einen vollen Euro-Betrag abgerundete zu versteuernde Einkommen. Der sich ergebende Steuerbetrag ist auf den nächsten vollen Euro-Betrag abzurunden."
+3. In § 33a Absatz 1 Satz 1 wird die Angabe „8.472" durch die Angabe „8.652" ersetzt.
+4. In § 39b Absatz 2 Satz 7 wird der Teilsatz nach dem Semikolon wie folgt gefasst:
+„die Jahreslohnsteuer beträgt jedoch mindestens 14 Prozent des zu versteuernden Jahresbetrags, für den 10.070 Euro übersteigenden Teil des zu versteuernden Jahresbetrags höchstens 42 Prozent, für den 26.832 Euro übersteigenden Teil des zu versteuernden Jahresbetrags 42 Prozent und für den 203.557 Euro übersteigenden Teil des zu versteuernden Jahresbetrags 45 Prozent."
+5. § 46 Absatz 2 wird wie folgt geändert:
+a) In Nummer 3 wird die Angabe „10.800 Euro" durch die Angabe „11.000 Euro" und die Angabe „20.500 Euro" durch die Angabe „20.900 Euro" ersetzt.
+b) In Nummer 4 wird die Angabe „10.800 Euro" durch die Angabe „11.000 Euro" und die Angabe „20.500 Euro" durch die Angabe „20.900 Euro" ersetzt.
+6. In § 51a Absatz 2a Satz 1 wird die Angabe „4.512 Euro" durch die Angabe „4.608 Euro" und die Angabe „2.256 Euro" durch die Angabe „2.304 Euro"ersetzt.
+7. Dem § 52 Absatz 49a wird folgender Satz angefügt:
+„§ 66 Absatz 1 in der am 1. Januar 2016 geltenden Fassung ist für Kindergeldfestsetzungen anzuwenden, die Zeiträume betreffen, die nach dem 31. Dezember 2015 beginnen."
+8. § 66 Absatz 1 wird wie folgt gefasst:
+„(1) Das Kindergeld beträgt monatlich für erste und zweite Kinder jeweils 190 Euro, für dritte Kinder 196 Euro und für das vierte und jedes weitere Kind jeweils 221 Euro."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 3 Änderung des Solidaritätszuschlaggesetzes 1995
+Artikel 3 wird in 1 Vorschrift zitiert und ändert mWv. 23. Juli 2015 SolzG 1995 § 3, § 6
+Das Solidaritätszuschlaggesetz 1995 in der Fassung der Bekanntmachung vom 15. Oktober 2002 (BGBl. I S. 4130), das zuletzt durch Artikel 6 des Gesetzes vom 7. Dezember 2011 (BGBl. I S. 2592) geändert worden ist, wird wie folgt geändert:
+1. § 3 Absatz 2a Satz 1 wird wie folgt gefasst:
+„Vorbehaltlich des § 40a Absatz 2 des Einkommensteuergesetzes ist beim Steuerabzug vom Arbeitslohn Bemessungsgrundlage die Lohnsteuer; beim Steuerabzug vom laufenden Arbeitslohn und beim Jahresausgleich ist die Lohnsteuer maßgebend, die sich ergibt, wenn der nach § 39b Absatz 2 Satz 5 des Einkommensteuergesetzes zu versteuernde Jahresbetrag für die Steuerklassen I, II und III im Sinne des § 38b des Einkommensteuergesetzes um den Kinderfreibetrag von 4.512 Euro sowie den Freibetrag für den Betreuungs- und Erziehungs- oder Ausbildungsbedarf von 2.640 Euro und für die Steuerklasse IV im Sinne des § 38b des Einkommensteuergesetzes um den Kinderfreibetrag von 2.256 Euro sowie den Freibetrag für den Betreuungs- und Erziehungs- oder Ausbildungsbedarf von 1.320 Euro für jedes Kind vermindert wird, für das eine Kürzung der Freibeträge für Kinder nach § 32 Absatz 6 Satz 4 des Einkommensteuergesetzes nicht in Betracht kommt."
+2. Dem § 6 wird folgender Absatz 14 angefügt:
+„(14) § 3 Absatz 2a Satz 1 in der am 23. Juli 2015 geltenden Fassung ist erstmals anzuwenden auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015 endenden Lohnzahlungszeitraum gezahlt wird, und auf sonstige Bezüge, die nach dem 30. November 2015 zufließen. Bei der Lohnsteuerberechnung auf laufenden Arbeitslohn, der für einen nach dem 30. November 2015, aber vor dem 1. Januar 2016 endenden täglichen, wöchentlichen und monatlichen Lohnzahlungszeitraum gezahlt wird, ist zu berücksichtigen, dass § 3 Absatz 2a Satz 1 in der am 23. Juli 2015 geltenden Fassung bis zum 30. November 2015 nicht angewandt wurde (Nachholung). Das Bundesministerium der Finanzen hat dies im Einvernehmen mit den obersten Finanzbehörden der Länder bei der Aufstellung und Bekanntmachung der entsprechenden Programmablaufpläne zu berücksichtigen (§ 52 Absatz 32a Satz 3 des Einkommensteuergesetzes)."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 4 Weitere Änderung des Solidaritätszuschlaggesetzes 1995
+Artikel 4 wird in 2 Vorschriften zitiert und ändert mWv. 1. Januar 2016 SolzG 1995 § 3, § 6
+Das Solidaritätszuschlaggesetz 1995 in der Fassung der Bekanntmachung vom 15. Oktober 2002 (BGBl. I S. 4130), das zuletzt durch Artikel 3 dieses Gesetzes geändert worden ist, wird wie folgt geändert:
+1. In § 3 Absatz 2a Satz 1 wird die Angabe „4.512 Euro" durch die Angabe „4.608 Euro" und die Angabe „2.256 Euro" durch die Angabe „2.304 Euro" ersetzt.
+2. Dem § 6 wird folgender Absatz 15 angefügt:
+„(15) § 3 Absatz 2a in der am 1. Januar 2016 geltenden Fassung ist erstmals auf den laufenden Arbeitslohn anzuwenden, der für einen nach dem 31. Dezember 2015 endenden Lohnzahlungszeitraum gezahlt wird, und auf sonstige Bezüge, die nach dem 31. Dezember 2015 zufließen."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 5 Änderung des Bundeskindergeldgesetzes
+Artikel 5 wird in 3 Vorschriften zitiert und ändert mWv. 1. Januar 2015 BKGG § 6
+§ 6 des Bundeskindergeldgesetzes in der Fassung der Bekanntmachung vom 28. Januar 2009 (BGBl. I S. 142, 3177), das zuletzt durch Artikel 14 des Gesetzes vom 22. Dezember 2014 (BGBl. I S. 2417) geändert worden ist, wird wie folgt geändert:
+1. Absatz 1 wird wie folgt gefasst:
+„(1) Das Kindergeld beträgt monatlich für erste und zweite Kinder jeweils 188 Euro, für dritte Kinder 194 Euro und für das vierte und jedes weitere Kind jeweils 219 Euro."
+2. In Absatz 2 wird die Angabe „184 Euro" durch die Angabe „188 Euro" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 6 Weitere Änderung des Bundeskindergeldgesetzes
+Artikel 6 wird in 2 Vorschriften zitiert und ändert mWv. 1. Januar 2016 BKGG § 6
+§ 6 des Bundeskindergeldgesetzes in der Fassung der Bekanntmachung vom 28. Januar 2009 (BGBl. I S. 142, 3177), das zuletzt durch Artikel 5 dieses Gesetzes geändert worden ist, wird wie folgt geändert:
+1. Absatz 1 wird wie folgt gefasst:
+„(1) Das Kindergeld beträgt monatlich für erste und zweite Kinder jeweils 190 Euro, für dritte Kinder 196 Euro und für das vierte und jedes weitere Kind jeweils 221 Euro."
+2. In Absatz 2 wird die Angabe „188 Euro" durch die Angabe „190 Euro" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 7 Weitere Änderung des Bundeskindergeldgesetzes
+Artikel 7 wird in 2 Vorschriften zitiert und ändert mWv. 1. Juli 2016 BKGG § 6a
+In § 6a Absatz 2 Satz 1 des Bundeskindergeldgesetzes in der Fassung der Bekanntmachung vom 28. Januar 2009 (BGBl. I S. 142, 3177), das zuletzt durch Artikel 6 dieses Gesetzes geändert worden ist, wird die Angabe „140 Euro" durch die Angabe „160 Euro" ersetzt.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 8 Gesetz zur Nichtanrechnung rückwirkender Erhöhungen des Kindergeldes
+Artikel 8 wird in 1 Vorschrift zitiert und ändert mWv. 1. Januar 2015 KiGAnrG 
+(gesamter Text siehe Gesetz zur Nichtanrechnung rückwirkender Erhöhungen des Kindergeldes)
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 9 Änderung des Unterhaltsvorschussgesetzes
+Artikel 9 wird in 2 Vorschriften zitiert und ändert mWv. 1. Januar 2015 UVG § 11a (neu)
+Nach § 11 des Unterhaltsvorschussgesetzes in der Fassung der Bekanntmachung vom 17. Juli 2007 (BGBl. I S. 1446), das zuletzt durch Artikel 1 des Gesetzes vom 3. Mai 2013 (BGBl. I S. 1108) geändert worden ist, wird folgender § 11a eingefügt:
+ „§ 11a Anwendungsvorschrift
+Im Sinne dieses Gesetzes beträgt für die Zeit vom 1. Januar 2015 bis zum 30. Juni 2015 die Unterhaltsleistung nach § 2 Absatz 1 Satz 1 monatlich 317 Euro für ein Kind, das das sechste Lebensjahr noch nicht vollendet hat, und monatlich 364 Euro für ein Kind, das das zwölfte Lebensjahr noch nicht vollendet hat. Für die Zeit vom 1. Juli 2015 bis zum 31. Dezember 2015 beträgt die Unterhaltsleistung nach § 2 Absatz 1 Satz 1 monatlich 328 Euro für ein Kind, das das sechste Lebensjahr noch nicht vollendet hat, und monatlich 376 Euro für ein Kind, das das zwölfte Lebensjahr noch nicht vollendet hat. Ab dem 1. Januar 2016 beträgt die Unterhaltsleistung nach § 2 Absatz 1 Satz 1 monatlich 335 Euro für ein Kind, das das sechste Lebensjahr noch nicht vollendet hat, und monatlich 384 Euro für ein Kind, das das zwölfte Lebensjahr noch nicht vollendet hat. Bis zum 31. Dezember 2015 gilt als für ein erstes Kind zu zahlendes Kindergeld im Sinne von § 2 Absatz 2 Satz 1 ein Betrag in Höhe von monatlich 184 Euro."
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Artikel 10 Inkrafttreten
+(1) Dieses Gesetz tritt vorbehaltlich der folgenden Absätze am Tag nach der Verkündung*) in Kraft.
+(2) Die Artikel 5, 8 und 9 treten mit Wirkung vom 1. Januar 2015 in Kraft.
+(3) Die Artikel 2, 4 und 6 treten am 1. Januar 2016 in Kraft.
+(4) Artikel 7 tritt am 1. Juli 2016 in Kraft.
+---
+*) Anm. d. Red.: Die Verkündung erfolgte am 22. Juli 2015.
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+Schlussformel 
+Das vorstehende Gesetz wird hiermit ausgefertigt. Es ist im Bundesgesetzblatt zu verkünden.
+Der Bundespräsident
+Joachim Gauck
+Die Bundeskanzlerin
+Dr. Angela Merkel
+Der Bundesminister der Finanzen
+Schäuble
+Die Bundesministerin für Familie, Senioren, Frauen und Jugend
+Manuela Schwesig
+Link zu dieser Seite: https://www.buzer.de/gesetz/11668/index.htm 
+Inhaltsverzeichnis | Ausdrucken/PDF | nach oben
+KiGAnhG 2015
+Rechtskataster 
+Änderungen
+überwachen 
+Sie werden über jede verkündete oder in Kraft tretende Änderung per Mail informiert, sofort, wöchentlich oder in dem Intervall, das Sie gewählt haben.
+Stellen Sie Ihr Paket zu überwachender Vorschriften beliebig zusammen.
+Jetzt anmelden!
+Weitere Vorteile:
+Konsolidierte Vorschriften selbst bei Inkrafttreten "am Tage nach der Verkündung", Synopse zu jeder Änderungen, Begründungen des Gesetzgebers
+Für Ihr Blog oder Forum - Gesetze verknüpfen
+Für Ihre Internetseite -
+Ticker aktuellste Gesetzesänderungen

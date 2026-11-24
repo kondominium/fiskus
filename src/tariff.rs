@@ -26,6 +26,11 @@ pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error> {
     basic_allowance_zone(unit, parameters.basic_allowance.value_eur)
 }
 
+/// Basic allowance (Grundfreibetrag) in whole euros for `year`, § 32a Abs. 1 Satz 2 Nr. 1 EStG.
+pub fn basic_allowance_eur(year: TaxYear) -> i128 {
+    params::for_year(year).basic_allowance.value_eur
+}
+
 fn basic_allowance_zone(unit: &FilingUnit, basic_allowance_eur: i128) -> Result<Assessment, Error> {
     if unit.taxable_income.get() < 0 {
         return Err(Error::NegativeTaxableIncome);
@@ -172,6 +177,55 @@ mod tests {
                 taxable_income_eur: BASIC_ALLOWANCE_EUR + 1
             }
         );
+    }
+
+    // Basic allowance per VZ, pinned to the statute and the BMF PAPs, see docs/references/README.md.
+    #[test]
+    fn basic_allowance_per_year_matches_the_sources() {
+        let expected = [
+            (TaxYear::Y2005, 7_664),
+            (TaxYear::Y2006, 7_664),
+            (TaxYear::Y2007, 7_664),
+            (TaxYear::Y2008, 7_664),
+            (TaxYear::Y2009, 7_834),
+            (TaxYear::Y2010, 8_004),
+            (TaxYear::Y2011, 8_004),
+            (TaxYear::Y2012, 8_004),
+            (TaxYear::Y2013, 8_130),
+            (TaxYear::Y2014, 8_354),
+            (TaxYear::Y2015, 8_472),
+            (TaxYear::Y2016, 8_652),
+            (TaxYear::Y2017, 8_820),
+            (TaxYear::Y2018, 9_000),
+            (TaxYear::Y2019, 9_168),
+            (TaxYear::Y2020, 9_408),
+            (TaxYear::Y2021, 9_744),
+            (TaxYear::Y2022, 10_347),
+            (TaxYear::Y2023, 10_908),
+            (TaxYear::Y2024, 11_784),
+            (TaxYear::Y2025, 12_096),
+            (TaxYear::Y2026, 12_348),
+        ];
+        for (year, euros) in expected {
+            assert_eq!(basic_allowance_eur(year), euros, "{year:?}");
+        }
+    }
+
+    // Every listed year: the basic allowance is tax-free, one euro more is outside the zone.
+    #[test]
+    fn every_year_is_tax_free_up_to_its_basic_allowance() {
+        for year in TaxYear::ALL {
+            let allowance = basic_allowance_eur(year);
+            let result = assess(year, &single(allowance * 100)).unwrap();
+            assert_eq!(result.income_tax, Cents::new(0), "{year:?}");
+            assert_eq!(
+                assess(year, &single((allowance + 1) * 100)).unwrap_err(),
+                Error::OutsideImplementedRange {
+                    taxable_income_eur: allowance + 1
+                },
+                "{year:?}"
+            );
+        }
     }
 
     // Joint filer at 24 697 €: the Splitting half is 12 348 €, so tax is 0 (§ 32a Abs. 5 EStG).

@@ -7,7 +7,10 @@ use std::path::{Path, PathBuf};
 
 use serde::Deserialize;
 
-const YEARS: [u16; 1] = [2026];
+const YEARS: [u16; 22] = [
+    2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+    2021, 2022, 2023, 2024, 2025, 2026,
+];
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -16,6 +19,7 @@ struct Parameter {
     citation: String,
     source: String,
     retrieved: String,
+    reference: String,
 }
 
 fn main() {
@@ -30,7 +34,7 @@ fn generate() -> Result<(), String> {
 
     let mut generated = String::new();
     for year in YEARS {
-        let path = manifest_dir.join(format!("rules/{year}/parameters.toml"));
+        let path = manifest_dir.join(format!("rules/{year}.toml"));
         println!("cargo:rerun-if-changed={}", path.display());
         let parameters = load(&path)?;
 
@@ -71,6 +75,7 @@ fn check(key: &str, parameter: &Parameter) -> Result<(), String> {
         ("citation", &parameter.citation),
         ("source", &parameter.source),
         ("retrieved", &parameter.retrieved),
+        ("reference", &parameter.reference),
     ] {
         if text.trim().is_empty() {
             return Err(format!("{field} is empty"));

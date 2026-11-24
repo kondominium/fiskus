@@ -6,7 +6,7 @@
 //!
 //! Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //!
-//! So far only the Grundfreibetrag zone of § 32a EStG (VZ 2026) is implemented.
+//! So far only the Grundfreibetrag zone of § 32a EStG is implemented, for VZ 2005 to 2026.
 
 mod assessment;
 mod error;
@@ -20,5 +20,5 @@ pub use assessment::Assessment;
 pub use error::Error;
 pub use filing_unit::{FilingStatus, FilingUnit};
 pub use money::Cents;
-pub use tariff::assess;
+pub use tariff::{assess, basic_allowance_eur};
 pub use year::TaxYear;

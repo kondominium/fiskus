@@ -1,0 +1,9 @@
+# Tax parameters for VZ 2020. Every value needs a citation and source.
+
+[basic_allowance]
+value_eur = 9408
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Familienentlastungsgesetz, BGBl. 2018 I S. 2210)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2019-11-11-PAP-2020-anlage-1.pdf?__blob=publicationFile&v=2"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf"
+

@@ -23,6 +23,7 @@ struct Chapter {
 struct Parameter {
     value_eur: i128,
     citation: String,
+    reference: String,
 }
 
 fn root() -> PathBuf {
@@ -136,22 +137,45 @@ fn listed_sections_are_cited_by_the_code() {
     }
 }
 
+// The guide explains VZ 2026 only, so only its parameters need a page.
 #[test]
 fn parameter_values_appear_on_the_page_that_cites_them() {
     let chapters = coverage().chapter;
+    let path = root().join("rules/2026.toml");
+    let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
+    for (name, parameter) in parameters {
+        let value = euros(parameter.value_eur);
+        let explained = chapters.iter().any(|chapter| {
+            let text = page(&chapter.file);
+            text.contains(&parameter.citation) && text.contains(&value)
+        });
+        assert!(
+            explained,
+            "{name}: no guide page cites `{}` together with {value}",
+            parameter.citation
+        );
+    }
+}
+
+#[test]
+fn parameter_references_exist() {
+    let base = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/";
     for entry in fs::read_dir(root().join("rules")).unwrap() {
-        let path = entry.unwrap().path().join("parameters.toml");
+        let path = entry.unwrap().path();
         let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
         for (name, parameter) in parameters {
-            let value = euros(parameter.value_eur);
-            let explained = chapters.iter().any(|chapter| {
-                let text = page(&chapter.file);
-                text.contains(&parameter.citation) && text.contains(&value)
-            });
             assert!(
-                explained,
-                "{name}: no guide page cites `{}` together with {value}",
-                parameter.citation
+                parameter.reference.starts_with(base),
+                "{}: [{name}] reference is not a GitLab main-branch link: {}",
+                path.display(),
+                parameter.reference
+            );
+            let basename = parameter.reference.trim_start_matches(base);
+            assert!(
+                root().join("docs/references").join(basename).is_file(),
+                "{}: [{name}] reference {} has no local file",
+                path.display(),
+                parameter.reference
             );
         }
     }

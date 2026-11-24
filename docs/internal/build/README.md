@@ -10,7 +10,7 @@ The first three steps run at build time. The last step is the binary at runtime.
 
 ## The steps
 
-**Source files.** Each tax year has one file of parameters. Each parameter has its value, its citation, its source and the date it was retrieved. Changing a year means changing one file.
+**Source files.** Each tax year has one file of parameters at `rules/<year>.toml`. Each parameter has its value, its citation, its source, the date it was retrieved, and a `reference` link to the archived source. Changing a year means changing one file.
 
 **Build check.** While the library builds, every entry in every file is validated. A value that is negative, not a whole euro amount, or missing its citation stops the build, with a message that names the file and the parameter. Bad data does not reach a release.
 

@@ -112,3 +112,22 @@ fn cents_order_by_amount() {
     assert!(Cents::new(99) < Cents::from_euros(1));
     assert!(Cents::from_euros(-1) < Cents::new(0));
 }
+
+// The years fiskus claims to support are exactly 2006 to 2026, and each one exists as a `TaxYear`.
+#[test]
+fn claimed_years_exist() {
+    let claimed: Vec<u16> = (2005..=2026).collect();
+    assert_eq!(TaxYear::ALL.len(), claimed.len());
+    for (year, variant) in claimed.iter().zip(TaxYear::ALL.iter()) {
+        assert_eq!(variant.year(), *year);
+        assert_eq!(TaxYear::from_year(*year), Some(*variant));
+    }
+}
+
+// Years outside the supported range are not representable: `from_year` returns `None`.
+#[test]
+fn out_of_range_years_are_not_supported() {
+    for year in [0u16, 1900, 2004, 2027, 3000, u16::MAX] {
+        assert_eq!(TaxYear::from_year(year), None, "{year}");
+    }
+}

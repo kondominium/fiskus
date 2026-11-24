@@ -1,4 +1,4 @@
-# Basic allowance zone (Grundfreibetrag), § 32a EStG, VZ 2026
+# Basic allowance zone (Grundfreibetrag), § 32a EStG
 
 The basic allowance (Grundfreibetrag) is not a deduction from income. It is the first zone of the tariff: tax is zero for taxable income up to the threshold.
 
@@ -28,7 +28,7 @@ $$
 b = \left\lfloor \frac{e}{2} \right\rfloor
 $$
 
-The zone applies when $b \le 12\,348$. In that zone the tariff tax is $0$, and for joint filing $2 \cdot 0 = 0$.
+The zone applies when $b \le G$, where $G$ is the basic allowance for the assessment year. For VZ 2026, $G = 12\,348$. The values for all years 2005 to 2026 are in `rules/<year>.toml` and are exposed as `basic_allowance_eur(year)`. In that zone the tariff tax is $0$, and for joint filing $2 \cdot 0 = 0$.
 
 Outside the zone, the code returns an error. The next tariff zones are not implemented yet.
 

@@ -1,0 +1,9 @@
+# Tax parameters for VZ 2022. Every value needs a citation and source.
+
+[basic_allowance]
+value_eur = 10347
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Steuerentlastungsgesetz 2022, BGBl. 2022 I S. 749)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2022-05-20-geaenderte-PAP-2022-anwendung-ab-01-06-2022-anlage-1.pdf?__blob=publicationFile&v=2"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2022-bmf-pap-2022.pdf"
+

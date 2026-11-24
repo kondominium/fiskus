@@ -22,7 +22,7 @@ Run `make gates` before handover. It runs every gate CI runs, and CI runs the sa
 - No `f64` for money: binary floats can't store decimals exactly (`0.1 + 0.2 != 0.3`), which breaks equality checks and rounding. Use integer cents or a decimal type.
 - No `unwrap()` or `expect()` in library code reachable from user input. Return `Result`: bad input would panic the caller instead of returning an error it can handle.
 - No runtime filesystem reads. Tax parameters are compiled in: the binary is self-contained and reproducible, and stray files can't silently change results.
-- Provenance (the § citation and parameter version behind each number) is a planned separate feature. It is not in the code yet. The citations and sources stay in `rules/` as reference: readers shouldn't assume the code tracks sources it doesn't yet.
+- Provenance (the § citation and parameter version behind each number) is a planned separate feature. It is not in the code yet. The citations, sources and archived `reference` links stay in `rules/` as reference: readers shouldn't assume the code tracks sources it doesn't yet.
 - Verify tax figures against the statute before relying on them. Tax law changes, and numbers from memory or an LLM are often wrong.
 - Identifiers are English. Types, functions, fields, variables, constants, files, test names and parameter keys never use German, even where German is the precise tax term: one language keeps code consistent and searchable.
 - Docs and doc comments follow the [language rules](language.md), including German terms in parentheses after the English term. Why: readers find the German term, while code keeps the English name.
@@ -69,18 +69,18 @@ Bad: `/// Assesses tax.`
 
 ## Tax parameters
 
-Tax values live in `rules/<year>/parameters.toml`. The build checks them and compiles them in, so the library never reads them at runtime. Why and how: [How fiskus is built](../internal/build/README.md).
+Tax values live in `rules/<year>.toml`. The build checks them and compiles them in, so the library never reads them at runtime. Why and how: [How fiskus is built](../internal/build/README.md).
 
 The build fails on an entry that:
 
-- has a field other than `value_eur`, `citation`, `source` or `retrieved`
+- has a field other than `value_eur`, `citation`, `source`, `retrieved` or `reference`
 - has a `value_eur` that is negative or not a whole number
-- has a blank `citation`, `source` or `retrieved`
+- has a blank `citation`, `source`, `retrieved` or `reference`
 - has a key that is not lowercase snake_case, since keys become Rust field names
 
 | Change | Steps |
 |---|---|
-| New parameter | 1. Add a table with the four fields to the year's file. 2. Add a `Parameter` field with the same name to `Parameters` in `src/params.rs`. Without it the generated code does not compile. 3. Read it through the year's lookup. An unread field fails `make lint`. |
-| New tax year | 1. Create `rules/<year>/parameters.toml`. 2. Add the year to `YEARS` in `build.rs`. 3. Add a variant to `TaxYear`. 4. Add a match arm in the lookup in `src/params.rs`. The compiler checks steps 3 and 4. Document the year on the usage page. |
+| New parameter | 1. Add a table with the five fields (`value_eur`, `citation`, `source`, `retrieved`, `reference`) to the year's file. 2. Add a `Parameter` field with the same name to `Parameters` in `src/params.rs`. Without it the generated code does not compile. 3. Read it through the year's lookup. An unread field fails `make lint`. |
+| New tax year | 1. Create `rules/<year>.toml`. 2. Add the year to `YEARS` in `build.rs`. 3. Add a variant to `TaxYear`. 4. Add a match arm in the lookup in `src/params.rs`. The compiler checks steps 3 and 4. Document the year on the usage page. |
 
 Keep `/build.rs` and `/rules/**/*.toml` in the `include` list of `Cargo.toml`, or the packaged crate cannot build. Check the list with `cargo package --list`.

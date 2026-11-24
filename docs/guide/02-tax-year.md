@@ -22,8 +22,8 @@ The guide currently assumes that the rules for the next year appear in November 
 
 ## What fiskus supports today
 
-fiskus has one year: VZ 2026, given as `TaxYear::Y2026`. There is no other year to pass in, so fiskus does not estimate the amounts for other years.
+fiskus covers the basic allowance for VZ 2005 to 2026, given as `TaxYear::Y2005` to `TaxYear::Y2026`. There is no year outside that range, so fiskus does not estimate the amounts for other years.
 
 ## Other years
 
-Each other year gets its own parameter file in `rules/`, checked line by line against that year's statute, and only then becomes a `TaxYear`. When the law changes for a year that is already added, the parameter file and this page change together.
+Each year has its own parameter file in `rules/`, checked line by line against that year's statute. When the law changes for a year that is already added, the parameter file and this page change together.

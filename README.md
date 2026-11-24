@@ -5,7 +5,7 @@
   </picture>
 </p>
 
-Independent reference engine for German income tax (Einkommensteuer), tax year 2026. Today it computes the tax on taxable income (zu versteuerndes Einkommen) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. Documentation starts at [docs/README.md](docs/README.md).
+Independent reference engine for German income tax (Einkommensteuer). Today it computes the tax on taxable income (zu versteuerndes Einkommen) in the basic allowance (Grundfreibetrag) zone of § 32a EStG, for tax years 2005 to 2026. Documentation starts at [docs/README.md](docs/README.md).
 
 ## Disclaimer
 
