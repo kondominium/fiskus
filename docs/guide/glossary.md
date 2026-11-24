@@ -81,3 +81,4 @@ Terms used in the guide, with their German originals. Each term is listed under 
 | Tariff tax | tarifliche Einkommensteuer | The tax the tariff gives for taxable income, before credits. In fiskus, `Assessment.income_tax`. |
 | Taxable income | zu versteuerndes Einkommen (zvE) | The amount the tariff applies to, rounded down to whole euros ([§ 32a Abs. 1 Satz 1 EStG](https://www.gesetze-im-internet.de/estg/__32a.html)). Input today. |
 | Tax office | Finanzamt | The local office that makes the assessment. |
+| Total income | Gesamtbetrag der Einkünfte | The seven income types added up, before allowances and special expenses ([§ 2 Abs. 3 EStG](https://www.gesetze-im-internet.de/estg/__2.html)). Not yet in fiskus. |

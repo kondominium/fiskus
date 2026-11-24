@@ -64,7 +64,7 @@ fn run() -> Result<ExitCode, Box<dyn StdError>> {
     for path in &stale {
         eprintln!("out of date: {}", path.display());
     }
-    eprintln!("run `mise run charts` and commit the result");
+    eprintln!("run `make charts` and commit the result");
     Ok(ExitCode::FAILURE)
 }
 

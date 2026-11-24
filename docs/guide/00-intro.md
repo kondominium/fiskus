@@ -10,7 +10,7 @@ Think of this as the **release notes for fiskus**, told as the story of how inco
 
 Terms are listed in the [glossary](glossary.md).
 
-fiskus is **not tax advice**, and it is not official software of the Federal Ministry of Finance (BMF) or ELSTER.
+fiskus is **not tax advice**, and it is not official software of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER.
 
 ## Sources
 
