@@ -4,18 +4,24 @@
 
 # Guide
 
-- [About this guide](guide/00-intro.md)
-- [How your taxes are calculated](guide/README.md)
-- [Who is taxed together](guide/01-who-is-taxed-together.md)
-- [The tax year](guide/02-tax-year.md)
+- [About](guide/00-intro.md)
+- [Overview](guide/README.md)
+- [Filing unit](guide/01-who-is-taxed-together.md)
+- [Tax year](guide/02-tax-year.md)
 - [Taxable income](guide/03-taxable-income.md)
-- [The basic allowance](guide/04-basic-allowance.md)
+- [Basic allowance](guide/04-basic-allowance.md)
 - [Glossary](guide/glossary.md)
 
 # Using
 
-- [Using fiskus](usage/README.md)
+- [Usage](usage/README.md)
 - [Formulas](formulas/grundfreibetrag.md)
+
+# Internal
+
+- [Build](internal/build/README.md)
+- [Testing](internal/testing/README.md)
+- [Benchmarks](internal/benchmarks.md)
 
 # Contributing
 
@@ -25,6 +31,3 @@
 - [Guide](contributing/guide.md)
 - [Design](contributing/design.md)
 
-# Internals
-
-- [Build](internals/build/README.md)

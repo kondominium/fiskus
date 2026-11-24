@@ -1,0 +1,25 @@
+<!-- Hand-drawn illustration, not generated from code. Shows the build steps, not measured data. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Illustration: the values flow from source files through the build check and generated code into the binary</title>
+<path d="M20 44 V38 H460 V44" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.2; fill: none"/>
+<text x="240" y="30" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">build time</text>
+<path d="M500 44 V38 H620 V44" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.2; fill: none"/>
+<text x="560" y="30" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">runtime</text>
+<rect x="20" y="60" width="120" height="80" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="80" y="94" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Source files</text>
+<text x="80" y="116" text-anchor="middle" font-size="11" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">one file per year</text>
+<rect x="180" y="60" width="120" height="80" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="240" y="94" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Build check</text>
+<text x="240" y="116" text-anchor="middle" font-size="11" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">entries validated</text>
+<rect x="340" y="60" width="120" height="80" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="400" y="94" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Generated code</text>
+<text x="400" y="116" text-anchor="middle" font-size="11" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">static, per year</text>
+<rect x="500" y="60" width="120" height="80" rx="6" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
+<text x="560" y="94" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">The binary</text>
+<text x="560" y="116" text-anchor="middle" font-size="11" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">reads no files</text>
+<path d="M144 100 H170 M170 96 L177 100 L170 104 Z" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; fill: var(--chart-ink, #0f3d2e)"/>
+<path d="M304 100 H330 M330 96 L337 100 L330 104 Z" style="stroke: var(--chart-ink, #0f3d2e); stroke-width: 1.5; fill: var(--chart-ink, #0f3d2e)"/>
+<path d="M464 100 H490 M490 96 L497 100 L490 104 Z" style="stroke: #e0391f; stroke-width: 1.8; fill: #e0391f"/>
+<text x="480" y="124" text-anchor="middle" font-size="11" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">bundled</text>
+<text x="20" y="190" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">Illustration: the left three steps run at build time. The binary runs at runtime and reads no files.</text>
+</svg>
