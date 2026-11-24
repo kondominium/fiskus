@@ -1,5 +1,7 @@
 name: ci
 
+# Each job runs one of the targets that `make gates` runs locally.
+
 on:
   push:
   pull_request:
@@ -8,51 +10,34 @@ permissions:
   contents: read
 
 jobs:
-  check:
-    name: Gates (fmt, clippy, all tests)
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - name: Install pinned tools with mise
-        uses: jdx/mise-action@v5
-      - name: Run the gates (make check)
-        run: make check
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v5
+      - run: make lint
 
-  verify:
-    name: Kani proofs
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - name: Install pinned tools with mise
-        uses: jdx/mise-action@v5
-      - name: Run the Kani proofs (make verify)
-        run: make verify
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v5
+      - run: make test-all
 
   docs:
-    name: Docs book build
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - name: Install pinned tools with mise
-        uses: jdx/mise-action@v5
-      - name: Build the docs book (make docs)
-        run: make docs
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v5
+      - run: make docs
 
   coverage:
-    name: Line coverage gate
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - name: Install pinned tools with mise
-        uses: jdx/mise-action@v5
-      - name: Measure line coverage (make coverage)
-        run: make coverage
-      - name: Upload the lcov report
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v5
+      - run: make test-coverage
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: lcov

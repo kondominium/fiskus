@@ -1,21 +1,42 @@
 .SILENT:
 MISE ?= $(shell which mise)
 
-.PHONY: help check build verify coverage bench docs docs-serve charts run-example-basic_allowance run-example-guide_charts
+.PHONY: help build lint test-unit test-doc test-api test-guide test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-basic-allowance
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {name[NR] = $$1; desc[NR] = $$2; if (length($$1) > width) width = length($$1)} END {fmt = "  %-" width "s %s\n"; for (i = 1; i <= NR; i++) printf fmt, name[i], desc[i]}'
 
-check: ## Run fmt, clippy (deny warnings) and tests
-	$(MISE) run check
+build: ## Build the library, examples, tests and benches
+	$(MISE) run build
 
-verify: ## Run Kani proof harnesses
-	$(MISE) run verify
+lint: ## Format check and clippy, warnings denied
+	$(MISE) run lint
 
-coverage: ## Line coverage report, fails below 90% (writes target/llvm-cov/lcov.info)
-	$(MISE) run coverage
+test-unit: ## Unit and property tests in src/
+	$(MISE) run test-unit
 
-bench: ## Run criterion benchmarks in benches/ locally (writes target/criterion)
+test-doc: ## Doc tests on public items
+	$(MISE) run test-doc
+
+test-api: ## Black-box tests of the public API in tests/
+	$(MISE) run test-api
+
+test-guide: ## Guide checks and the chart drift check
+	$(MISE) run test-guide
+
+test-proofs: ## Kani proof harnesses
+	$(MISE) run test-proofs
+
+test-all: ## Every test category, except coverage
+	$(MISE) run test-all
+
+test-coverage: ## Line coverage, fails below 90% (writes target/llvm-cov/lcov.info)
+	$(MISE) run test-coverage
+
+gates: ## Every gate CI runs: lint, test-all, test-coverage, docs
+	$(MISE) run gates
+
+bench: ## Criterion benchmarks in benches/ (writes target/criterion). Measures, does not gate
 	$(MISE) run bench
 
 docs: ## Build the docs book into target/book
@@ -24,14 +45,11 @@ docs: ## Build the docs book into target/book
 docs-serve: ## Serve the docs book locally with live reload
 	$(MISE) run docs-serve
 
+docs-clean: ## Remove the docs book and leftover calculator builds from other branches
+	$(MISE) run docs-clean
+
 charts: ## Regenerate the guide charts in docs/guide/assets/charts
 	$(MISE) run charts
 
-build: ## Build the library, examples and tests
-	$(MISE) run build
-
-run-example-basic_allowance: ## Run examples/basic_allowance.rs
-	$(MISE) run run-example-basic_allowance
-
-run-example-guide_charts: ## Run scripts/guide/charts.rs (writes the SVG charts)
-	$(MISE) run run-example-guide_charts
+run-example-basic-allowance: ## Run examples/basic_allowance.rs
+	$(MISE) run run-example-basic-allowance

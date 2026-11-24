@@ -8,34 +8,55 @@ mdbook = "0.5.3"
 [env]
 COVERAGE_IGNORE_REGEX = '(scripts/|build\.rs)'
 
-[tasks.check]
-description = "fmt, clippy (deny warnings), test"
+[tasks.build]
+description = "Build the library, examples, tests and benches"
+run = "cargo build --all-targets"
+
+[tasks.lint]
+description = "rustfmt check and clippy with warnings denied"
 run = [
   "cargo fmt --all -- --check",
   "cargo clippy --all-targets -- -D warnings",
-  "cargo test --all-targets",
-  "cargo test --doc",
+]
+
+[tasks.test-unit]
+description = "Unit and property tests in src/"
+run = "cargo test --lib"
+
+[tasks.test-doc]
+description = "Doc tests on public items"
+run = "cargo test --doc"
+
+[tasks.test-api]
+description = "Black-box tests of the public API in tests/public_api.rs"
+run = "cargo test --test public_api"
+
+[tasks.test-guide]
+description = "Guide checks (tests/guide_checks) and the chart drift check"
+run = [
+  "cargo test --test guide_checks",
   "cargo run --example guide_charts -- --check",
 ]
 
-[tasks.charts]
-description = "Regenerate the guide charts in docs/guide/assets/charts"
-run = "cargo run --example guide_charts"
+[tasks.test-proofs]
+description = "Kani proof harnesses in src/"
+run = [
+  "cargo kani setup",
+  "cargo kani",
+]
 
-[tasks.build]
-description = "Build the library, examples and tests"
-run = "cargo build --all-targets"
+[tasks.test-all]
+description = "Every test category, except coverage"
+run = [
+  "mise run test-unit",
+  "mise run test-doc",
+  "mise run test-api",
+  "mise run test-guide",
+  "mise run test-proofs",
+]
 
-[tasks.run-example-basic_allowance]
-description = "Run examples/basic_allowance.rs"
-run = "cargo run --example basic_allowance"
-
-[tasks.run-example-guide_charts]
-description = "Run scripts/guide/charts.rs (writes the SVG charts)"
-run = "cargo run --example guide_charts"
-
-[tasks.coverage]
-description = "Line coverage report, fails below COVERAGE_MIN_LINES (default 90; writes target/llvm-cov/lcov.info)"
+[tasks.test-coverage]
+description = "Line coverage, fails below COVERAGE_MIN_LINES (default 90; writes target/llvm-cov/lcov.info)"
 run = [
   "mkdir -p target/llvm-cov",
   "cargo llvm-cov --all-targets --no-report",
@@ -43,21 +64,41 @@ run = [
   "cargo llvm-cov report --summary-only --ignore-filename-regex \"$COVERAGE_IGNORE_REGEX\" --fail-under-lines \"${COVERAGE_MIN_LINES:-90}\"",
 ]
 
-[tasks.bench]
-description = "Criterion benchmarks in benches/, run locally (writes target/criterion)"
-run = "cargo bench"
-
-[tasks.verify]
-description = "Kani proof harnesses"
+[tasks.gates]
+description = "Every gate CI runs: lint, test-all, test-coverage, docs"
 run = [
-  "cargo kani setup",
-  "cargo kani",
+  "mise run lint",
+  "mise run test-all",
+  "mise run test-coverage",
+  "mise run docs",
 ]
 
+[tasks.bench]
+description = "Criterion benchmarks in benches/ (writes target/criterion). Measures, does not gate"
+run = "cargo bench"
+
 [tasks.docs]
-description = "Build the docs book into target/book"
-run = "mdbook build"
+description = "Build the docs book into target/book, from a clean output directory"
+run = [
+  "rm -rf target/book",
+  "mdbook build",
+]
 
 [tasks.docs-serve]
 description = "Serve the docs book locally with live reload"
 run = "mdbook serve --open"
+
+[tasks.docs-clean]
+description = "Remove the docs book (target/book) and leftover calculator builds in docs/calculator, which are not on main"
+run = [
+  "rm -rf target/book",
+  "rm -rf docs/calculator",
+]
+
+[tasks.charts]
+description = "Regenerate the guide charts in docs/guide/assets/charts"
+run = "cargo run --example guide_charts"
+
+[tasks.run-example-basic-allowance]
+description = "Run examples/basic_allowance.rs"
+run = "cargo run --example basic_allowance"
