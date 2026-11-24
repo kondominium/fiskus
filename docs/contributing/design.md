@@ -2,7 +2,7 @@
  
 Reference for the fiskus wordmark and its core visual tokens. Source of truth for README headers, docs sites (mdBook / GitHub Pages), social cards and badges.
  
-> fiskus is an independent open-source reference engine for German tax calculation. It is not affiliated with the German government, the Bundesministerium der Finanzen (BMF) or ELSTER.
+> fiskus is an independent open-source reference engine for German tax calculation. It is not affiliated with the German government, the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER.
  
 ## 1. Identity
  
@@ -72,7 +72,7 @@ These rules are about the logo only. Icons and charts follow the [guide](guide.m
 - Use `fiskus-light-mode.svg` on light surfaces and `fiskus-dark-mode.svg` on dark surfaces. Never recolor outside the core pairs.
 - No gradients, shadows, outlines, effects, rotation or stretching.
 - Keep lowercase. Do not add a symbol or tagline into the lockup.
-- Do not use the Bundesadler, official seals, flag stripes, rubber stamps, piggy banks or coins anywhere alongside the logo.
+- Do not use the federal eagle (Bundesadler), official seals, flag stripes, rubber stamps, piggy banks or coins anywhere alongside the logo.
 
 ## 6. CSS tokens
  

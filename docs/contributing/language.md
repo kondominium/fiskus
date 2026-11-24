@@ -9,6 +9,7 @@ Applies to humans and agents who write docs, the guide, and doc comments. Code i
 - **Statute names:** the English name, then the German name in parentheses, then the abbreviation. Example: Income Tax Act (Einkommensteuergesetz, EStG).
 - **Glossary:** every term used in the guide is registered in the [glossary](../guide/glossary.md), under the first letter of its English name. Add a term there before using it on a page.
 - Write `fiskus` in lowercase, including at the start of a sentence.
+- Do not write "we", "our" or "us". Make `fiskus` the subject. Bad: "We test every figure." Good: "fiskus tests every figure." Why: the docs describe the project, and a project reads as more professional than a team talking about itself.
 - Cite one section per citation, in the form `§ 32a Abs. 1 Satz 2 Nr. 1 EStG`. Do not use `§§` lists. The guide tests check this.
 - Write euro amounts as `12 348 €`: a space between thousands, a point for cents (`12 348.99 €`), and the euro sign after a space.
 - Say what a rule does, not what the reader should do. The guide gives no tax advice.

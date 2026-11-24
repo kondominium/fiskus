@@ -25,9 +25,10 @@
 
 # Contributing
 
-- [Contributing](contributing/index.md)
-- [Code gates and rules](contributing/code.md)
-- [Language](contributing/language.md)
+- [Overview](contributing/index.md)
+- [Workflow](contributing/workflow.md)
+- [Code](contributing/code.md)
+- [Tests](contributing/tests.md)
 - [Guide](contributing/guide.md)
+- [Language](contributing/language.md)
 - [Design](contributing/design.md)
-

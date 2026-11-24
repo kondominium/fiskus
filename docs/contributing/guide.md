@@ -14,21 +14,21 @@ The guide in `docs/guide/` explains how fiskus calculates income tax, one step a
 Ask: does this change add or alter a rule, a parameter, a zone, an error, or how a filing unit is assessed? If yes, the same diff includes:
 
 1. The updated page in `docs/guide/`, and its entry in `coverage.toml` if it cites a new section.
-2. Regenerated charts, with `mise run charts`. Commit the SVG files.
-3. `make check` passing. It runs the guide tests and the chart drift check.
+2. Regenerated charts, with `make charts`. Commit the SVG files.
+3. `make test-guide` passing. It runs the guide tests and the chart drift check.
 
 If no, say why in the handover.
 
 ## Releases
 
-A release is complete when `make check` passes on it. The guide tests and the chart drift check then guarantee that the guide matches the code the release ships.
+A release is complete when `make gates` passes on it. The guide tests and the chart drift check then guarantee that the guide matches the code the release ships.
 
 ## Charts
 
 - `scripts/guide/charts.rs` draws the charts from the public `assess` API, so each chart shows what the code does. Charts stop at the implemented range and never draw a zone that fiskus does not compute.
 - Each chart is one SVG in `docs/guide/assets/charts/`, with no background. Its ink and zone colors are CSS variables (`--chart-ink`, `--chart-zone`) set per theme in `docs/theme/fiskus.css`, so it follows the book's light and navy themes. Colors come from [design](design.md), with `signal` used once per chart as the highlight.
-- Pages pull each chart in with `{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
-- `make check` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG differs from the generated one.
+- Pages pull each chart in with `\{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
+- `make test-guide` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG differs from the generated one.
 
 ## Illustrations
 
@@ -40,11 +40,11 @@ An illustration is a hand-drawn SVG in `docs/guide/assets/illustrations/`, for a
 
 ## Icons
 
-- Every guide page has one icon, placed directly above its H1 as `{{#include assets/icons/<name>.svg}}`. `docs/theme/fiskus.css` floats it to the left of the title.
+- Every guide page has one icon, placed directly above its H1 as `\{{#include assets/icons/<name>.svg}}`. `docs/theme/fiskus.css` floats it to the left of the title.
 - Icons come from [Lucide](https://lucide.dev), fetched from `lucide-static`, not drawn by hand. Keep Lucide's license comment at the top of each file.
 - Icons are 24-unit line icons. Each file sets `width` and `height` to 32, keeps `stroke="currentColor"`, and sets `style="color: var(--chart-ink, #0f3d2e)"` on the root `<svg>`, so the icon follows the theme.
 - The Lucide notice lives in `docs/guide/assets/icons/LICENSE-LUCIDE.txt`. Keep it when icons are added or removed.
-- `make check` fails if a page does not have exactly one icon, or if the icon file is missing.
+- `make test-guide` fails if a page does not have exactly one icon, or if the icon file is missing.
 
 ## Page layout
 
@@ -61,16 +61,16 @@ Read this section before touching `docs/guide/`, `scripts/guide/charts.rs`, or `
 3. Add a `[[chapter]]` entry to `docs/guide/coverage.toml`. List each cited article by number only (`"32a"`, `"26b"`). Only list sections the code cites in `src/` or `rules/`.
 4. Add the page to `docs/SUMMARY.md` under `# Guide`, in order.
 5. If a chapter quotes a parameter, write its citation verbatim and its value as `12 348 €`, as it appears in `rules/`.
-6. Run `make check`.
+6. Run `make test-guide`.
 
 **Add a chart**
 
 1. Write a function in `scripts/guide/charts.rs` that takes no theme and returns `document(title, body)`. Use only `assess` and `FilingUnit`, never internal modules.
 2. Use the helpers (`text`, `line`, `polyline`, `circle`, `bar`) and the `INK`, `ZONE`, and `SIGNAL` constants. Do not write hex colors inline.
 3. Register it in the `charts` array in `run()`.
-4. Run `mise run charts`, then commit the SVG.
-5. Embed it on the page with `{{#include assets/charts/<name>.svg}}` on its own line, with a blank line before and after.
-6. Run `make check`.
+4. Run `make charts`, then commit the SVG.
+5. Embed it on the page with `\{{#include assets/charts/<name>.svg}}` on its own line, with a blank line before and after.
+6. Run `make test-guide`.
 
 **Never**
 
