@@ -1,6 +1,6 @@
 # Using fiskus
 
-This page is for developers who call fiskus from Rust. It describes what the crate does today, which is one zone of the tariff. For the formulas, see `docs/formulas/`.
+This page is for developers who call fiskus from Rust. It describes what the crate does today, which is one zone of the tariff. For the formulas, see [Formulas](../formulas/grundfreibetrag.md).
 
 ## Status
 
@@ -13,14 +13,14 @@ fiskus = { path = "../fiskus" }
 
 ## What it computes today
 
-For tax year 2026, `assess` returns the Einkommensteuer for taxable income in the Grundfreibetrag zone of § 32a EStG. In that zone the tax is 0 €.
+For tax year 2026, `assess` returns the income tax (Einkommensteuer) for taxable income (zu versteuerndes Einkommen, zvE) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. In that zone the tax is 0 €.
 
-- Single filing (Grundtarif): zero tax up to 12 348 €.
-- Joint filing (Splittingtarif, § 32a Abs. 5 EStG): zero tax up to 24 697 € of joint taxable income.
+- Single filing, basic tariff (Grundtarif): zero tax up to 12 348 € of taxable income.
+- Joint filing, splitting tariff (Splittingtarif, § 32a Abs. 5 EStG): zero tax up to 24 697 € of joint taxable income.
 
-Above these amounts, `assess` returns `Error::OutsideImplementedRange`. It does not estimate the tax. Other tariff zones will be added later.
+Above these amounts, `assess` returns `Error::OutsideImplementedRange`. It does not estimate the tax. Other tariff zones are not yet in fiskus.
 
-fiskus does not compute taxable income yet. You pass in zu versteuerndes Einkommen (zvE) as an amount.
+fiskus does not compute taxable income yet. You pass it in as an amount.
 
 ## Quick start
 
@@ -41,14 +41,14 @@ fn main() -> Result<(), Error> {
 
 ## Inputs
 
-`FilingUnit` (Veranlagungseinheit) has two fields:
+The filing unit (Veranlagungseinheit) is `FilingUnit`. It has two fields:
 
 | Field | Type | Meaning |
 |---|---|---|
-| `filing` | `FilingStatus` | `Single` (Einzelveranlagung) or `Joint` (Zusammenveranlagung) |
-| `taxable_income` | `Cents` | Zu versteuerndes Einkommen, in cents |
+| `filing` | `FilingStatus` | `Single` (single assessment, Einzelveranlagung) or `Joint` (joint assessment, Zusammenveranlagung) |
+| `taxable_income` | `Cents` | Taxable income (zu versteuerndes Einkommen), in cents |
 
-Amounts are `Cents`, an exact integer count of cents. Build one from euros with `Cents::from_euros(12_348)`, or from cents with `Cents::new(1_234_800)`. Fractions of a euro are rounded down before the tariff is applied, as § 32a Abs. 1 Satz 1 EStG requires. A value of `12_348.99` € is treated as `12_348` €.
+Amounts are `Cents`, an exact integer count of cents. Build one from euros with `Cents::from_euros(12_348)`, or from cents with `Cents::new(1_234_800)`. Fractions of a euro are rounded down before the tariff is applied, as § 32a Abs. 1 Satz 1 EStG requires. An amount of 12 348.99 € is treated as 12 348 €.
 
 ## Outputs
 
@@ -56,8 +56,8 @@ Amounts are `Cents`, an exact integer count of cents. Build one from euros with 
 
 | Field | Type | Meaning |
 |---|---|---|
-| `taxable_income` | `Cents` | zvE rounded down to whole euros |
-| `income_tax` | `Cents` | Tarifliche Einkommensteuer, whole euros |
+| `taxable_income` | `Cents` | Taxable income, rounded down to whole euros |
+| `income_tax` | `Cents` | Tariff tax (tarifliche Einkommensteuer), whole euros |
 
 Read the amount in euros with `income_tax.whole_euros()`, or in cents with `income_tax.get()`.
 
@@ -68,7 +68,7 @@ Read the amount in euros with `income_tax.whole_euros()`, or in cents with `inco
 | Error | When |
 |---|---|
 | `NegativeTaxableIncome` | `taxable_income` is below zero |
-| `OutsideImplementedRange { taxable_income_eur }` | Above the Grundfreibetrag zone (joint: above 24 697 € of joint income) |
+| `OutsideImplementedRange { taxable_income_eur }` | Above the basic allowance zone (joint: above 24 697 € of joint income) |
 
 `Error` implements `std::error::Error` and `Display`.
 
@@ -95,11 +95,11 @@ match assess(TaxYear::Y2026, &unit) {
 
 ## Not covered yet
 
-- Income tax above the Grundfreibetrag.
-- Computing zvE from income (§ 2 EStG), including Werbungskosten, Sonderausgaben and Vorsorgeaufwendungen.
-- Solidaritätszuschlag and Kirchensteuer.
-- Rates. There is no marginal or average rate yet.
+- Income tax above the basic allowance zone.
+- Taxable income from income (§ 2 EStG), including income-related expenses (Werbungskosten), special expenses (Sonderausgaben) and pension and insurance expenses (Vorsorgeaufwendungen).
+- Solidarity surcharge (Solidaritätszuschlag) and church tax (Kirchensteuer).
+- Rates: marginal and average rates are not yet in fiskus.
 
 ## Disclaimer
 
-fiskus is an independent reference engine. It is not officialjBMF or ELSTER software and it is not tax advice.
+fiskus is an independent reference engine. It is not official software of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER, and it is not tax advice.

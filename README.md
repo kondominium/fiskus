@@ -5,12 +5,12 @@
   </picture>
 </p>
 
-German individual income tax (Einkommensteuer) for the 2026 tax year: zu versteuerndes Einkommen (taxable income), Einkommensteuer (income tax), and the marginal and average rate.
+Independent reference engine for German income tax (Einkommensteuer), tax year 2026. Today it computes the tax on taxable income (zu versteuerndes Einkommen) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. Documentation starts at [docs/README.md](docs/README.md).
 
 ## Disclaimer
 
-* **Independent reference engine. Not official BMF or ELSTER software. Not tax advice.**
-* Pre-release. Only the `Grundfreibetrag` zone of `§ 32a EStG` is implemented.
+* **Independent reference engine. Not official software of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER. Not tax advice.**
+* Pre-release. Only the basic allowance zone of § 32a EStG is implemented.
 
 ## Performance
 
@@ -21,7 +21,11 @@ Measured with `make bench` (criterion), release build, one thread, on 2026-11-23
 - `assess`, outside the implemented zone (error path): about 300 million calculations per second.
 - Peak memory footprint while benchmarking: 1.6 MB (`/usr/bin/time -l`). Process RSS is 19 MB, which also counts shared system libraries.
 
-The benchmark covers only the implemented zone, so these figures will change as more zones are added. They are updated by hand with `make bench`.
+The benchmark covers only the implemented zone, so these figures will change as more zones are added. They are updated by hand with `make bench`. The method and the history are in [Benchmarks](docs/internal/benchmarks.md).
+
+## Contributing
+
+Start with [Contributing](docs/contributing/index.md). The gates are `make gates`.
 
 ## License
 
