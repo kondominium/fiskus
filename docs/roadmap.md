@@ -1,6 +1,6 @@
 # Roadmap
 
-This page lists the features and domains fiskus plans to cover, in planned order. Everything here is not yet in fiskus, except the basic allowance (Grundfreibetrag) for tax years 2005 to 2026, which fiskus implements today.
+This page lists the features and domains fiskus plans to cover, in planned order. Everything here is not yet in fiskus, except the basic allowance (Grundfreibetrag) for tax years 2003 to 2026, which fiskus implements today.
 
 The order is deliberate. Each milestone depends on the ones before it. The build and the test process are proved on simple values before the complex formulas arrive.
 

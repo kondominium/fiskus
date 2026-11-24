@@ -22,7 +22,7 @@ The guide currently assumes that the rules for the next year appear in November 
 
 ## What fiskus supports today
 
-fiskus covers the basic allowance for VZ 2005 to 2026, given as `TaxYear::Y2005` to `TaxYear::Y2026`. There is no year outside that range, so fiskus does not estimate the amounts for other years.
+fiskus covers the basic allowance for VZ 2003 to 2026, given as `TaxYear::Y2003` to `TaxYear::Y2026`. There is no year outside that range, so fiskus does not estimate the amounts for other years.
 
 ## Other years
 

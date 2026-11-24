@@ -4,7 +4,7 @@
 
 **Income tax, worked out in the open.**
 
-fiskus is an independent reference engine for German income tax (Einkommensteuer). It shows each step of the calculation and the code that performs it. The basic allowance (Grundfreibetrag) zone of § 32a EStG is implemented for tax years 2005 to 2026.
+fiskus is an independent reference engine for German income tax (Einkommensteuer). It shows each step of the calculation and the code that performs it. The basic allowance (Grundfreibetrag) zone of § 32a EStG is implemented for tax years 2003 to 2026.
 
 > Not official software of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER. Not tax advice.
 
@@ -12,7 +12,7 @@ fiskus is an independent reference engine for German income tax (Einkommensteuer
 
 | Area | Status |
 |---|---|
-| Tax year | 2005 to 2026 |
+| Tax year | 2003 to 2026 |
 | Implemented | The basic allowance (Grundfreibetrag) zone of § 32a EStG, for single and joint filing |
 | Not yet in fiskus | Income types, allowances and special expenses, child allowances, tariff zones above the basic allowance, solidarity surcharge (Solidaritätszuschlag), church tax (Kirchensteuer) |
 | Test coverage | At least 90% of lines, enforced by `make test-coverage` |

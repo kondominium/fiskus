@@ -6,7 +6,7 @@
 //!
 //! Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //!
-//! So far only the Grundfreibetrag zone of § 32a EStG is implemented, for VZ 2005 to 2026.
+//! So far only the Grundfreibetrag zone of § 32a EStG is implemented, for VZ 2003 to 2026.
 
 mod assessment;
 mod error;

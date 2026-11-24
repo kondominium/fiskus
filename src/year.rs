@@ -3,6 +3,10 @@
 /// Assessment year (Veranlagungszeitraum).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum TaxYear {
+    /// Assessment year 2003 (VZ 2003).
+    Y2003,
+    /// Assessment year 2004 (VZ 2004).
+    Y2004,
     /// Assessment year 2005 (VZ 2005).
     Y2005,
     /// Assessment year 2006 (VZ 2006).
@@ -53,6 +57,8 @@ impl TaxYear {
     /// Calendar year of the assessment year, so `TaxYear::Y2026.year()` is 2026.
     pub const fn year(self) -> u16 {
         match self {
+            Self::Y2003 => 2003,
+            Self::Y2004 => 2004,
             Self::Y2005 => 2005,
             Self::Y2006 => 2006,
             Self::Y2007 => 2007,
@@ -81,6 +87,8 @@ impl TaxYear {
     /// Returns the variant for `year` if fiskus implements that assessment year, otherwise `None`.
     pub fn from_year(year: u16) -> Option<Self> {
         match year {
+            2003 => Some(Self::Y2003),
+            2004 => Some(Self::Y2004),
             2005 => Some(Self::Y2005),
             2006 => Some(Self::Y2006),
             2007 => Some(Self::Y2007),
@@ -108,7 +116,9 @@ impl TaxYear {
     }
 
     /// Every implemented assessment year, oldest first.
-    pub const ALL: [TaxYear; 22] = [
+    pub const ALL: [TaxYear; 24] = [
+        TaxYear::Y2003,
+        TaxYear::Y2004,
         TaxYear::Y2005,
         TaxYear::Y2006,
         TaxYear::Y2007,

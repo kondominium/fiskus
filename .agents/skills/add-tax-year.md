@@ -103,7 +103,7 @@ Run `make gates` (lint, test-all, test-coverage, docs). All must pass. Specifica
 ## 7. Limits
 
 - Years before the euro (pre-2002, DM amounts) are not compatible today: the engine uses integer cents and assumes euro. Do not add them.
-- Years before 2005 have no archived PAP in `docs/references`; VZ 2005 was sourced from the Haushaltsbegleitgesetz 2004 draft. Sourcing earlier years needs a new search (see the "Not yet in fiskus" section of `docs/references/README.md`).
+- VZ 2002 is not yet sourced: no archived document states its Grundfreibetrag directly. VZ 2003 to 2005 are sourced from the Existenzminimumbericht 2003 and the Haushaltsbegleitgesetz 2004 draft. Sourcing earlier years needs a new search (see the "Not yet in fiskus" section of `docs/references/README.md`).
 - Only the basic allowance zone is implemented. Adding the full tariff (zones 2-5 of § 32a) is a separate slice.
 - `TaxYear::from_year` returns `None` for unsupported years; `assess` cannot be called with them.
 - Never commit, push or merge. Hand over the staged slice, a commit message draft (use the `commit-message` skill) and the gate result.

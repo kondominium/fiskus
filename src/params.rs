@@ -17,6 +17,8 @@ include!(concat!(env!("OUT_DIR"), "/parameters.rs"));
 
 pub(crate) fn for_year(year: TaxYear) -> &'static Parameters {
     match year {
+        TaxYear::Y2003 => &PARAMETERS_2003,
+        TaxYear::Y2004 => &PARAMETERS_2004,
         TaxYear::Y2005 => &PARAMETERS_2005,
         TaxYear::Y2006 => &PARAMETERS_2006,
         TaxYear::Y2007 => &PARAMETERS_2007,

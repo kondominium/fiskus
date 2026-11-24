@@ -1,0 +1,8 @@
+# Tax parameters for VZ 2003. Every value needs a citation and source.
+
+[basic_allowance]
+value_eur = 7426
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Steuersenkungsgesetz, BGBl. 2000 I S. 1433)"
+source = "https://dserver.bundestag.de/btd/14/077/1407765.pdf"
+retrieved = "2026-11-24"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2003-bt-drs-existenzminimum-14-7765.pdf"

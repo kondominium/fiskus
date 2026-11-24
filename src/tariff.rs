@@ -183,6 +183,8 @@ mod tests {
     #[test]
     fn basic_allowance_per_year_matches_the_sources() {
         let expected = [
+            (TaxYear::Y2003, 7_426),
+            (TaxYear::Y2004, 7_664),
             (TaxYear::Y2005, 7_664),
             (TaxYear::Y2006, 7_664),
             (TaxYear::Y2007, 7_664),
@@ -257,27 +259,35 @@ mod tests {
     }
 
     proptest! {
-        // Any single amount in the zone, with any cents part, is tax-free.
+        // Any single amount in any year's zone, with any cents part, is tax-free.
         #[test]
-        fn single_zone_is_tax_free_for_any_cents(euros in 0..=BASIC_ALLOWANCE_EUR, cents in 0..100i128) {
-            let result = assess(TaxYear::Y2026, &single(euros * 100 + cents)).unwrap();
+        fn single_zone_is_tax_free_for_any_cents(index in 0..TaxYear::ALL.len(), euros in 0..=BASIC_ALLOWANCE_EUR, cents in 0..100i128) {
+            let year = TaxYear::ALL[index];
+            let allowance = basic_allowance_eur(year);
+            prop_assume!(euros <= allowance);
+            let result = assess(year, &single(euros * 100 + cents)).unwrap();
             prop_assert_eq!(result.income_tax, Cents::new(0));
             prop_assert_eq!(result.taxable_income, Cents::from_euros(euros));
         }
 
-        // Any joint amount in the zone, with any cents part, is tax-free.
+        // Any joint amount in any year's zone, with any cents part, is tax-free.
         #[test]
-        fn joint_zone_is_tax_free_for_any_cents(euros in 0..=JOINT_ZONE_EUR, cents in 0..100i128) {
-            let result = assess(TaxYear::Y2026, &joint(euros * 100 + cents)).unwrap();
+        fn joint_zone_is_tax_free_for_any_cents(index in 0..TaxYear::ALL.len(), euros in 0..=(BASIC_ALLOWANCE_EUR * 2 + 1), cents in 0..100i128) {
+            let year = TaxYear::ALL[index];
+            let allowance = basic_allowance_eur(year);
+            let joint_limit = allowance * 2 + 1;
+            prop_assume!(euros <= joint_limit);
+            let result = assess(year, &joint(euros * 100 + cents)).unwrap();
             prop_assert_eq!(result.income_tax, Cents::new(0));
         }
 
-        // Any i128 cents value, single or joint, returns Ok or Err but never panics.
+        // Any i128 cents value, single or joint, in any year, returns Ok or Err but never panics.
         #[test]
-        fn assess_never_panics(cents in any::<i128>(), joint_filing in any::<bool>()) {
+        fn assess_never_panics(index in 0..TaxYear::ALL.len(), cents in any::<i128>(), joint_filing in any::<bool>()) {
+            let year = TaxYear::ALL[index];
             let filing = if joint_filing { FilingStatus::Joint } else { FilingStatus::Single };
             let unit = FilingUnit { filing, taxable_income: Cents::new(cents) };
-            let _ = assess(TaxYear::Y2026, &unit);
+            let _ = assess(year, &unit);
         }
     }
 }

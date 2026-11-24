@@ -50,7 +50,7 @@ The PAP URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/D
 | `2022-bt-drs-existenzminimumbericht-19-22800.pdf` | 13th report, BT-Drs. 19/22800 | VZ 2020, 2022 context | official report | `a8342cccf9fd20e66dbaaaba54f49e8836aed4de6e481bae4b005ee0d7969367` |
 | `2024-bt-drs-existenzminimumbericht-20-04443.pdf` | 14th report, BT-Drs. 20/4443 | VZ 2024 context | official report | `31038bb446f4fd270880c103747e8413724b47c55623d058e0820aa67cc61b5f` |
 | `2022-bt-drs-inflationsausgleichsgesetz-entwurf-20-3496.pdf` | Inflation Compensation Act draft (Inflationsausgleichsgesetz, InflAusG), BT-Drs. 20/3496, with the reasons for 2022 and 2023 | VZ 2022, 2023 context | draft | `d4cb500f899290599ca676edd0fd738b21a96277e4ed45e6fd54c18c973decd7` |
-| `2003-bt-drs-existenzminimum-14-7765.pdf` | Report on the subsistence minimum for 2003, BT-Drs. 14/7765, footnote 6 cites the Tax Cut Act (BGBl. I 2000 S. 1433) | VZ 2003 (not in fiskus yet) | official report, gives 7 426 € | `12924029bc8bcdddfacf33efafe3366a72cb041576ccbdc3cfc1627adfd0582e` |
+| `2003-bt-drs-existenzminimum-14-7765.pdf` | Report on the subsistence minimum for 2003, BT-Drs. 14/7765, footnote 6 cites the Tax Cut Act (BGBl. I 2000 S. 1433) | VZ 2003 | official report, gives 7 426 € | `12924029bc8bcdddfacf33efafe3366a72cb041576ccbdc3cfc1627adfd0582e` |
 | `2000-bt-drs-steuersenkungsgesetz-entwurf-14-3074.pdf` | Tax Cut Act draft, BT-Drs. 14/3074 | context | draft | `594a588c13e66848e9a0cd32de9796db690270ea1eb5d6b0482e8978863b1b17` |
 | `2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf` | Budget Accompanying Act 2004 draft, BT-Drs. 15/1502 | VZ 2004, 2005 | draft, states "bis 7 664 Euro (Grundfreibetrag)" | `c009f601079bbadcf085e994a4aebdf7e3f71a9da620215707b2ba5c36ada75e` |
 | `2005-bt-drs-existenzminimum-15-2462.pdf` | Report on the subsistence minimum for 2005, BT-Drs. 15/2462 | VZ 2005 context | official report | `3d1f5ee5a107b42d662d2a359f18ca47c171239e593b9ce006b361cbdd19c3fe` |
@@ -72,7 +72,7 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 
 ## Not yet in fiskus
 
-- **VZ 2002 to 2004.** Not archived. The Lohnsteuer repository lists PAPs from 2006 on, so the sources for these years still need a search. VZ 2005 is now in fiskus, sourced from the Haushaltsbegleitgesetz 2004 draft (BT-Drs. 15/1502).
+- **VZ 2002.** Not archived and not yet verified. The Steuersenkungsgesetz (BGBl. I 2000 S. 1433) raises the Grundfreibetrag stufenweise, but no archived source states the VZ 2002 value directly. Needs a search before adding. VZ 2003 to 2005 are now in fiskus.
 - **Dates and sources to check later.** The 2014 PAP is a draft. The 2006 to 2008 setting laws are not traced yet, although their values are confirmed.
 - **bgbl.de and recht.bund.de.** recht.bund.de serves issues from 2023 on, such as BGBl. 2024 I Nr. 386 above. It returned 404 for BGBl. 2022 I Nr. 49 and Nr. 17, two issues that dejure.org lists, so pre-2023 issues are not there. bgbl.de serves a JavaScript page for every URL form tried.
 
