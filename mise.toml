@@ -110,17 +110,9 @@ description = "Run examples/explain_tax.rs"
 run = "cargo run --example explain_tax"
 
 [tasks.test-conformance]
-description = "Conformance tests and scoreboard (tests/conformance). Years via CONFORMANCE_YEARS. Not part of gates"
-run = "scripts/conformance/run.sh"
+description = "Conformance tests and scoreboard (tests/conformance). Years via CONFORMANCE_YEARS. Runs in gates, does not fail them yet"
+run = "cargo test --test conformance --features conformance -- --nocapture"
 
-[tasks.conformance-points]
-description = "Write a points list from zone starts: YEAR=2026 BOUNDS='12349 17800 69879 277826'"
-run = "scripts/conformance/make-points.sh \"$YEAR\" $BOUNDS > scripts/conformance/points/$YEAR.csv"
-
-[tasks.conformance-fetch]
-description = "Fetch calculator results for a points list: POINTS=scripts/conformance/points/2026.csv"
-run = "scripts/conformance/fetch.sh \"$POINTS\""
-
-[tasks.conformance-fetch-all]
-description = "Bring every euro year from FROM_YEAR (default 2002) to TARGET cases (default 500)"
-run = "scripts/conformance/fetch-all.sh \"${TARGET:-500}\" \"${FROM_YEAR:-2002}\""
+[tasks.conformance-cases]
+description = "Fetch BMF results for generated cases: YEAR=2026 KIND=kinks|samples COUNT=50, DRY_RUN=1 to probe without writing"
+run = "mkdir -p target/conformance && cargo run -q --example conformance_points -- \"$YEAR\" \"$KIND\" \"${COUNT:-50}\" > target/conformance/cases.csv && scripts/conformance/fetch.sh ${DRY_RUN:+--dry-run} < target/conformance/cases.csv"

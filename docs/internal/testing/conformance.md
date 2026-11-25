@@ -73,20 +73,20 @@ Status: accepted.
 - Older years can return cents, so `income_tax_cents` is not always a multiple of 100. Compare the exact cents.
 - The fixtures are committed, so the test runs offline.
 
-### D6. Case selection: a template where zone starts are known, samples elsewhere
+### D6. Case selection: the rules give the kinks, seeded samples give the rest
 
-Status: accepted.
+Status: accepted. Revised 2026-11-26 (slice 2.1).
 
-- **2026** has known zone starts. Its cases are the kink template (86 cases: for each zone start, the value just below, at, with cents, and just above, plus a zero case, interior values and two tail values, per filing status), and samples up to the target.
-- **Other years** have no zone starts in the code yet. Their cases are samples: half single, half joint, spread over four income bands, so every zone gets cases even though its boundaries are unknown.
-- Each top-up batch has its own seed (the year times 10 000, plus the number of cases before it), so a batch never repeats the incomes of the one before. The lists are reproducible.
-- Kink cases for other years come when their zone starts are known from the statute history. Use `make conformance-points` with those starts. The template then covers those years too.
+- **Kinks.** `scripts/conformance/points.rs`, through `make conformance-cases KIND=kinks`, takes the basic allowance and each zone start from the rules. For each one it writes the income one euro below, at, with 0.99 € more, and one euro above, for single and for joint filing. It adds zero, one odd joint income (the halving rounds it down), and two tail incomes. A wrong start in `rules/` shows as a mismatch, and the calculator stays the oracle (D2).
+- **Samples.** `KIND=samples` writes `COUNT` seeded incomes per filing status, spread over four income bands, so every zone gets cases between its boundaries.
+- **Seeds.** The default seed is the year option times 10 000, plus the cases its fixture already has. A top-up therefore draws incomes the fixture does not have yet. A seed can be given as the fourth argument, and the same seed gives the same list.
+- **The 2002 option** covers 2002 and 2003. Its kink points use the 2003 rules, including the basic allowance that the plan checks in slice 3.2. Do not treat those kinks as verified until that slice is done.
 
 ### D7. Tests read fixtures at compile time
 
 Status: accepted.
 
-`tests/` must not read files at runtime, because a test that reads files can hide a dependency. The conformance test embeds each fixture with `include_str!`. A new year needs a new line in `year_tests!`, so a missing year cannot silently drop out of the test. A missing file fails the build.
+`tests/` must not read files at runtime, because a test that reads files can hide a dependency. The conformance test embeds each fixture with `include_str!`. A new year needs a new entry in `FIXTURES`, so a missing year cannot silently drop out of the test. A missing file fails the build.
 
 ### D8. The result is the income tax row, not the total
 
@@ -102,9 +102,9 @@ The 2026 results come in whole euros. The probe of older years returned cents: f
 
 ### D10. Raw pages stay out of the repo
 
-Status: accepted.
+Status: accepted. Revised 2026-11-26 (slice 2.1).
 
-`scripts/conformance/fetch.sh` writes each raw result page under `CONFORMANCE_RAW_DIR` (default: a directory in `$TMPDIR`), so a result can be audited without committing the pages. `CONFORMANCE_FIXTURE_DIR` redirects the fixtures and run log, so probes and experiments do not change the committed data.
+`scripts/conformance/fetch.sh` writes each raw result page under `target/conformance/raw/<run_id>/`, which git ignores, so a result can be audited without committing the page. `--dry-run` prints each answer and writes nothing. A probe uses it to check a question without changing a fixture.
 
 ### D11. Consent and rate
 
@@ -124,21 +124,17 @@ Why: a name that names one source would need renaming, and every reference updat
 
 Status: accepted. Pre-euro years are parked, not dropped.
 
-Decision: the fixtures cover the 20 dropdown options whose first year is 2002 or later (2026 down to 2002). The earlier options (2001 and before, including the 1958 to 1975 groups) are not fetched for now, and no test includes them. `scripts/conformance/fetch-all.sh` defaults to `FROM_YEAR=2002`.
+Decision: the fixtures cover the 20 dropdown options whose first year is 2002 or later (2026 down to 2002). The earlier options (2001 and before, including the 1958 to 1975 groups) are not fetched for now, and no test includes them. `make conformance-cases YEAR=all` covers the euro options, from 2002.
 
-Why: the euro is the currency of every year in the scope, so the figures compare directly. The probe showed that the calculator returns results for every option, so the pre-euro years are a scope choice, not a technical gap. They can be fetched later with `FROM_YEAR=1958`, and the conformance test then needs their entries added to `year_tests!`.
+Why: the euro is the currency of every year in the scope, so the figures compare directly. The probe showed that the calculator returns results for every option, so the pre-euro years are a scope choice, not a technical gap. They can be fetched later, once their year options are in `year-options.csv`, and the conformance test then needs their entries in `FIXTURES`.
 
-### D14. One test per year, selected at run time, timed
+### D14. One test, with the scoreboard printed whole
 
-The tests are standard Rust tests (`cargo test --test conformance --features conformance`). The `run.sh` script is a wrapper that builds the binary, runs it under `/usr/bin/time -l`, and prints a scoreboard with wall time and peak memory. The scoreboard is printed by the test itself, not by the script.
+Status: accepted. Revised 2026-11-26 (slice 2.1), replacing one test per year.
 
-Status: accepted.
+Decision: `tests/conformance/main.rs` has one test. It checks every selected year, prints the scoreboard in year order, and then fails with the messages for every year that has failing cases. `CONFORMANCE_YEARS` still picks the years. `make test-conformance` passes `--nocapture`, so the table shows.
 
-Decision: the conformance tests have one test per year, so libtest runs the years concurrently. `CONFORMANCE_YEARS` chooses which years run: unset or empty runs 2002 to 2025, a list such as `2010,2026` runs those years, and `all` runs every year. The default leaves out 2026 for now. `scripts/conformance/run.sh` runs the test binary under `/usr/bin/time -l`, prints the wall time and peak memory of the test process, and appends each run to `target/conformance/timing.log`. Build time is not included.
-
-Why: an operator can rerun one year quickly without rebuilding, and the timings show whether concurrency helps. The test binary is built once, so the timed run measures only the tests. `CONFORMANCE_YEARS` is read from the environment at run time, which does not read files, so it fits the rule against runtime file reads in tests.
-
-Consequence: a year that is not selected reports "skipped" and passes. Check the years in the scoreboard when you read the result.
+Why: with one test per year, libtest ran the years concurrently, and their summary lines interleaved. A row could go missing from the scoreboard. In one gate run the 2023 row was lost, which had 500 passing cases, so the total read 9 500 cases instead of 10 000. One test prints the table from one place, in order.
 
 ### D15. At least 300 cases per year, target 500
 
@@ -172,16 +168,17 @@ Then run `make test-conformance`. The zone's row in the scoreboard should move. 
 
 ## Data
 
-Fixtures live in `tests/fixtures/conformance/`. One file per year option: `<year_option>.csv`. Points lists (the inputs to fetch) live in `scripts/conformance/points/<year_option>.csv`.
+Fixtures live in `tests/fixtures/conformance/`, one file per year option: `<year_option>.csv`. The cases to fetch are not stored. `points.rs` writes them when they are needed.
 
 | File | Contents |
 |---|---|
-| `<year_option>.csv` | Cases: `case_id,year_option,filing_status,taxable_income_cents,income_tax_cents,role,run_id` |
-| `runs.csv` | One row per fetch: `run_id,papversion,fetched_at,source` |
+| `<year_option>.csv` | Cases: `case_id,year_option,filing_status,taxable_income_cents,income_tax_cents,role,run_id`. `case_id` is `<year_option>-NNNN`, numbered in order, so the next id is the row count plus one |
+| `runs.csv` | One row per fetch that wrote cases: `run_id,papversion,fetched_at,source` |
 | `scripts/conformance/year-options.csv` | One row per dropdown value, with its label and the years it covers |
-| `scripts/conformance/points/<year_option>.csv` | The inputs for a year, in the same order as its fixture |
+| `scripts/conformance/points.rs` | The generator. It writes `year_option,filing_status,taxable_income_cents,role` lines to stdout |
+| `scripts/conformance/fetch.sh` | The fetcher. It reads those lines on stdin, and appends the results to the fixtures |
 
-Roles: `zero`, `kink_minus`, `kink`, `kink_cents` (start + 0.99 €), `kink_plus`, `interior` and `tail` for the 2026 template, and `sample` for sampled cases.
+Roles: `zero`, `kink_minus`, `kink`, `kink_cents` (start + 0.99 €), `kink_plus`, `odd` (an odd joint income), `tail`, and `sample`. The 2026 fixture was written before the `odd` role existed. Its `interior` rows stay as they are.
 
 Current state (update after each full fetch):
 
@@ -200,38 +197,19 @@ A grouped option such as `2010` covers 2010 to 2012. The BMF treats the years in
 
 Commands are in `mise.toml` and the Makefile.
 
-- Fetch every euro year to a target, newest first: `make conformance-fetch-all TARGET=500 FROM_YEAR=2002`. The run resumes where it stopped, and its summary lists any year still short of the target.
-- Fetch one points list: `make conformance-fetch POINTS=scripts/conformance/points/2026.csv`.
-- Write kink points for a year with known zone starts: `make conformance-points YEAR=2026 BOUNDS="12349 17800 69879 277826"`. This overwrites that year's points list, so run it before the fetch, not after.
-- Run the conformance tests: `make test-conformance` runs years 2002 to 2025 and prints the scoreboard. Pick years with `make test-conformance YEARS=2010,2026`, or run everything with `YEARS=all`. Each run prints its wall time and peak memory, appends them to `target/conformance/timing.log`, and keeps the full output in `target/conformance/last-run.log`.
-- After the BMF publishes a new `papversion`, refetch a sample of kink and interior cases, compare them with the fixtures, and only then refetch everything.
+- Probe a question without writing anything: `make conformance-cases YEAR=2026 KIND=samples COUNT=2 DRY_RUN=1`. That is four requests, one per second. For one hand-written case, pipe a line into `scripts/conformance/fetch.sh --dry-run`.
+- Fetch the kinks or the samples of an option: `make conformance-cases YEAR=2010 KIND=kinks`, or `KIND=samples COUNT=50`. A run resumes where it stopped. It reports how many cases it fetched and how many it skipped, because the fixture already had them.
+- Run the conformance tests: `make test-conformance` runs years 2002 to 2025 and prints the scoreboard. Pick years with `make test-conformance YEARS=2010,2026`, or run everything with `YEARS=all`.
+- After the BMF publishes a new `papversion`, probe a sample of kink and interior cases with `DRY_RUN=1`, and compare them with the fixtures. Fetch more only after that.
 
 Adding a tax year:
 
 1. Add the dropdown value to `scripts/conformance/year-options.csv`.
-2. Read its zone starts from the statute and its history. Check them against the calculator with kink cases.
-3. Generate the points, fetch them, and add the file to `year_tests!` in `tests/conformance/main.rs`.
-4. In fiskus, add the year to `TaxYear` and `rules/<year>/parameters.toml`, with a citation for each value, and write the formula page in `docs/formulas/` first.
+2. Check the zone starts against the statute, and confirm them with kink cases.
+3. Fetch the kinks and the samples with `make conformance-cases`, and add the option's fixture to `FIXTURES` in `tests/conformance/main.rs`.
+4. In fiskus, add the year to `TaxYear` and `rules/<year>.toml`, with a citation for each value. Write the formula page in `docs/formulas/` first.
 
-## Measurements
 
-Measured with `scripts/conformance/run.sh`. Build time is excluded. The times are the test process's wall time, to 10 ms, and the memory is its peak resident set size (macOS `time -l`). Every run exits 101 while fiskus has only the basic allowance zone.
-
-Measured with `scripts/conformance/run.sh`. Build time is excluded. The times are the test process's wall time, to 10 ms, and the memory is its peak resident set size (macOS `time -l`). Every run exits 101 while fiskus has only the basic allowance zone.
-
-| Run | Years | Threads | Cases | Wall time | Peak memory |
-|---|---|---|---|---|---|
-| First run after the build (cold) | all, 2002 to 2026 | default | 10,000 | 0.55 s | 4.8 MiB |
-| Repeated (2 runs) | all, 2002 to 2026 | default | 10,000 | 0.01 to 0.02 s | 5.1 to 5.2 MiB |
-| Repeated (2 runs) | 2026, 2025 | default | 1,000 | 0.00 to 0.01 s | 2.8 MiB |
-
-Reading:
-- The whole suite runs in about 10 ms once the binary is built, even with 10,000 cases. Its cost is process start-up, not the cases: the 10,000 cases are about 700 kB of CSV.
-- The cold run takes 0.55 s, almost all of it compilation and linking of the embedded fixtures.
-- One thread and the default thread count take the same time at this size, so the per-year tests bring no measurable speed-up yet. They keep each year's failures separate, and they will matter if the cases grow. Re-measure then.
-- The concurrent runs print their summary lines interleaved. The scoreboard sorts them by year, so the order does not matter.
-
-Every new measurement goes in this table, with the date and the command. `target/conformance/timing.log` keeps the raw lines.
 
 ## Open questions
 
@@ -246,9 +224,10 @@ Every new measurement goes in this table, with the date and the command. `target
 
 | Item | Status |
 |---|---|
-| Conformance test (`tests/conformance/`) | Built, strict, gated by feature. Per-year, with a 300-case minimum and a scoreboard |
-| Fetch scripts (`scripts/conformance/`) | Built. Seeded top-ups, resumable, one request per second |
+| Conformance test (`tests/conformance/`) | Built, strict, gated by the `conformance` feature. One test for every selected year, with a 300-case minimum and a scoreboard |
+| Generator and fetcher (`scripts/conformance/`) | `points.rs` writes the cases, and `fetch.sh` fetches them. Resumable, one request per second, with a dry run |
 | Fixtures | Complete: 10,000 cases, 500 per euro year. See Data |
 | BMF consent | Confirmed. Date to fill in (D11) |
 | fiskus tariff zones | All zones for 2004-2026. 2003 (and the 2002 year-option) not yet implemented |
 | Conformance as a gate | `make test-conformance` is part of `make gates`. It runs and reports, but does not block (2002 has 406 zone-missing, 2019 and 2020 have 1 floating-point discrepancy each) |
+

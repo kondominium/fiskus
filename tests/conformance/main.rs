@@ -1,19 +1,42 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
-//! Compares fiskus with the income tax results of the BMF calculator, one test per euro year option.
-//
-// Conformance: fiskus against recorded results from an official calculator. The fixtures are generated
-// by the scripts described in docs/internal/testing/conformance.md. The tests are gated behind the
-// `conformance` feature, so `make gates` stays green. Run them with `make test-conformance`, choose years
-// with YEARS=2010,2026 or YEARS=all, and read the scoreboard it prints.
+//! Compares fiskus with the income tax results of the BMF calculator, for every euro year option.
+//!
+//! The fixtures are written by `scripts/conformance/fetch.sh`. The test prints a scoreboard with one row
+//! per year option, and fails when any case differs. Run it with `make test-conformance`, choose years
+//! with `CONFORMANCE_YEARS=2010,2026` or `all`, and read the scoreboard it prints.
+
 use fiskus::{Cents, Error, FilingStatus, FilingUnit, TaxYear, assess};
-use std::io::Write;
 
 // Years run when CONFORMANCE_YEARS is unset. 2026 is left out for now.
 const DEFAULT_LAST_YEAR: u32 = 2025;
 
 // Every year needs at least this many cases. A smaller sample says too little about the year, so it fails.
 const MIN_CASES_PER_YEAR: usize = 300;
+
+// One fixture per euro year option, as written by scripts/conformance/fetch.sh.
+const FIXTURES: [(&str, &str); 20] = [
+    ("2026", include_str!("../fixtures/conformance/2026.csv")),
+    ("2025", include_str!("../fixtures/conformance/2025.csv")),
+    ("2024", include_str!("../fixtures/conformance/2024.csv")),
+    ("2023", include_str!("../fixtures/conformance/2023.csv")),
+    ("2022", include_str!("../fixtures/conformance/2022.csv")),
+    ("2021", include_str!("../fixtures/conformance/2021.csv")),
+    ("2020", include_str!("../fixtures/conformance/2020.csv")),
+    ("2019", include_str!("../fixtures/conformance/2019.csv")),
+    ("2018", include_str!("../fixtures/conformance/2018.csv")),
+    ("2017", include_str!("../fixtures/conformance/2017.csv")),
+    ("2016", include_str!("../fixtures/conformance/2016.csv")),
+    ("2015", include_str!("../fixtures/conformance/2015.csv")),
+    ("2014", include_str!("../fixtures/conformance/2014.csv")),
+    ("2013", include_str!("../fixtures/conformance/2013.csv")),
+    ("2010", include_str!("../fixtures/conformance/2010.csv")),
+    ("2009", include_str!("../fixtures/conformance/2009.csv")),
+    ("2007", include_str!("../fixtures/conformance/2007.csv")),
+    ("2005", include_str!("../fixtures/conformance/2005.csv")),
+    ("2004", include_str!("../fixtures/conformance/2004.csv")),
+    ("2002", include_str!("../fixtures/conformance/2002.csv")),
+];
 
 #[expect(
     clippy::struct_field_names,
@@ -90,45 +113,44 @@ fn selected(year: &str) -> bool {
     }
 }
 
-#[derive(Default)]
-struct Score {
+// One row of the scoreboard: how the cases of one year option came out.
+struct Row {
+    year: &'static str,
+    cases: usize,
     passed: usize,
     zone_missing: usize,
     mismatched: usize,
 }
 
-// Holds the stderr lock for the whole line, so the years that run concurrently cannot interleave.
-fn report(line: &str) {
-    let mut stderr = std::io::stderr().lock();
-    let _ = writeln!(stderr, "{line}");
-}
-
-fn check_year(year: &str, csv: &str) {
-    if !selected(year) {
-        eprintln!("{year}: not selected, skipped (set CONFORMANCE_YEARS to run it)");
-        return;
-    }
-
-    let mut score = Score::default();
+// Checks every case of one fixture. Returns the row, and a message for each failing case.
+fn check_year(year: &'static str, csv: &str) -> (Row, Vec<String>) {
+    let mut row = Row {
+        year,
+        cases: 0,
+        passed: 0,
+        zone_missing: 0,
+        mismatched: 0,
+    };
     let mut failures = Vec::new();
     for case in parse_cases(csv) {
+        row.cases += 1;
         let unit = FilingUnit {
             filing: case.filing,
             taxable_income: Cents::new(case.taxable_income),
         };
         match tax_year(&case.year_option).map(|tax_year| assess(tax_year, &unit)) {
             None => {
-                score.zone_missing += 1;
+                row.zone_missing += 1;
                 failures.push(format!(
                     "{}: tax year {} is not in fiskus yet",
                     case.case_id, case.year_option
                 ));
             }
             Some(Ok(assessment)) if assessment.income_tax == Cents::new(case.income_tax) => {
-                score.passed += 1;
+                row.passed += 1;
             }
             Some(Ok(assessment)) => {
-                score.mismatched += 1;
+                row.mismatched += 1;
                 failures.push(format!(
                     "{}: fiskus {} cents, expected {} cents",
                     case.case_id,
@@ -137,65 +159,90 @@ fn check_year(year: &str, csv: &str) {
                 ));
             }
             Some(Err(Error::OutsideImplementedRange { .. })) => {
-                score.zone_missing += 1;
+                row.zone_missing += 1;
                 failures.push(format!("{}: tariff zone not in fiskus yet", case.case_id));
             }
             Some(Err(error)) => {
-                score.mismatched += 1;
+                row.mismatched += 1;
                 failures.push(format!("{}: {error}", case.case_id));
             }
         }
     }
-
-    let cases = score.passed + score.zone_missing + score.mismatched;
-    report(&format!(
-        "score year={year} cases={cases} passed={} zone_missing={} mismatched={}",
-        score.passed, score.zone_missing, score.mismatched
-    ));
-    assert!(
-        cases >= MIN_CASES_PER_YEAR,
-        "{year}: {cases} cases, at least {MIN_CASES_PER_YEAR} are required"
-    );
-    let first: Vec<&str> = failures.iter().take(20).map(String::as_str).collect();
-    assert!(
-        failures.is_empty(),
-        "{year}: {} of {cases} cases fail. First ones:\n{}",
-        failures.len(),
-        first.join("\n")
-    );
+    (row, failures)
 }
 
-macro_rules! year_tests {
-    ($($name:ident: $year:literal => $csv:literal,)*) => {
-        $(
-            #[test]
-            fn $name() {
-                check_year($year, include_str!($csv));
-            }
-        )*
+// A share with one decimal, in integer arithmetic: 9092 of 9500 is "95.7%".
+fn percent(part: usize, whole: usize) -> String {
+    let tenths = part * 1000 / whole.max(1);
+    format!("{}.{}%", tenths / 10, tenths % 10)
+}
+
+fn print_scoreboard(rows: &[Row]) {
+    println!(
+        "conformance scoreboard (zone missing: the tariff zone is not in fiskus yet; mismatched: fiskus disagrees with the calculator)"
+    );
+    println!(
+        "{:<6} {:>7} {:>8} {:>8} {:>13} {:>11} {:>8}",
+        "year", "cases", "passed", "failed", "zone missing", "mismatched", "passed"
+    );
+    let mut total = Row {
+        year: "total",
+        cases: 0,
+        passed: 0,
+        zone_missing: 0,
+        mismatched: 0,
     };
+    for row in rows {
+        print_row(row);
+        total.cases += row.cases;
+        total.passed += row.passed;
+        total.zone_missing += row.zone_missing;
+        total.mismatched += row.mismatched;
+    }
+    print_row(&total);
 }
 
-// One test per euro year. libtest runs them concurrently, and CONFORMANCE_YEARS picks which ones run.
-year_tests! {
-    year_2026: "2026" => "../fixtures/conformance/2026.csv",
-    year_2025: "2025" => "../fixtures/conformance/2025.csv",
-    year_2024: "2024" => "../fixtures/conformance/2024.csv",
-    year_2023: "2023" => "../fixtures/conformance/2023.csv",
-    year_2022: "2022" => "../fixtures/conformance/2022.csv",
-    year_2021: "2021" => "../fixtures/conformance/2021.csv",
-    year_2020: "2020" => "../fixtures/conformance/2020.csv",
-    year_2019: "2019" => "../fixtures/conformance/2019.csv",
-    year_2018: "2018" => "../fixtures/conformance/2018.csv",
-    year_2017: "2017" => "../fixtures/conformance/2017.csv",
-    year_2016: "2016" => "../fixtures/conformance/2016.csv",
-    year_2015: "2015" => "../fixtures/conformance/2015.csv",
-    year_2014: "2014" => "../fixtures/conformance/2014.csv",
-    year_2013: "2013" => "../fixtures/conformance/2013.csv",
-    year_2010: "2010" => "../fixtures/conformance/2010.csv",
-    year_2009: "2009" => "../fixtures/conformance/2009.csv",
-    year_2007: "2007" => "../fixtures/conformance/2007.csv",
-    year_2005: "2005" => "../fixtures/conformance/2005.csv",
-    year_2004: "2004" => "../fixtures/conformance/2004.csv",
-    year_2002: "2002" => "../fixtures/conformance/2002.csv",
+fn print_row(row: &Row) {
+    println!(
+        "{:<6} {:>7} {:>8} {:>8} {:>13} {:>11} {:>8}",
+        row.year,
+        row.cases,
+        row.passed,
+        row.cases - row.passed,
+        row.zone_missing,
+        row.mismatched,
+        percent(row.passed, row.cases)
+    );
+}
+
+// One test for every selected year, so the scoreboard is printed whole, in year order.
+#[test]
+fn conformance_to_the_bmf_calculator() {
+    let mut rows = Vec::new();
+    let mut failures = Vec::new();
+    for (year, csv) in FIXTURES {
+        if !selected(year) {
+            continue;
+        }
+        let (row, year_failures) = check_year(year, csv);
+        if row.cases < MIN_CASES_PER_YEAR {
+            failures.push(format!(
+                "{year}: {} cases, at least {MIN_CASES_PER_YEAR} are required",
+                row.cases
+            ));
+        }
+        if !year_failures.is_empty() {
+            let first: Vec<&str> = year_failures.iter().take(20).map(String::as_str).collect();
+            failures.push(format!(
+                "{year}: {} of {} cases fail. First ones:\n{}",
+                year_failures.len(),
+                row.cases,
+                first.join("\n")
+            ));
+        }
+        rows.push(row);
+    }
+    rows.sort_by_key(|row| row.year);
+    print_scoreboard(&rows);
+    assert!(failures.is_empty(), "{}", failures.join("\n"));
 }

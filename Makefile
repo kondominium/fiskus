@@ -1,7 +1,7 @@
 .SILENT:
 MISE ?= $(shell which mise)
 
-.PHONY: help build lint test-unit test-doc test-api test-guide test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-income-tax run-example-explain-tax test-conformance conformance-points conformance-fetch conformance-fetch-all
+.PHONY: help build lint test-unit test-doc test-api test-guide test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-income-tax run-example-explain-tax test-conformance conformance-cases
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {name[NR] = $$1; desc[NR] = $$2; if (length($$1) > width) width = length($$1)} END {fmt = "  %-" width "s %s\n"; for (i = 1; i <= NR; i++) printf fmt, name[i], desc[i]}'
@@ -60,11 +60,5 @@ run-example-explain-tax: ## Run examples/explain_tax.rs
 test-conformance: ## Conformance tests and scoreboard. Years: make test-conformance YEARS=2010,2026 (or YEARS=all). Not part of gates
 	CONFORMANCE_YEARS="$(YEARS)" $(MISE) run test-conformance
 
-conformance-points: ## Write a points list: make conformance-points YEAR=2026 BOUNDS="12349 17800 69879 277826"
-	YEAR=$(YEAR) BOUNDS="$(BOUNDS)" $(MISE) run conformance-points
-
-conformance-fetch: ## Fetch calculator results for a points list: make conformance-fetch POINTS=scripts/conformance/points/2026.csv
-	POINTS=$(POINTS) $(MISE) run conformance-fetch
-
-conformance-fetch-all: ## Bring every euro year to TARGET cases (default 500, from 2002): make conformance-fetch-all TARGET=500 FROM_YEAR=2002
-	TARGET=$(or $(TARGET),500) FROM_YEAR=$(or $(FROM_YEAR),2002) $(MISE) run conformance-fetch-all
+conformance-cases: ## Fetch BMF results for generated cases: make conformance-cases YEAR=2026 KIND=kinks|samples [COUNT=50] [DRY_RUN=1]
+	YEAR=$(YEAR) KIND=$(KIND) COUNT=$(COUNT) DRY_RUN=$(DRY_RUN) $(MISE) run conformance-cases

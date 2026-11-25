@@ -68,6 +68,10 @@ toml = "1.2.2"
 name = "guide_charts"
 path = "scripts/guide/charts.rs"
 
+[[example]]
+name = "conformance_points"
+path = "scripts/conformance/points.rs"
+
 [[test]]
 name = "guide_checks"
 path = "scripts/guide/checks.rs"
