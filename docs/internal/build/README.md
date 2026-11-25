@@ -40,4 +40,4 @@ The proofs take parameter values as arguments, or as symbolic zones with stated 
 
 ## Packaging
 
-`Cargo.toml` includes `build.rs`, `rules/**/*.toml` and the source. `docs/references` is not packaged, and the build does not read it: each `reference` is a link to the GitLab main branch.
+`Cargo.toml` includes `build.rs`, `rules/**/*.toml` and the source. `docs/references` is not packaged, and the build does not read it: each `reference` is a link to the GitHub main branch.

@@ -5,13 +5,13 @@ value_eur = 9408
 citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Familienentlastungsgesetz, BGBl. 2018 I S. 2210)"
 source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2019-11-11-PAP-2020-anlage-1.pdf?__blob=publicationFile&v=2"
 retrieved = "2026-11-22"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2020-bmf-pap-2020.pdf"
 
 [source]
 citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2020 (UPTAB20)"
 source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2019-11-11-PAP-2020-anlage-1.pdf?__blob=publicationFile&v=2"
 retrieved = "2026-11-22"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2020-bmf-pap-2020.pdf"
 
 [[zone]]
 from_eur = 9409

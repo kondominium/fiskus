@@ -5,13 +5,13 @@ value_eur = 7664
 citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Haushaltsbegleitgesetz 2004, BGBl. 2003 I S. 2840)"
 source = "https://www.bmf-steuerrechner.de/ekst/eingabeformekst.xhtml"
 retrieved = "2026-11-25"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf"
 
 [source]
 citation = "§ 32a Abs. 1 Satz 2 EStG, Tarif VZ 2004 (BMF-Einkommensteuerrechner)"
 source = "https://www.bmf-steuerrechner.de/ekst/eingabeformekst.xhtml"
 retrieved = "2026-11-25"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf"
 
 [[zone]]
 from_eur = 7665

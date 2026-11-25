@@ -5,13 +5,13 @@ value_eur = 8472
 citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (KiGAnhG 2015, BGBl. 2015 I S. 1202)"
 source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2015-09-08-PAP-dezember-2015-anlage-1.pdf?__blob=publicationFile&v=3"
 retrieved = "2026-11-22"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
 
 [source]
 citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2015 (UPTAB15)"
 source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2015-09-08-PAP-dezember-2015-anlage-1.pdf?__blob=publicationFile&v=3"
 retrieved = "2026-11-22"
-reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
 
 [[zone]]
 from_eur = 8473

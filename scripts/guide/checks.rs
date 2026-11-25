@@ -30,6 +30,7 @@ struct Chapter {
 struct RuleFile {
     basic_allowance: Parameter,
     source: Option<Reference>,
+    solidarity: Option<Reference>,
 }
 
 #[derive(Deserialize)]
@@ -189,7 +190,7 @@ fn parameter_values_appear_on_the_page_that_cites_them() {
 
 #[test]
 fn parameter_references_exist() {
-    let base = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/";
+    let base = "https://github.com/kondominium/fiskus/raw/main/docs/references/";
     for entry in fs::read_dir(root().join("rules")).unwrap() {
         let path = entry.unwrap().path();
         let file: RuleFile = toml::from_str(&read(&path)).unwrap();
@@ -197,10 +198,13 @@ fn parameter_references_exist() {
         if let Some(source) = file.source {
             references.push(("source", source.reference));
         }
+        if let Some(solidarity) = file.solidarity {
+            references.push(("solidarity", solidarity.reference));
+        }
         for (name, reference) in references {
             assert!(
                 reference.starts_with(base),
-                "{}: [{name}] reference is not a GitLab main-branch link: {reference}",
+                "{}: [{name}] reference is not a GitHub main-branch link: {reference}",
                 path.display(),
             );
             let basename = reference.trim_start_matches(base);

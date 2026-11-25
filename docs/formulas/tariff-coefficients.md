@@ -3,29 +3,29 @@
 | VZ | Basic allowance (€) | Tariff citation | Archived copy |
 |---|---|---|---|
 | 2003 | 7 426 | no tariff zones | — |
-| 2004 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif VZ 2004 (BMF-Einkommensteuerrechner) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
-| 2005 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif nach dem Entwurf des Haushaltsbegleitgesetzes 2004 (BT-Drs. 15/1502), in Kraft ab VZ 2004 | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
-| 2006 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2006 (UPTAB05) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2006-bmf-pap-2006.pdf) |
-| 2007 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2007 (UPTAB07) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2007-bmf-pap-2007.pdf) |
-| 2008 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2008 (UPTAB07) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2008-bmf-pap-2008.pdf) |
-| 2009 | 7 834 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2009 (UPTAB09) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2009-bmf-pap-2009.pdf) |
-| 2010 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2010 (UPTAB10) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2010-bmf-pap-2010.pdf) |
-| 2011 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2011 (UPTAB10) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2011-bmf-pap-dezember-2011.pdf) |
-| 2012 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2012 (UPTAB10) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2012-bmf-pap-2012.pdf) |
-| 2013 | 8 130 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2013 (UPTAB13) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2013-bmf-pap-2013.pdf) |
-| 2014 | 8 354 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2014 (UPTAB14) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2014-bmf-pap-2014.pdf) |
-| 2015 | 8 472 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2015 (UPTAB15) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf) |
-| 2016 | 8 652 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2016 (UPTAB16) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2016-bmf-pap-2016.pdf) |
-| 2017 | 8 820 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2017 (UPTAB17) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2017-bmf-pap-2017.pdf) |
-| 2018 | 9 000 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2018 (UPTAB18) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2018-bmf-pap-2018.pdf) |
-| 2019 | 9 168 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2019 (UPTAB19) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2019-bmf-pap-2019.pdf) |
-| 2020 | 9 408 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2020 (UPTAB20) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf) |
-| 2021 | 9 744 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2021 (UPTAB21) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2021-bmf-pap-2021.pdf) |
-| 2022 | 10 347 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2022 (UPTAB22) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2022-bmf-pap-2022.pdf) |
-| 2023 | 10 908 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2023 (UPTAB23) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2023-bmf-pap-ab-juli-2023.pdf) |
-| 2024 | 11 784 | § 32a Abs. 1 Satz 2 EStG (Gesetz zur steuerlichen Freistellung des Existenzminimums 2024, Art. 1 Nr. 2, BGBl. 2024 I Nr. 386) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-existenzminimum-I-386.pdf) |
-| 2025 | 12 096 | § 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 1 Nr. 2, BGBl. 2024 I Nr. 449) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf) |
-| 2026 | 12 348 | § 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 2 Nr. 2, BGBl. 2024 I Nr. 449) | [PDF](https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf) |
+| 2004 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif VZ 2004 (BMF-Einkommensteuerrechner) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
+| 2005 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif nach dem Entwurf des Haushaltsbegleitgesetzes 2004 (BT-Drs. 15/1502), in Kraft ab VZ 2004 | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
+| 2006 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2006 (UPTAB05) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2006-bmf-pap-2006.pdf) |
+| 2007 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2007 (UPTAB07) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2007-bmf-pap-2007.pdf) |
+| 2008 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2008 (UPTAB07) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2008-bmf-pap-2008.pdf) |
+| 2009 | 7 834 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2009 (UPTAB09) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2009-bmf-pap-2009.pdf) |
+| 2010 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2010 (UPTAB10) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2010-bmf-pap-2010.pdf) |
+| 2011 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2011 (UPTAB10) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2011-bmf-pap-dezember-2011.pdf) |
+| 2012 | 8 004 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2012 (UPTAB10) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2012-bmf-pap-2012.pdf) |
+| 2013 | 8 130 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2013 (UPTAB13) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2013-bmf-pap-2013.pdf) |
+| 2014 | 8 354 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2014 (UPTAB14) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2014-bmf-pap-2014.pdf) |
+| 2015 | 8 472 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2015 (UPTAB15) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf) |
+| 2016 | 8 652 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2016 (UPTAB16) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2016-bmf-pap-2016.pdf) |
+| 2017 | 8 820 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2017 (UPTAB17) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2017-bmf-pap-2017.pdf) |
+| 2018 | 9 000 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2018 (UPTAB18) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2018-bmf-pap-2018.pdf) |
+| 2019 | 9 168 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2019 (UPTAB19) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2019-bmf-pap-2019.pdf) |
+| 2020 | 9 408 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2020 (UPTAB20) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2020-bmf-pap-2020.pdf) |
+| 2021 | 9 744 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2021 (UPTAB21) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2021-bmf-pap-2021.pdf) |
+| 2022 | 10 347 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2022 (UPTAB22) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2022-bmf-pap-2022.pdf) |
+| 2023 | 10 908 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2023 (UPTAB23) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2023-bmf-pap-ab-juli-2023.pdf) |
+| 2024 | 11 784 | § 32a Abs. 1 Satz 2 EStG (Gesetz zur steuerlichen Freistellung des Existenzminimums 2024, Art. 1 Nr. 2, BGBl. 2024 I Nr. 386) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2024-bgbl-existenzminimum-I-386.pdf) |
+| 2025 | 12 096 | § 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 1 Nr. 2, BGBl. 2024 I Nr. 449) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf) |
+| 2026 | 12 348 | § 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 2 Nr. 2, BGBl. 2024 I Nr. 449) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf) |
 
 Each zone is `a·t² + b·t + c` with `t = (x − base) / step`. `x` is the whole-euro basis. The coefficients `a`, `b` and `c` are in euros.
 

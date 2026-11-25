@@ -49,13 +49,13 @@ Rules:
    citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (...)"
    source = "<url>"
    retrieved = "<date>"
-   reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/<file>.pdf"
+   reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/<file>.pdf"
 
    [source]
    citation = "§ 32a Abs. 1 Satz 2 EStG (...)"
    source = "<url>"
    retrieved = "<date>"
-   reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/<file>.pdf"
+   reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/<file>.pdf"
 
    [[zone]]
    from_eur = <first euro of zone 2>
@@ -104,7 +104,7 @@ Writing rules from `docs/contributing/language.md`:
 ## 5. Review end to end
 
 - Read each source PDF and confirm the basic allowance, each zone's formula and the zone limits.
-- Confirm each `reference` is the GitLab main-branch link form, and that its file name is in `docs/references/`, with its sha256 in the README. `parameter_references_exist` checks both.
+- Confirm each `reference` is the GitHub main-branch link form, and that its file name is in `docs/references/`, with its sha256 in the README. `parameter_references_exist` checks both.
 - Build the crate's package list (`cargo package --list`). `rules/<Y>.toml` must appear. `docs/references/` is not packaged, and `build.rs` does not read it, so it can stay out of the package.
 - Grep for stale strings across the docs: `one variant`, `parameters/`, `OutsideImplementedRange` where the text says it is the zone limit, and `basic allowance zone` where the tariff is meant.
 

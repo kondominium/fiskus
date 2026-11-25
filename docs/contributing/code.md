@@ -95,7 +95,7 @@ The build fails on a file that:
 - has a `[solidarity]` table with a negative threshold, or a joint threshold below the single one
 - has a first zone that does not start at the allowance plus one euro, zones that are not in increasing order, a step that is not positive, or a tax that jumps by more than one euro at a zone start
 
-The build does not read the `reference` file: it is a link on the GitLab main branch, so the packaged crate needs no local copy. `scripts/guide/checks.rs` checks that each reference names a file in `docs/references/`.
+The build does not read the `reference` file: it is a link on the GitHub main branch, so the packaged crate needs no local copy. `scripts/guide/checks.rs` checks that each reference names a file in `docs/references/`.
 
 Tests do not hold the figures of a year. They read the rule data through the API, and run for every year in `TaxYear::ALL`. A figure is checked against its source when the file is written, and against the BMF calculator by the conformance layer.
 

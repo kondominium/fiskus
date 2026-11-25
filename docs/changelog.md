@@ -19,3 +19,4 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 ### Changed
 
 - Functions that return a value now carry `#[must_use]`, so ignoring a result is a compiler warning. Results are unchanged.
+- The `reference` link of every rules file, and of each `[solidarity]` table, points at the GitHub repository. These links were on GitLab. The figures are unchanged.
