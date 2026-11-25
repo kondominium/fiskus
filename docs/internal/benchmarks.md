@@ -26,21 +26,24 @@ A scheduled CI run executes the same benchmark every night on GitHub's Linux run
 
 ## Coverage today
 
-fiskus aims to benchmark every code path it has: each filing status, each tariff zone, and the error path for inputs it rejects. Today that is narrower than the goal. The benchmark covers both filing statuses at the edges of the basic allowance (Grundfreibetrag) zone, which is the only zone implemented so far, plus the error path. As each new zone lands, its boundary and interior cases will join the benchmark, and the published figures will say which zones they include.
+fiskus benchmarks the calculation paths that users call: `assess` and `explain` for every listed year, both filing statuses and the inputs that matter for the tariff, the solidarity surcharge, and the error path for a negative income. The inputs come from the rule data, so a new year is benchmarked without an edit: the zero-tax point, the allowance, twice the allowance, and every zone start of that year. Each figure says which inputs it uses.
 
 ## Current figures
 
-Measured on 2026-11-23 on an Apple M2 Pro (12 cores, 32 GB memory, macOS 26.6.2) with Rust 1.100.0, using one thread and a release build.
+Measured on 2026-11-25 on an Apple M2 Pro (12 cores, 32 GB memory, macOS 26.6.2) with Rust 1.100.0, using one thread and a release build. The batch of `assess` and `explain` covers 322 calls: for every listed year, the incomes 0, the allowance and twice the allowance, and each zone start, for single and joint filing.
 
 | Case | Calls per second | Notes |
 |---|---|---|
-| `assess`, inside the implemented zone | about 199 million | The basic allowance zone |
-| `assess`, outside the implemented zone (error path) | about 300 million | Inputs the calculator rejects |
-| Peak memory footprint while the benchmark ran | 1.6 MB | Measured on macOS |
+| `assess`, every listed year and zone boundary | about 42 million | 322 calls per batch |
+| `explain`, same inputs | about 46 million | 322 calls per batch, with the rates and the citation |
+| `solidarity_surcharge`, year and filing at each zone start | about 446 million | 178 calls per batch: 89 zone starts, for both filings. The years without a threshold return `None` at once |
+| `assess`, negative income (error path) | about 276 million | One call per batch |
+| Peak memory footprint while the benchmark ran | not measured | Not measured in this run. Measure it before quoting a figure |
 
 ## What the figures do not say
 
-- They describe one machine, one thread and one zone. They are not a promise for your hardware, and they will change as more of the tariff is implemented.
+- They describe one machine and one thread. They are not a promise for your hardware, and they will change as the calculation grows.
+- The figures change with the number of listed years: a new year adds calls to each batch, so compare batches of the same size only.
 - fiskus has not verified that the calculation makes zero heap allocations per call, so that claim is not made.
 - Memory has been measured only on macOS.
 - A browser build is not yet in fiskus, so it has not been measured.

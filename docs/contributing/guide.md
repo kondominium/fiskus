@@ -25,18 +25,14 @@ A release is complete when `make gates` passes on it. The guide tests and the ch
 
 ## Charts
 
-- `scripts/guide/charts.rs` draws the charts from the public `assess` API, so each chart shows what the code does. Charts stop at the implemented range and never draw a zone that fiskus does not compute.
+- `scripts/guide/charts.rs` draws the charts from the public API (`assess`, `explain`, `tariff_zones`, `solidarity_surcharge`), so each chart shows what the code does. Charts use the latest listed year, and inputs scaled to its basic allowance, so they follow the rule files without edits.
 - Each chart is one SVG in `docs/guide/assets/charts/`, with no background. Its ink and zone colors are CSS variables (`--chart-ink`, `--chart-zone`) set per theme in `docs/theme/fiskus.css`, so it follows the book's light and navy themes. Colors come from [design](design.md), with `signal` used once per chart as the highlight.
 - Pages pull each chart in with `\{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
-- `make test-guide` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG differs from the generated one.
+- `make test-guide` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG, or the generated tariff table in `docs/formulas/tariff-coefficients.md`, differs from what the code and `rules/` produce.
 
 ## Illustrations
 
-An illustration is a hand-drawn SVG in `docs/guide/assets/illustrations/`, for a point that no code computes yet. It is the exception to the chart rules, so it must:
-
-- say "Illustration" in its `<title>` and state on the page that it is not measured data;
-- not be written by the generator, and not be checked by the chart drift check;
-- be replaced by a generated chart, with dated data in `rules/`, once the data exists.
+The guide has no illustrations. Every figure a chart shows is drawn from the code. A point that no code computes yet is written as text, with the words "not yet in fiskus", and not as a drawing.
 
 ## Icons
 
@@ -65,7 +61,7 @@ Read this section before touching `docs/guide/`, `scripts/guide/charts.rs`, or `
 
 **Add a chart**
 
-1. Write a function in `scripts/guide/charts.rs` that takes no theme and returns `document(title, body)`. Use only `assess` and `FilingUnit`, never internal modules.
+1. Write a function in `scripts/guide/charts.rs` that takes no theme and returns `document(title, body)`. Use only the public API and `FilingUnit`, never internal modules.
 2. Use the helpers (`text`, `line`, `polyline`, `circle`, `bar`) and the `INK`, `ZONE`, and `SIGNAL` constants. Do not write hex colors inline.
 3. Register it in the `charts` array in `run()`.
 4. Run `make charts`, then commit the SVG.

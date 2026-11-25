@@ -10,12 +10,17 @@
 - [Tax year](guide/02-tax-year.md)
 - [Taxable income](guide/03-taxable-income.md)
 - [Basic allowance](guide/04-basic-allowance.md)
+- [Tariff](guide/05-tariff.md)
+- [Rates and surcharge](guide/06-rates-and-surcharge.md)
+- [How fiskus thinks](guide/07-how-fiskus-thinks.md)
 - [Glossary](guide/glossary.md)
 
 # Using
 
 - [Usage](usage/README.md)
 - [Formulas](formulas/grundfreibetrag.md)
+- [Tariff](formulas/tariff.md)
+- [Solidarity surcharge](formulas/solidarity-surcharge.md)
 
 # Project
 

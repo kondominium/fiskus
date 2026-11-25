@@ -8,7 +8,7 @@ sections = []
 
 [[chapter]]
 file = "guide/glossary.md"
-sections = ["2", "26", "26a", "26b", "32a"]
+sections = ["2", "3", "26", "26a", "26b", "32a"]
 
 [[chapter]]
 file = "guide/README.md"
@@ -29,3 +29,15 @@ sections = ["32a"]
 [[chapter]]
 file = "guide/04-basic-allowance.md"
 sections = ["32a"]
+
+[[chapter]]
+file = "guide/05-tariff.md"
+sections = ["2", "32a"]
+
+[[chapter]]
+file = "guide/06-rates-and-surcharge.md"
+sections = ["3", "4"]
+
+[[chapter]]
+file = "guide/07-how-fiskus-thinks.md"
+sections = []

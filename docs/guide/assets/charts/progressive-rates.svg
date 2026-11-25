@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Each progressive zone starts at a higher marginal rate</title>
+<line x1="104.0" y1="280.0" x2="600.0" y2="280.0" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<line x1="104.0" y1="48.0" x2="104.0" y2="280.0" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="94.0" y="285.0" text-anchor="end" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">0 %</text>
+<text x="94.0" y="192.2" text-anchor="end" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">20 %</text>
+<text x="94.0" y="99.4" text-anchor="end" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">40 %</text>
+<rect x="128.8" y="215.0" width="74.4" height="65.0" style="fill: var(--chart-ink, #0f3d2e)"/>
+<text x="166.0" y="207.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">14.0 %</text>
+<text x="166.0" y="302.0" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Zone 2</text>
+<rect x="252.8" y="168.8" width="74.4" height="111.2" style="fill: var(--chart-ink, #0f3d2e)"/>
+<text x="290.0" y="160.8" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">24.0 %</text>
+<text x="290.0" y="302.0" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Zone 3</text>
+<rect x="376.8" y="85.1" width="74.4" height="194.9" style="fill: var(--chart-ink, #0f3d2e)"/>
+<text x="414.0" y="77.1" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">42.0 %</text>
+<text x="414.0" y="302.0" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Zone 4</text>
+<rect x="500.8" y="71.2" width="74.4" height="208.8" style="fill: var(--chart-ink, #0f3d2e)"/>
+<text x="538.0" y="63.2" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">45.0 %</text>
+<text x="538.0" y="302.0" text-anchor="middle" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">Zone 5</text>
+<text x="352.0" y="342.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Progressive zone of § 32a Abs. 1 EStG</text>
+<text x="104.0" y="28.0" text-anchor="start" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Marginal rate at the zone's first euro, VZ 2026</text>
+</svg>

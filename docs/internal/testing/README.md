@@ -24,7 +24,7 @@ The arrow on the left shows the cost to run, which rises towards the top. The ba
 
 **In theory.** A unit test is a specification by example. The cases that matter most sit at the boundaries of a rule: the last value inside it, the first value outside, and the cents on either side of each.
 
-**In practice.** For each tax zone, unit tests pin the behaviour on both sides of every threshold. They also catch regressions, which is useful but secondary. A unit test covers only the cases someone thought of.
+**In practice.** Unit tests run the pure functions on fixtures: small tariffs with sample numbers, written in the test. They pin the rules that hold for any tariff, such as the zero zone, the rounding of one zone, and the overflow path. They do not pin the figures of a year. A figure from a statute belongs to the conformance layer, not to a unit test. A unit test covers only the cases someone thought of.
 
 ## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/wrench.svg'); mask-image: url('../assets/icons/wrench.svg')"></span>Public API tests
 
@@ -32,7 +32,7 @@ The arrow on the left shows the cost to run, which rises towards the top. The ba
 
 **In theory.** This is black-box testing. The public surface is the contract, so the tests use it as a user would. They split each input into equivalence classes and test the boundaries between them.
 
-**In practice.** Today the public API tests check named cases. The aim is to cover the meaningful permutations of each exported type: each constructor and conversion, each filing status, each zone and each error path a user can reach. The numbers themselves cannot be listed, so the numeric side belongs to property tests and proofs, and the public API tests cover the functionality around them.
+**In practice.** The public API tests use `fiskus` only, for every listed year, and take their expected values from the API itself: the basic allowance, the zones, the error variants. They check the contract around the numbers: each error path a user can reach, the messages, the conversions of `Cents`, and that `from_year` round-trips. No year and no amount is fixed in them.
 
 ## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/dices.svg'); mask-image: url('../assets/icons/dices.svg')"></span>Property tests
 
@@ -40,7 +40,7 @@ The arrow on the left shows the cost to run, which rises towards the top. The ba
 
 **In theory.** Property testing comes from QuickCheck, which asked for properties instead of examples. When a counterexample is found, the runner shrinks it to a minimal failing input, which is usually the easiest bug to understand.
 
-**In practice.** The generators reach the values a person would not write down: the largest amounts, odd cent values, the first value past each threshold. Random search can find a bug that a fixed list of examples misses. A passing run means no counterexample was found among the inputs tried, not that none exists. Failing inputs are saved and replayed, so a bug found once stays under test.
+**In practice.** The generators reach the values a person would not write down: the largest amounts, odd cent values, the first value past each threshold. Random search can find a bug that a fixed list of examples misses. A passing run means no counterexample was found among the inputs tried, not that none exists. Failing inputs are saved and replayed, so a bug found once stays under test. The properties run over every listed year, using the rule data: the zones join, tax never falls as income rises, and joint tax is twice the tax on half the income.
 
 ## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/sigma.svg'); mask-image: url('../assets/icons/sigma.svg')"></span>Kani proofs
 
@@ -48,7 +48,7 @@ The arrow on the left shows the cost to run, which rises towards the top. The ba
 
 **In theory.** Kani is a bounded model checker. It turns the Rust code into a logical model and asks a solver whether any input breaks the property. Inside the bound, the answer is exact. Kani's own documentation describes its proof harnesses as similar to property-based test harnesses, with the difference that they cover all inputs. A wider bound is a stronger claim, so the bounds can grow over time.
 
-**In practice.** fiskus uses Kani for three things: each pure formula does exactly what the formula says, for every input in its bound; the code cannot panic on any value its types allow; and the types behave consistently at their edges, such as money that saturates instead of wrapping. Three proofs run today, and the bound is part of each claim.
+**In practice.** fiskus uses Kani for three things: each pure formula does exactly what the formula says, for every input in its bound; the arithmetic is checked, so an overflow is an error and never a wrong tax; and the types behave consistently at their edges, such as money that saturates instead of wrapping. The proofs are in `src/` next to the code they check, and each states its bound in a comment. A proof is dropped where the solver cannot finish it: the floor of a 128-bit fraction is a property test instead. Kani does not prove panic-freedom over the full `i128` range: that comes from the checked arithmetic, which the unit tests exercise with the largest values.
 
 A proof does not extrapolate from examples. Checking ten thousand inputs and checking the whole bound are different claims, and only the second one is a proof. Proofs suit small functions with a clear boundary. Where a rule is too large for a proof to finish, property tests carry it.
 
@@ -58,7 +58,7 @@ A proof does not extrapolate from examples. Checking ten thousand inputs and che
 
 **In theory.** This is differential testing: two independent implementations receive the same input, and any difference marks a bug in one of them. The BMF calculator is the reference for the data, so a match means fiskus gives the same answer as the official calculator for those inputs.
 
-**In practice.** The expected values are the BMF-provided results, never fiskus's own output. The cases are committed, so the test runs offline. A sample of thousands cannot cover every income, and conformance does not claim that it does. Kani covers the formulas across their bounds, and conformance covers the data. The layer is planned work and not yet in fiskus. Until it lands, no statement in these docs depends on it. Only the basic allowance zone is implemented, so the test will report the missing zones as gaps.
+**In practice.** The expected values are the BMF-provided results, never fiskus's own output. The cases are committed, so the test runs offline. A sample of thousands cannot cover every income, and conformance does not claim that it does. Kani covers the formulas across their bounds, and conformance covers the data. The layer is planned work and not yet in fiskus. Until it lands, no statement in these docs depends on it. A year that fiskus lists but that has no reference data yet is reported as a gap, not as a pass.
 
 ## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/ruler.svg'); mask-image: url('../assets/icons/ruler.svg')"></span>Coverage
 
@@ -91,7 +91,8 @@ This is how the library is built stone by stone. Each change is added only when 
 - Kani proofs hold inside their bounds.
 - Property tests sample, and unit tests check named cases.
 - Coverage shows what ran, not what is right.
-- Only the basic allowance zone is implemented. The other zones carry no evidence yet.
+- A figure from a draft, such as a year whose enacted text is not archived, is marked as a draft in its citation. It is not checked against enacted text until that text is archived.
+
 
 ## Further reading
 
@@ -106,7 +107,7 @@ This is how the library is built stone by stone. Each change is added only when 
 | The system FoundationDB was built to test | [FoundationDB, SIGMOD 2021 (PDF)](https://www.foundationdb.org/files/fdb-paper.pdf) | The design behind the simulation |
 | Differential testing | [Wikipedia: differential testing](https://en.wikipedia.org/wiki/Differential_testing), citing McKeeman (1998) | Two implementations, one input, and any difference is a bug |
 | Conformance testing | [Wikipedia: conformance testing](https://en.wikipedia.org/wiki/Conformance_testing) | Checking an implementation against a specification |
-| Fuzzing | [The Rust Fuzz Book](https://rust-fuzz.github.io/book/) | Coverage-guided fuzzing, which fiskus does not use |
+| Fuzzing | [The Rust Fuzz Book](https://rust-fuzz.github.io/book/) | Coverage-guided fuzzing, not used in fiskus |
 | Mutation testing | [cargo-mutants](https://mutants.rs/) | Planting bugs to test the tests |
 | Coverage | [cargo-llvm-cov](https://github.com/taiki-e/cargo-llvm-cov) | Line coverage for Rust |
 | Static analysis | [Clippy](https://doc.rust-lang.org/clippy/) | The lints behind the static checks |

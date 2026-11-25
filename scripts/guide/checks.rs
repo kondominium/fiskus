@@ -2,7 +2,7 @@
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //! Keeps the guide in `docs/guide` in step with the code. See `docs/contributing/guide.md`.
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -20,9 +20,20 @@ struct Chapter {
 }
 
 #[derive(Deserialize)]
+struct RuleFile {
+    basic_allowance: Parameter,
+    source: Option<Reference>,
+}
+
+#[derive(Deserialize)]
 struct Parameter {
     value_eur: i128,
     citation: String,
+    reference: String,
+}
+
+#[derive(Deserialize)]
+struct Reference {
     reference: String,
 }
 
@@ -32,6 +43,19 @@ fn root() -> PathBuf {
 
 fn read(path: &Path) -> String {
     fs::read_to_string(path).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
+}
+
+fn latest_rule_file() -> PathBuf {
+    fs::read_dir(root().join("rules"))
+        .unwrap()
+        .map(|entry| entry.unwrap().path())
+        .filter_map(|path| {
+            let year: u16 = path.file_stem()?.to_str()?.parse().ok()?;
+            Some((year, path))
+        })
+        .max_by_key(|(year, _)| *year)
+        .map(|(_, path)| path)
+        .expect("rules/ has a year file")
 }
 
 fn coverage() -> Coverage {
@@ -137,24 +161,23 @@ fn listed_sections_are_cited_by_the_code() {
     }
 }
 
-// The guide explains VZ 2026 only, so only its parameters need a page.
+// The guide quotes the basic allowance of the latest year in rules/, so a new year must update it.
 #[test]
 fn parameter_values_appear_on_the_page_that_cites_them() {
     let chapters = coverage().chapter;
-    let path = root().join("rules/2026.toml");
-    let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
-    for (name, parameter) in parameters {
-        let value = euros(parameter.value_eur);
-        let explained = chapters.iter().any(|chapter| {
-            let text = page(&chapter.file);
-            text.contains(&parameter.citation) && text.contains(&value)
-        });
-        assert!(
-            explained,
-            "{name}: no guide page cites `{}` together with {value}",
-            parameter.citation
-        );
-    }
+    let path = latest_rule_file();
+    let file: RuleFile = toml::from_str(&read(&path)).unwrap();
+    let parameter = file.basic_allowance;
+    let value = euros(parameter.value_eur);
+    let explained = chapters.iter().any(|chapter| {
+        let text = page(&chapter.file);
+        text.contains(&parameter.citation) && text.contains(&value)
+    });
+    assert!(
+        explained,
+        "basic_allowance: no guide page cites `{}` together with {value}",
+        parameter.citation
+    );
 }
 
 #[test]
@@ -162,20 +185,22 @@ fn parameter_references_exist() {
     let base = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/";
     for entry in fs::read_dir(root().join("rules")).unwrap() {
         let path = entry.unwrap().path();
-        let parameters: BTreeMap<String, Parameter> = toml::from_str(&read(&path)).unwrap();
-        for (name, parameter) in parameters {
+        let file: RuleFile = toml::from_str(&read(&path)).unwrap();
+        let mut references = vec![("basic_allowance", file.basic_allowance.reference)];
+        if let Some(source) = file.source {
+            references.push(("source", source.reference));
+        }
+        for (name, reference) in references {
             assert!(
-                parameter.reference.starts_with(base),
-                "{}: [{name}] reference is not a GitLab main-branch link: {}",
+                reference.starts_with(base),
+                "{}: [{name}] reference is not a GitLab main-branch link: {reference}",
                 path.display(),
-                parameter.reference
             );
-            let basename = parameter.reference.trim_start_matches(base);
+            let basename = reference.trim_start_matches(base);
             assert!(
                 root().join("docs/references").join(basename).is_file(),
-                "{}: [{name}] reference {} has no local file",
+                "{}: [{name}] reference {reference} has no local file",
                 path.display(),
-                parameter.reference
             );
         }
     }

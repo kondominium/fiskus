@@ -58,7 +58,7 @@ Good:
 /// Assesses income tax for one filing unit in `year`.
 ///
 /// Income is in cents. Returns [`Error::NegativeTaxableIncome`] for negative income
-/// and [`Error::OutsideImplementedRange`] above the implemented zone.
+/// and [`Error::OutsideImplementedRange`] above the allowance when the tax cannot be computed.
 pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error>
 ```
 
@@ -71,16 +71,25 @@ Bad: `/// Assesses tax.`
 
 Tax values live in `rules/<year>.toml`. The build checks them and compiles them in, so the library never reads them at runtime. Why and how: [How fiskus is built](../internal/build/README.md).
 
-The build fails on an entry that:
+Each year file has the basic allowance, `[basic_allowance]`, with the four fields `value_eur`, `citation`, `source` and `retrieved`, plus `reference`. A year with a tariff also has a `[source]` table with the same four fields, and one `[[zone]]` table per zone. A year without a tariff has neither.
 
-- has a field other than `value_eur`, `citation`, `source`, `retrieved` or `reference`
-- has a `value_eur` that is negative or not a whole number
-- has a blank `citation`, `source`, `retrieved` or `reference`
-- has a key that is not lowercase snake_case, since keys become Rust field names
+A year with a free threshold for the solidarity surcharge (§ 3 Abs. 3 SolZG) also has a `[solidarity]` table, with `free_threshold_single_eur`, `free_threshold_joint_eur`, and the four source fields. A year without it has no solidarity figure, and `solidarity_surcharge` returns `None` for it.
+
+The build fails on a file that:
+
+- has a field other than the ones listed above, or a zone field other than `from_eur`, `base_eur`, `step_eur`, `quadratic_h`, `linear_h` and `constant_h`
+- has a `value_eur` that is negative, or a blank `citation`, `source`, `retrieved` or `reference`
+- has zones without a `[source]` table, or a `[source]` table without zones
+- has a `[solidarity]` table with a negative threshold, or a joint threshold below the single one
+- has a first zone that does not start at the allowance plus one euro, zones that are not in increasing order, a step that is not positive, or a tax that jumps by more than one euro at a zone start
+
+The build does not read the `reference` file: it is a link on the GitLab main branch, so the packaged crate needs no local copy. `scripts/guide/checks.rs` checks that each reference names a file in `docs/references/`.
+
+Tests do not hold the figures of a year. They read the rule data through the API, and run for every year in `TaxYear::ALL`. A figure is checked against its source when the file is written, and against the BMF calculator by the conformance layer.
 
 | Change | Steps |
 |---|---|
-| New parameter | 1. Add a table with the five fields (`value_eur`, `citation`, `source`, `retrieved`, `reference`) to the year's file. 2. Add a `Parameter` field with the same name to `Parameters` in `src/params.rs`. Without it the generated code does not compile. 3. Read it through the year's lookup. An unread field fails `make lint`. |
-| New tax year | 1. Create `rules/<year>.toml`. 2. Add the year to `YEARS` in `build.rs`. 3. Add a variant to `TaxYear`. 4. Add a match arm in the lookup in `src/params.rs`. The compiler checks steps 3 and 4. Document the year on the usage page. |
+| New basic allowance value or zone for an existing year | 1. Change the value, the coefficients and the citation in `rules/<year>.toml`. 2. Check the change against the source, and the references README. 3. Update the guide and formula pages that quote it, if they quote it. `make test-guide` shows which. |
+| New tax year | 1. Create `rules/<year>.toml` with `[basic_allowance]`, and `[source]` and `[[zone]]` if the tariff is known. 2. Add the year to `YEARS` in `build.rs`. 3. Add a variant to `TaxYear` and to `ALL`, and the `year()` arm. The compiler checks the rest. 4. Update the year count in `tests/public_api.rs` only if a test pins it. 5. Update the docs that state the range, and add the year's sources to `docs/references/README.md`. |
 
-Keep `/build.rs` and `/rules/**/*.toml` in the `include` list of `Cargo.toml`, or the packaged crate cannot build. Check the list with `cargo package --list`.
+Keep `/build.rs` and `/rules/**/*.toml` in the `include` list of `Cargo.toml`, or the packaged crate cannot build. Check the list with `cargo package --list`. `docs/references` is not packaged, and the build does not read it.

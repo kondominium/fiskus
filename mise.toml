@@ -89,16 +89,17 @@ description = "Serve the docs book locally with live reload"
 run = "mdbook serve --open"
 
 [tasks.docs-clean]
-description = "Remove the docs book (target/book) and leftover calculator builds in docs/calculator, which are not on main"
-run = [
-  "rm -rf target/book",
-  "rm -rf docs/calculator",
-]
+description = "Remove the docs book (target/book)"
+run = "rm -rf target/book"
 
 [tasks.charts]
-description = "Regenerate the guide charts in docs/guide/assets/charts"
+description = "Regenerate the guide charts in docs/guide/assets/charts and the tariff tables in docs/formulas"
 run = "cargo run --example guide_charts"
 
-[tasks.run-example-basic-allowance]
-description = "Run examples/basic_allowance.rs"
-run = "cargo run --example basic_allowance"
+[tasks.run-example-income-tax]
+description = "Run examples/income_tax.rs"
+run = "cargo run --example income_tax"
+
+[tasks.run-example-explain-tax]
+description = "Run examples/explain_tax.rs"
+run = "cargo run --example explain_tax"

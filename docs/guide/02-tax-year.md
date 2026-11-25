@@ -2,28 +2,24 @@
 
 # The tax year
 
-Income tax (Einkommensteuer) is assessed for one calendar year, called the assessment period (Veranlagungszeitraum, VZ). Each year's bill is worked out from that year's rules, so every calculation in fiskus names its year.
+Income tax (Einkommensteuer) is assessed for one calendar year, called the assessment period (Veranlagungszeitraum, VZ). Each assessment uses the rules of its own year, so every calculation in fiskus names its year. `TaxYear::Y<year>` is the year, and `TaxYear::year()` gives the calendar number.
 
 ## Where the yearly rules come from
 
-Income tax is set by law. The [Income Tax Act (Einkommensteuergesetz, EStG)](https://www.gesetze-im-internet.de/estg/) is that law. Parliament (Bundestag) changes it, and the changes are published in the Federal Law Gazette (Bundesgesetzblatt, BGBl.).
+The [Income Tax Act (Einkommensteuergesetz, EStG)](https://www.gesetze-im-internet.de/estg/) sets the rules. Parliament (Bundestag) changes it, and each change is published in the Federal Law Gazette (Bundesgesetzblatt, BGBl.).
 
-The yearly amounts, such as the basic allowance (Grundfreibetrag), are written into the law itself. The tariff (Tarif) is in [§ 32a EStG](https://www.gesetze-im-internet.de/estg/__32a.html), and the figures say from which year they apply. For example, the basic allowance is stated "from the assessment period 2026" (ab dem Veranlagungszeitraum 2026).
+The yearly amounts are written into the law. The basic allowance (Grundfreibetrag) and the tariff zones are in [§ 32a EStG](https://www.gesetze-im-internet.de/estg/__32a.html). The law states from which assessment period each figure applies.
 
-The Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) administers the law. It publishes guidance and tables that apply these figures, and the tax office (Finanzamt) uses them to make each assessment. The consolidated text of every law is free to read at gesetze-im-internet.de, which is where fiskus takes its figures from. The official ELSTER portal is at [elster.de](https://www.elster.de/).
+The Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) administers the law. Its withholding guidance (Programmablaufplan, PAP) applies the same figures for the tax office (Finanzamt), and fiskus checks its figures against that guidance as well.
 
-**Every figure in fiskus names its citation, its source, and the date it was retrieved.** Each one can be compared with the law.
+**Every figure in fiskus names its citation, its source, and the date it was retrieved.** Each one can be compared with the law. The source files are in `docs/references`.
 
-## When the next year's rules appear
+## What fiskus supports
 
-The guide currently assumes that the rules for the next year appear in November and December. The illustration below shows those two months. **It is an illustration, not a measurement.** These dates are not yet checked against sources. It will be replaced with dated data once that data exists.
+fiskus lists the assessment years in `TaxYear::ALL`, and `TaxYear::from_year` returns the variant for a calendar year. A year outside that list is not supported, so fiskus does not estimate its figures.
 
-{{#include assets/illustrations/publication-months.svg}}
+Each listed year has a basic allowance. A year with tariff zones also has its tariff. A year without zones has only its basic allowance, and an income above that allowance is reported as outside the implemented range. The [roadmap](../roadmap.md) says which years still lack zones.
 
-## What fiskus supports today
+## Adding a year
 
-fiskus covers the basic allowance for VZ 2003 to 2026, given as `TaxYear::Y2003` to `TaxYear::Y2026`. There is no year outside that range, so fiskus does not estimate the amounts for other years.
-
-## Other years
-
-Each year has its own parameter file in `rules/`, checked line by line against that year's statute. When the law changes for a year that is already added, the parameter file and this page change together.
+Each year has its own parameter file in `rules/`, checked against that year's sources. When the law changes for a year that is already listed, the parameter file and the guide change together.

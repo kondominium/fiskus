@@ -1,54 +1,45 @@
 # Roadmap
 
-This page lists the features and domains fiskus plans to cover, in planned order. Everything here is not yet in fiskus, except the basic allowance (Grundfreibetrag) for tax years 2003 to 2026, which fiskus implements today.
+This page lists the features and domains fiskus plans to cover, in planned order. Each milestone says what is done, and what is still to do. Everything not marked done is not yet in fiskus.
 
 The order is deliberate. Each milestone depends on the ones before it. The build and the test process are proved on simple values before the complex formulas arrive.
 
 ## 1. Basic allowance for every tax year
 
-**Goal:** the build and the test process work for every tax year, using only the basic allowance.
+**Done:** each listed year has a `rules/<year>.toml` with its basic allowance, citation, source and retrieval date. The build checks every file. The listed years are in `TaxYear::ALL`.
 
-- Add one `rules/<year>.toml` for each tax year, with the value, citation, source and retrieval date.
-- Run the build check and the year tests for every year.
-- Check that the packaged crate builds with every year file in it.
-- Follow the steps in [Tax parameters](contributing/code.md#tax-parameters) for each new year.
+**Still to do:**
+
 - Check the sources regularly for changes to each year's values, and retrieve the new source when a value changes.
 
 ## 2. Kani proof fixes
 
-**Goal:** the proofs check what they claim, before the tariff work depends on them.
+**Done:** the proofs cover the zero zone for any zone table, the joint doubling and halving, the rejection of negative income, the solidarity surcharge bounds, and the saturation of `Cents::from_euros`. Each proof states its bound in a comment. The floor of a fraction is a property test instead, because the solver cannot finish a proof over 128-bit division in reasonable time.
 
-- Prove the joint boundary against an independent statement: a joint filer is in the zone if and only if the whole euros are at most twice the allowance plus one.
-- Prove `whole_euros` for every `i128` value: it is the floor of the cents divided by 100.
-- Use one bound name for euro values and another for cents.
-- State in each proof's comment what it covers and what it does not, such as the allowance being a free input.
+**Still to do:**
+
+- Prove the joint boundary against an independent statement: a joint filer is in the zone if and only if the half of the income is at most the allowance.
+- Prove `whole_euros` for every `i128` value, not only a bound.
 
 ## 3. Rounding
 
-**Goal:** every rounding step is stated, tested and documented in the order the statute applies it.
-
-- Taxable income is rounded down to the whole euro (§ 32a Abs. 1 Satz 1 EStG).
-- The formula result is rounded down to the whole euro (§ 32a Abs. 1 Satz 6 EStG).
-- For joint filers, the half of the income is rounded down, taxed, and the result is doubled (§ 32a Abs. 5 EStG).
-- Write the rounding rules on a page of their own under `docs/formulas/`.
-- Test each step with the values on either side of it.
+**Done:** taxable income is rounded down to the whole euro (§ 32a Abs. 1 Satz 1 EStG), the tax is rounded down once at the end of the zone (§ 32a Abs. 1 Satz 6 EStG), and joint filers are taxed on the rounded-down half (§ 32a Abs. 5 EStG). The rules are on the [tariff](formulas/tariff.md) page, and the unit and property tests run them for every listed year.
 
 ## 4. Income tax from taxable income to total tax
 
-**Goal:** calculate the total tax from taxable income (zu versteuerndes Einkommen). The total tax is the income tax (Einkommensteuer), the solidarity surcharge (Solidaritätszuschlag) and church tax (Kirchensteuer).
+**Done:** the tariff of § 32a Abs. 1 EStG for every listed year that has zones, for single and for joint filers. Average (effective) and marginal tax rates. Zone explanations through `explain`. The solidarity surcharge (§ 4 SolZG) for the years whose free threshold (§ 3 Abs. 3 SolZG) is in `rules/`: VZ 2024 to 2026 so far.
 
-- Tariff zones 2 to 5 of § 32a Abs. 1 EStG, for single filers.
-- Joint filing with the splitting procedure (§ 32a Abs. 5 EStG). The joint tax is always twice the tax on half the income, and always a whole number of euros.
+**Still to do:**
+
+- Sources for the zones of years that have none yet, and the draft years checked against their enacted text.
 - Widowed filers, for the year after the spouse dies (§ 32a Abs. 6 EStG).
-- The solidarity surcharge, under the Solidarity Surcharge Act (Solidaritätszuschlaggesetz 1995, SolZG).
+- The solidarity surcharge threshold for the years before VZ 2024. Their statute (the amendments before the Steuerfortentwicklungsgesetz) is not archived yet. The rates of § 4 SolZG are checked against the statute text in `docs/references`.
 - Church tax, which each state sets for its members.
-- Kani proofs for the formulas over bounded inputs: no panic, and exact zone boundaries.
-- Check that adjacent formulas agree at each threshold, to within one euro.
-- Fuzz testing of the calculation path. Not yet in fiskus. Update the testing page when it lands.
+- Fuzz tests of the surcharge and tariff paths beyond the smoke run, on a scheduled job.
 
 ## 5. Conformance with the BMF calculator
 
-**Goal:** find bugs by comparing fiskus with the results of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) calculator.
+**Goal:** find bugs by comparing fiskus with the results of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) calculator. This is the next milestone. It lives on its own branch, so the unit, property and proof layers stay free of fixed figures per year.
 
 - Take the BMF results for chosen incomes, about 2,000 cases planned. Not yet in fiskus.
 - Check the terms of use of the BMF results before any fixture is committed to the repository.
@@ -67,10 +58,11 @@ The order is deliberate. Each milestone depends on the ones before it. The build
 
 **Goal:** figures derived from the tax, each with the references that explain it.
 
-- The average tax rate, also called the effective tax rate (Durchschnittssteuersatz), as a percentage of taxable income.
-- The marginal tax rate (Grenzsteuersatz), as the tax on the next euro, as a percentage.
-- The tariff zone (Tarifzone) that a figure falls in, with the statute section that sets it.
-- An explanation for each figure, with a reference to the statute section behind it.
+**Done:** the average tax rate (Durchschnittssteuersatz) and the marginal tax rate (Grenzsteuersatz) in `explain`, the tariff zone (Tarifzone) that a figure falls in, and the citation and archived source of the year's tariff.
+
+**Still to do:**
+
+- An explanation for each figure that names its statute section, not only the year's source.
 - Formulas shared by more than one zone or tax year are written once, and every place that uses them refers to that one place.
 
 ## 8. Taxable income from income (§ 2 EStG)

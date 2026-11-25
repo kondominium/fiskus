@@ -7,3 +7,40 @@ source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/St
 retrieved = "2026-11-22"
 reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2023-bmf-pap-ab-juli-2023.pdf"
 
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2023 (UPTAB23)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2023-06-09-geaenderte-PAP-2023-anwendung-ab-dem-1-juli-2023-anlage-1.pdf?__blob=publicationFile&v=5"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2023-bmf-pap-ab-juli-2023.pdf"
+
+[[zone]]
+from_eur = 10909
+base_eur = 10908
+step_eur = 10000
+quadratic_h = 97918
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 16000
+base_eur = 15999
+step_eur = 10000
+quadratic_h = 19259
+linear_h = 239700
+constant_h = 96653
+
+[[zone]]
+from_eur = 62810
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -997298
+
+[[zone]]
+from_eur = 277826
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1830773

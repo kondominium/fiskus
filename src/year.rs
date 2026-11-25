@@ -86,33 +86,7 @@ impl TaxYear {
 
     /// Returns the variant for `year` if fiskus implements that assessment year, otherwise `None`.
     pub fn from_year(year: u16) -> Option<Self> {
-        match year {
-            2003 => Some(Self::Y2003),
-            2004 => Some(Self::Y2004),
-            2005 => Some(Self::Y2005),
-            2006 => Some(Self::Y2006),
-            2007 => Some(Self::Y2007),
-            2008 => Some(Self::Y2008),
-            2009 => Some(Self::Y2009),
-            2010 => Some(Self::Y2010),
-            2011 => Some(Self::Y2011),
-            2012 => Some(Self::Y2012),
-            2013 => Some(Self::Y2013),
-            2014 => Some(Self::Y2014),
-            2015 => Some(Self::Y2015),
-            2016 => Some(Self::Y2016),
-            2017 => Some(Self::Y2017),
-            2018 => Some(Self::Y2018),
-            2019 => Some(Self::Y2019),
-            2020 => Some(Self::Y2020),
-            2021 => Some(Self::Y2021),
-            2022 => Some(Self::Y2022),
-            2023 => Some(Self::Y2023),
-            2024 => Some(Self::Y2024),
-            2025 => Some(Self::Y2025),
-            2026 => Some(Self::Y2026),
-            _ => None,
-        }
+        Self::ALL.into_iter().find(|variant| variant.year() == year)
     }
 
     /// Every implemented assessment year, oldest first.

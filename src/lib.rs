@@ -6,13 +6,15 @@
 //!
 //! Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //!
-//! So far only the Grundfreibetrag zone of § 32a EStG is implemented, for VZ 2003 to 2026.
+//! fiskus computes the income tax of § 32a EStG for every year in [`TaxYear::ALL`] that has tariff zones,
+//! and the basic allowance for every listed year. See the guide in `docs/guide` for how the calculation works.
 
 mod assessment;
 mod error;
 mod filing_unit;
 mod money;
 mod params;
+mod solidarity_surcharge;
 mod tariff;
 mod year;
 
@@ -20,5 +22,10 @@ pub use assessment::Assessment;
 pub use error::Error;
 pub use filing_unit::{FilingStatus, FilingUnit};
 pub use money::Cents;
-pub use tariff::{assess, basic_allowance_eur};
+pub use solidarity_surcharge::{
+    solidarity_free_threshold_eur, solidarity_source, solidarity_surcharge,
+};
+pub use tariff::{
+    Explanation, Fraction, Source, ZoneStep, assess, basic_allowance_eur, explain, tariff_zones,
+};
 pub use year::TaxYear;

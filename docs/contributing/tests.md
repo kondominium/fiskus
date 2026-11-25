@@ -11,67 +11,71 @@ Run tests through their `make` target, never a raw `cargo test`, so the flags ma
 | `make test-unit` | Unit and property tests in `src/` | The quick loop while coding |
 | `make test-doc` | Doc tests | Doc examples |
 | `make test-api` | `tests/public_api.rs` | What users import, errors, conversions |
-| `make test-guide` | Guide checks and the chart drift check | `docs/guide/`, charts, icons |
-| `make test-proofs` | Kani proofs | Pure functions over a bound |
+| `make test-guide` | Guide checks and the chart drift check | `docs/guide/`, charts, icons, glossary references |
+| `make test-proofs` | Kani proofs in `src/` | Pure functions over a stated bound |
 | `make test-all` | All of the above, except coverage | Before handover |
 | `make test-coverage` | Line coverage, fails below 90% | Before handover |
 | `make bench` | Criterion benchmarks | Hot-path changes. Not a gate |
 
-## Pick the layer that proves the claim
+## The test pyramid
 
-| Claim | Layer | Where |
-|---|---|---|
-| One value or error for one case | Unit test | `#[cfg(test)] mod tests` beside the code |
-| Extremes, unexpected inputs and whole ranges: no panic, rounding, zone membership | Property test (`proptest`) | Same module as the rule |
-| A formula holds for every input in a bound, and the code cannot panic | Kani harness | `#[cfg(kani)] mod verification` |
-| Functionality of exported types: constructors, conversions, the public call and its error paths | Public API test | `tests/`, using `fiskus::` paths only |
-| The BMF calculator's results for chosen incomes | Conformance test | Not yet in fiskus. Do not add fixtures until the conformance work lands |
-| Claims in docs and examples | Doc test | `///` on the public item |
-| Guide and code agree | Guide check | `scripts/guide/checks.rs`. Extend it for a new rule. Do not work around it |
+Each layer answers one question, and a test belongs to the lowest layer that can answer it. The table lists each layer with what it is for and what it must not do.
+
+| Layer | Question it answers | Where | Must not |
+|---|---|---|---|
+| Unit | Does this function do what its rule says, on a small case? | `#[cfg(test)] mod tests` beside the code | Pin a figure of a real year |
+| Property | Does the rule hold for every input in a range? | `proptest` in the same modules, and `tests/` for the public API | Pin a figure of a real year |
+| Proof (Kani) | Does this pure function hold for every input in a bound? | `#[cfg(kani)] mod verification` | Be unbounded. Each proof states its bound |
+| API | Does the public contract behave as documented? | `tests/public_api.rs`, `fiskus::` paths only | Use internal modules |
+| Doc | Does each example compile and run? | `///` examples on public items | Show a figure that a change would silently break |
+| Guide | Do the guide and the rules agree? | `scripts/guide/checks.rs` and the chart drift check | Be worked around. Extend it for a new rule |
+| Conformance | Does fiskus match the BMF calculator for chosen incomes? | Not yet in fiskus. It is the next milestone, on its own branch | Be added to the other layers |
+
+**Figures belong to conformance.** The unit, property, proof and API layers use the rule data and the properties of the tariff, never a fixed figure for a year. The tests run for every year in `TaxYear::ALL`, so a new year is covered without an edit. Fixed figures wait for the conformance layer, where they are checked against the BMF calculator.
 
 Test a claim in one layer. Repeat it in another only when the second layer checks something different.
+
+## Good and bad
+
+Each test has a `//` comment above it that names the case and cites its section, when the case comes from the statute. The test name says what runs.
+
+Good: a property over every listed year, with its rule named.
+
+```rust
+// Joint tax is exactly twice the tax on half of the income, rounded down (§ 32a Abs. 5 EStG).
+proptest! {
+    #[test]
+    fn joint_tax_is_twice_the_single_tax_on_half_the_income(index in year_index(), euros in 0..2_000_000i128) {
+        let year = TaxYear::ALL[index];
+        // ...
+    }
+}
+```
+
+Bad: a fixed figure for one year, which breaks when the rules change for that year, and tests nothing else.
+
+```rust
+// A figure for one year, copied from a statute.
+assert_eq!(assess(year, &joint(2_471_200)).unwrap().income_tax, Cents::from_euros(2));
+```
 
 ## When to add what
 
 | Change | Add |
 |---|---|
-| New tariff rule or zone | A page in `docs/formulas/` first. Unit tests on both sides of each boundary, with cents. One proptest for the rule's property. A Kani harness if the function is pure. A public test if users see it. A guide update |
-| New public item | A `///` doc with units and errors, a doc example, and a `tests/` test that calls it |
+| New tariff rule or zone | A page in `docs/formulas/` first. A property that the rule holds for every year. A Kani harness if the function is pure. A public test if users see it. A guide update. The fixed figures wait for conformance |
+| New public item | A `///` doc with units and errors, a doc example, and a `tests/` test that calls it. An example in `examples/` if it is a new entry point |
 | New error variant | A test for its `Display` text, a test that returns it, and an example |
 | Bug fix | A failing test that reproduces the bug, committed with the fix |
-| Parameter value change | The `rules/` citation and source, the formula page and the guide. Update every test that cites the value, with the same citation |
+| Parameter value change | The `rules/` citation and source, the formula page and the guide. The properties need no edit |
 | Refactor with no behaviour change | Nothing new. The existing tests must pass. Do not add tests that only pin internals |
 | Docs only | The guide checks. New tests only if a claim changed |
 
 ## How many
 
-- For each threshold, test the value just below, at and just above it, with cents where they matter. Add one interior value. That is the whole table, not a grid.
-- Keep proptest to one or two properties per rule. Use a table of cases where a few examples say it clearly.
-- Write Kani harnesses only for pure functions, and state the bound in a comment.
-- Kani needs bounded integers to finish. The boundary harness bounds cents to ±10^12 (see the comment in `src/tariff.rs`). The no-panic harness covers the full `i128` range.
-- Pass parameters into a harness, so a proof never parses TOML.
-
-## Good and bad
-
-Each test has a `//` comment above it that names the case and cites its section. The test name says what runs. The comment says which case and why it matters.
-
-Good:
-
-```rust
-// Joint filer at 24 698 €: the half is 12 349 €, just outside the zone (§ 32a Abs. 5 EStG).
-#[test]
-fn joint_one_euro_above_the_split_zone_is_outside_the_implemented_range() {
-    let error = assess(TaxYear::Y2026, &joint((JOINT_ZONE_EUR + 1) * 100)).unwrap_err();
-    assert_eq!(error, Error::OutsideImplementedRange { taxable_income_eur: JOINT_ZONE_EUR + 1 });
-}
-```
-
-Bad:
-
-- `assert!(result.is_ok());` alone. It passes for any amount. Assert the value.
-- Expected values copied from fiskus's own output. Take them from the statute. A value copied from fiskus's own output tests nothing.
-- A proptest that re-implements the rule to compare against. It repeats the same mistake. Assert a property: zone membership, rounding direction, no panic.
-- One test that covers several zones and several cases. Split it, so a failure names the case.
+- Unit tests: the rule's boundary values, the value just below and just above, with cents where they matter, and one interior value, using fixture data.
+- Property tests: one or two properties per rule. Keep the input ranges bounded, so a failing case is readable.
+- Kani harnesses: only for pure functions, with the bound stated in a comment. Keep each bound small enough that the proof runs in CI.
 - `#[ignore]` without a linked issue. Ignored tests hide gaps.
 - A test that reads a file or TOML. The library reads no files at runtime. The guide checks are the exception, because they compare docs with `rules/`.
 - Asserting on `Debug` output. Assert values and `Display` text, which users see.

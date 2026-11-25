@@ -2,11 +2,11 @@
 
 # About this guide
 
-Think of this as the **release notes for fiskus**, told as the story of how income tax is worked out. It covers version 0.1.0-dev, tax years 2003 to 2026.
+This guide explains how fiskus works out German income tax (Einkommensteuer), one step at a time. It covers every assessment year that fiskus lists in `TaxYear::ALL`. The code and the guide change together: a feature is not done until its page says so.
 
-- What is in: the steps fiskus does today, in the order the tax is worked out.
+- What is in: the steps fiskus computes today, in the order the tax is worked out.
 - What is not: steps that are not built yet. They are marked "not yet in fiskus" on the [overview](README.md) and explained when they ship.
-- How it stays current: the guide changes with the code. A new feature is not done until its page says so.
+- How fiskus thinks about the numbers: [How fiskus thinks](07-how-fiskus-thinks.md).
 
 Terms are listed in the [glossary](glossary.md).
 

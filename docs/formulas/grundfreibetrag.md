@@ -1,49 +1,31 @@
-# Basic allowance zone (Grundfreibetrag), § 32a EStG
+# Basic allowance (Grundfreibetrag), § 32a EStG
 
-The basic allowance (Grundfreibetrag) is not a deduction from income. It is the first zone of the tariff: tax is zero for taxable income up to the threshold.
+The basic allowance is the first zone of the tariff, and its tax is zero. It is the amount in `rules/<year>.toml` under `[basic_allowance]`, and `basic_allowance_eur(year)` returns it.
 
-## Statute
+## Rule
 
-§ 32a Abs. 1 Satz 1 EStG and § 32a Abs. 1 Satz 2 Nr. 1 EStG (source: https://www.gesetze-im-internet.de/estg/__32a.html, retrieved 2026-11-22):
-
-> Die tarifliche Einkommensteuer bemisst sich nach dem auf volle Euro abgerundeten zu versteuernden Einkommen. Sie beträgt ab dem Veranlagungszeitraum 2026 [...] jeweils in Euro für zu versteuernde Einkommen 1. bis 12 348 Euro (Grundfreibetrag): 0
-
-§ 32a Abs. 5 EStG (splitting procedure, Splitting-Verfahren):
-
-> Bei Ehegatten, die nach den §§ 26, 26b zusammen zur Einkommensteuer veranlagt werden, beträgt die tarifliche Einkommensteuer [...] das Zweifache des Steuerbetrags, der sich für die Hälfte ihres gemeinsam zu versteuernden Einkommens nach Absatz 1 ergibt.
-
-## Rules
-
-Let $z$ be the taxable income (zu versteuerndes Einkommen) in cents. Let $e = \lfloor z / 100 \rfloor$ be the whole-euro amount. The statute rounds down before any tariff step.
-
-Single, basic tariff (Grundtarif, § 26a EStG):
+Let `G` be the basic allowance for the assessment year, and let `x` be the taxable income in whole euros. For a single filer, the zone of zero tax is:
 
 $$
-b = e
+x \le G \quad\Rightarrow\quad T(x) = 0
 $$
 
-Joint, splitting tariff (Splittingtarif, § 26b EStG with § 32a Abs. 5 EStG):
+For a joint filer with joint taxable income `z`, the zone uses the half of `z`, rounded down, against `G`:
 
 $$
-b = \left\lfloor \frac{e}{2} \right\rfloor
+\left\lfloor \frac{z}{2} \right\rfloor \le G \quad\Rightarrow\quad T_{\text{joint}}(z) = 0
 $$
 
-The zone applies when $b \le G$, where $G$ is the basic allowance for the assessment year. For VZ 2026, $G = 12\,348$. The values for all years 2003 to 2026 are in `rules/<year>.toml` and are exposed as `basic_allowance_eur(year)`. In that zone the tariff tax is $0$, and for joint filing $2 \cdot 0 = 0$.
+The zone is the tax zone and not a deduction. Income is not reduced by `G`.
 
-Outside the zone, the code returns an error. The next tariff zones are not implemented yet.
+## The zero-tax range runs past G
 
-## Boundaries (VZ 2026)
+Tax is rounded down to whole euros at the end of the zone, so the first few euros above `G` still pay no tax. The zero-tax range is the set of incomes where the rounded-down tax is zero, and it is longer than the zone. The boundary is where the first zone's formula reaches one euro.
 
-| Filing | Last zero-tax taxable income (whole euros) | First taxable income outside the zone |
-|---|---|---|
-| Single | 12 348 | 12 349 |
-| Joint | 24 697 | 24 698 |
+Take a sample allowance `G = 10 000` and a sample first zone of the statute's form, `(a·y + b)·y` with `y = (x − G) / 10 000`, `a = 1 000` and `b = 1 400`. For `d = x − G = 7`, `y = 0.0007` and the tax is `(1 000 · 0.0007 + 1 400) · 0.0007 ≈ 0.98 €`, which rounds down to 0 €. For `d = 8`, the tax is about 1.12 €, which rounds down to 1 €. So the zero-tax range runs 7 euros past the allowance in this sample. These numbers are sample data, not a statute.
 
-The joint boundary is 24 697, not 24 696. The half of 24 697 is 12 348.50, which rounds down to 12 348, still inside the zone. A joint boundary of 24 696 would only follow if the half were not rounded down before the zone check, which § 32a Abs. 1 Satz 1 does not allow.
+The real boundaries of a year follow from its zones, and `explain` shows the zone and the unrounded tax for any income.
 
-## Not covered here
+## Joint filers
 
-- Zones 2 to 5 of § 32a Abs. 1 EStG (tax above the basic allowance).
-- How taxable income (zu versteuerndes Einkommen) is computed from income (§ 2 EStG).
-- The solidarity surcharge (Solidaritätszuschlag) and church tax (Kirchensteuer).
-- The exceptions named in § 32a Abs. 1 Satz 2 EStG: § 32b EStG, § 32d EStG, § 34 EStG and § 34a EStG.
+The splitting tariff applies the zone to half of the income. The joint zero zone is therefore about twice the single zone, plus the few euros of rounding. The guide's [basic allowance page](../guide/04-basic-allowance.md) shows the latest year's figures.

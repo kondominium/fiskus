@@ -1,7 +1,7 @@
 .SILENT:
 MISE ?= $(shell which mise)
 
-.PHONY: help build lint test-unit test-doc test-api test-guide test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-basic-allowance
+.PHONY: help build lint test-unit test-doc test-api test-guide test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-income-tax run-example-explain-tax
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {name[NR] = $$1; desc[NR] = $$2; if (length($$1) > width) width = length($$1)} END {fmt = "  %-" width "s %s\n"; for (i = 1; i <= NR; i++) printf fmt, name[i], desc[i]}'
@@ -45,11 +45,14 @@ docs: ## Build the docs book into target/book
 docs-serve: ## Serve the docs book locally with live reload
 	$(MISE) run docs-serve
 
-docs-clean: ## Remove the docs book and leftover calculator builds from other branches
+docs-clean: ## Remove the docs book
 	$(MISE) run docs-clean
 
-charts: ## Regenerate the guide charts in docs/guide/assets/charts
+charts: ## Regenerate the guide charts and the generated tariff tables
 	$(MISE) run charts
 
-run-example-basic-allowance: ## Run examples/basic_allowance.rs
-	$(MISE) run run-example-basic-allowance
+run-example-income-tax: ## Run examples/income_tax.rs
+	$(MISE) run run-example-income-tax
+
+run-example-explain-tax: ## Run examples/explain_tax.rs
+	$(MISE) run run-example-explain-tax

@@ -12,7 +12,7 @@ Source tiers, strongest first:
 
 | File | Source | Used for | Status | Retrieved from | sha256 |
 |---|---|---|---|---|---|
-| `2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf` | Tax Development Act (Steuerfortentwicklungsgesetz, SteFeG), BGBl. 2024 I Nr. 449, Art. 1 and 2 | VZ 2025, 2026 | primary, MD5 `b0dd71ec…` matches the BGBl page | https://www.recht.bund.de/bgbl/1/2024/449/regelungstext.pdf?__blob=publicationFile&v=1 | `0a679eafcaf3a658b84a5ef0a69992539fee7052cc80eca6fe2a04a9e56ddcf3` |
+| `2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf` | Tax Development Act (Steuerfortentwicklungsgesetz, SteFeG), BGBl. 2024 I Nr. 449, Art. 1 and 2 (tariff), Art. 3 and 4 (solidarity thresholds of § 3 Abs. 3 SolZG: VZ 2025 and 2026, and the VZ 2024 amounts it replaces) | VZ 2024, 2025, 2026 tariff and solidarity thresholds | primary, MD5 `b0dd71ec…` matches the BGBl page | https://www.recht.bund.de/bgbl/1/2024/449/regelungstext.pdf?__blob=publicationFile&v=1 | `0a679eafcaf3a658b84a5ef0a69992539fee7052cc80eca6fe2a04a9e56ddcf3` |
 | `2024-bgbl-existenzminimum-I-386.pdf` | Act on the Existenzminimum 2024 (Gesetz zur steuerlichen Freistellung des Existenzminimums 2024), BGBl. 2024 I Nr. 386, Art. 1, read in full | VZ 2024 | primary | https://www.recht.bund.de/bgbl/1/2024/386/regelungstext.pdf?__blob=publicationFile&v=1 | `411b3b7fedbb61a68a1ce0286571c5454f6f700843aed54dcf595c5fac5569b5` |
 | `2006-bmf-pap-2006.pdf` | BMF Programmablaufplan 2006 | VZ 2006 | official | https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/006_PAP_2006_a.pdf | `f168862107f9dab98ed61b115406dd650cbe77b16e733fcc039fe4b517b12e6c` |
 | `2007-bmf-pap-2007.pdf` | BMF Programmablaufplan 2007 | VZ 2007 | official | …/010_PAP_2007_a.pdf | `0ebe26c1fd81258dd27fd4c6b01eb1aacd68342215fe81aa192466f420c99c6e` |
@@ -39,7 +39,7 @@ Source tiers, strongest first:
 | `2025-bmf-pap-2025.pdf` | BMF Programmablaufplan 2025, amended | VZ 2025 check, states "auf 12.096 Euro" | official | …/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf | `092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53` |
 | `2026-bmf-pap-2026.pdf` | BMF Programmablaufplan 2026, `GFB = 12348` | VZ 2026 check | official | …/2025-11-12-PAP-2026-anlage-1.pdf | `5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48` |
 
-The PAP URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/`, abbreviated `…/` above. Each PAP is also listed by the [Lohnsteuer repository](https://github.com/MarcelLehmann/Lohnsteuer) (Apache-2.0, a generator built from these PAPs). We used the BMF files directly and copied no code from it.
+The PAP URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/`, abbreviated `…/` above. Each PAP is also listed by the [Lohnsteuer repository](https://github.com/MarcelLehmann/Lohnsteuer) (Apache-2.0, a generator built from these PAPs). The BMF files were used directly, and no code from that repository was copied.
 
 ## Bundestag documents
 
@@ -65,10 +65,10 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 
 | File | Source | Status | sha256 |
 |---|---|---|---|
-| `secondary-buzer-gesetz-8650-stabsig-2009.txt` | StabSiG, transcribed on buzer.de | unquoted secondary | `d76be1e03d356f0296e412e3ebc3b90ed0deef29d1ce86184365e1d09839b1ce` |
-| `secondary-buzer-gesetz-10510-abbau-kalte-progression-2013.txt` | Act to Reduce Cold Progression (Gesetz zum Abbau der kalten Progression), BGBl. 2013 I S. 283, transcribed on buzer.de | unquoted secondary | `b3f69fcf7e378e19465de551cad5fca4b7cd83e75c8971228c599d63793eca2b` |
-| `secondary-buzer-gesetz-11668-kigaanhg-2015.txt` | KiGAnhG, BGBl. 2015 I S. 1202, transcribed on buzer.de | unquoted secondary | `68a2a8de1910fb79fa167d5e6832f597e34c205190f02296a3f30835f7d67e59` |
-| `secondary-buzer-gesetz-9913-stvereinfg-2011.txt` | Tax Simplification Act 2011 (Steuervereinfachungsgesetz 2011), transcribed on buzer.de; no basic allowance text in it | context only | `ca48bf3143434d310bff7b963bb24fa1f85d05d6b8348a897c84cad6cdef589f` |
+| `2009-buzer-stabsig-8650.txt` | StabSiG, transcribed on buzer.de | unquoted secondary | `d76be1e03d356f0296e412e3ebc3b90ed0deef29d1ce86184365e1d09839b1ce` |
+| `2013-buzer-abbau-kalte-progression-10510.txt` | Act to Reduce Cold Progression (Gesetz zum Abbau der kalten Progression), BGBl. 2013 I S. 283, transcribed on buzer.de | unquoted secondary | `b3f69fcf7e378e19465de551cad5fca4b7cd83e75c8971228c599d63793eca2b` |
+| `2015-buzer-kigaanhg-11668.txt` | KiGAnhG, BGBl. 2015 I S. 1202, transcribed on buzer.de | unquoted secondary | `68a2a8de1910fb79fa167d5e6832f597e34c205190f02296a3f30835f7d67e59` |
+| `2011-buzer-stvereinfg-9913.txt` | Tax Simplification Act 2011 (Steuervereinfachungsgesetz 2011), transcribed on buzer.de; no basic allowance text in it | context only | `ca48bf3143434d310bff7b963bb24fa1f85d05d6b8348a897c84cad6cdef589f` |
 
 ## Not yet in fiskus
 
@@ -78,9 +78,13 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 
 ## Tariff sources (`rules/<year>.toml`)
 
-- **BMF withholding guidance (PAP), VZ 2006 to 2023.** The coefficients were checked against each year's PAP text in `docs/references`. The Lohnsteuer repository (Apache-2.0) mirrors the BMF's XML and generated Java for each year. We read the tariff method from that Java and copied no code.
+- **BMF withholding guidance (PAP), VZ 2006 to 2023.** The coefficients were checked against each year's PAP text in `docs/references`. The Lohnsteuer repository (Apache-2.0) mirrors the BMF's XML and generated Java for each year. The tariff method was read from that Java, and no code was copied.
 - **Statute, VZ 2024 to 2026.** BGBl. 2024 I Nr. 386 and Nr. 449, in `docs/references`.
+- **Draft, VZ 2004 and 2005.** The tariff is the § 32a text of the Haushaltsbegleitgesetz 2004 draft (BT-Drs. 15/1502, in `docs/references`). The draft moves the tariff of 2005 forward to VZ 2004, and the 2006 PAP has the same coefficients. The enacted text (BGBl. 2003 I S. 3076) is not archived yet, so these years are marked as draft.
+- **Not yet in fiskus, VZ 2003.** No archived source gives the zones of the 2003 tariff.
 - **Not stored:** the repository's XML and Java files. Their origin at the BMF is not yet verified, because the bmf-steuerrechner.de site returned HTTP 503 during this work.
+
+How the coefficients were checked: every coefficient of VZ 2006 to 2023 was searched for in the text of its PAP, in the form the PAP prints it (for example `997,6` for 997,60). All were found. The structure was checked by the build: each zone starts where the previous one ends, with a tax difference of at most one euro. For VZ 2024 to 2026 the coefficients were read against the statute text. The Lohnsteuer repository was used only as a lead, not as a source.
 
 ## Lead sources (not stored)
 

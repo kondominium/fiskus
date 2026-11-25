@@ -7,3 +7,40 @@ source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/St
 retrieved = "2026-11-22"
 reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2018-bmf-pap-2018.pdf"
 
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2018 (UPTAB18)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2017-11-23-PAP-2018-anlage-1-geaendert.pdf?__blob=publicationFile&v=1"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2018-bmf-pap-2018.pdf"
+
+[[zone]]
+from_eur = 9001
+base_eur = 9000
+step_eur = 10000
+quadratic_h = 99780
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 13997
+base_eur = 13996
+step_eur = 10000
+quadratic_h = 22013
+linear_h = 239700
+constant_h = 94849
+
+[[zone]]
+from_eur = 54950
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -862175
+
+[[zone]]
+from_eur = 260533
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1643770

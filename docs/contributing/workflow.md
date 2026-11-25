@@ -4,23 +4,14 @@ Applies to humans and agents. fiskus uses trunk-based development: `main` is the
 
 ## Branches
 
-Name a branch `<prefix>/<slug>`, in lowercase with hyphens.
-
-| Prefix | Use for | Example |
-|---|---|---|
-| `feat/` | New behaviour: a tariff zone, a public call | `feat/joint-zone` |
-| `fix/` | A bug fix | `fix/joint-rounding` |
-| `docs/` | Docs, guide, contributing pages | `docs/testing` |
-| `tests/` | Tests and benchmarks only | `tests/public-api` |
-| `refactor/` | No behaviour change | `refactor/zone-check` |
-| `ci/` | Workflows, Makefile and mise tasks | `ci/nightly-bench` |
+Branch from `main`. Any name works, in lowercase with hyphens, as long as it is short-lived.
 
 ## Daily flow
 
 | Step | Command | Why |
 |---|---|---|
 | 1. Update main | `git switch main && git pull --ff-only` | Start from the trunk |
-| 2. Branch | `git switch -c docs/testing` | Branch from main, never from another branch |
+| 2. Branch | `git switch -c <name>` | Branch from main, never from another branch |
 | 3. Commit a slice | `git add <the slice's files>`, then `git commit` | One slice per commit. The owner commits |
 | 4. Stay current | `git fetch origin && git rebase origin/main` | Rebase onto main. Repeat daily and before handover |
 | 5. Gate | `make gates` | Same checks as CI |
@@ -47,11 +38,7 @@ Set this once, so a plain `git pull` rebases: `git config pull.rebase true`.
 - Scope: one slice per commit. Stage only that slice's files.
 - Gate: `make gates` passes before the commit.
 
-| Good | Bad | Why |
-|---|---|---|
-| `Pande viam fisci` | `feat: add joint zone` | Imperative, no type prefix |
-| `Round joint halves down before the zone check` | `Update code` | Says what changed |
-| `Bootstrap repo fundamentals` | `WIP` | A reviewer can tell the slice from the title |
+Good title: `Round joint halves down before the zone check`. Bad title: `Update code`. A reviewer can tell the slice from the title.
 
 ## Agents
 

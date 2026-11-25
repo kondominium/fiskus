@@ -7,3 +7,40 @@ source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/St
 retrieved = "2026-11-22"
 reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf"
 
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2020 (UPTAB20)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2019-11-11-PAP-2020-anlage-1.pdf?__blob=publicationFile&v=2"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2020-bmf-pap-2020.pdf"
+
+[[zone]]
+from_eur = 9409
+base_eur = 9408
+step_eur = 10000
+quadratic_h = 97287
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 14533
+base_eur = 14532
+step_eur = 10000
+quadratic_h = 21202
+linear_h = 239700
+constant_h = 97279
+
+[[zone]]
+from_eur = 57052
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -896374
+
+[[zone]]
+from_eur = 270501
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1707874

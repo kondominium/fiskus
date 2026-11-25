@@ -7,3 +7,40 @@ source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/St
 retrieved = "2026-11-22"
 reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
 
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2015 (UPTAB15)"
+source = "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/2015-09-08-PAP-dezember-2015-anlage-1.pdf?__blob=publicationFile&v=3"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2015-bmf-pap-dezember-2015.pdf"
+
+[[zone]]
+from_eur = 8473
+base_eur = 8472
+step_eur = 10000
+quadratic_h = 99760
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 13470
+base_eur = 13469
+step_eur = 10000
+quadratic_h = 22874
+linear_h = 239700
+constant_h = 94868
+
+[[zone]]
+from_eur = 52882
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -826129
+
+[[zone]]
+from_eur = 250731
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1578319

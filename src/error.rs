@@ -7,7 +7,7 @@ use std::fmt;
 pub enum Error {
     /// Taxable income (zu versteuerndes Einkommen) is below zero (§ 2 Abs. 5 EStG).
     NegativeTaxableIncome,
-    /// Taxable income is above the basic allowance zone (Grundfreibetrag). The tariff zones beyond it are not implemented yet.
+    /// Taxable income is above the basic allowance (Grundfreibetrag), and fiskus cannot compute its tax: the year has no tariff zones yet, or the amount is too large for `i128`.
     OutsideImplementedRange {
         /// Taxable income in whole euros.
         taxable_income_eur: i128,

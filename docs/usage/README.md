@@ -1,6 +1,6 @@
 # Using fiskus
 
-This page is for developers who call fiskus from Rust. It describes what the crate does today, which is one zone of the tariff. For the formulas, see [Formulas](../formulas/grundfreibetrag.md).
+This page is for developers and agents who call fiskus from Rust. It describes what the crate does today, and how to call it. For the reasoning behind the figures, read the [guide](../guide/README.md). For the formulas, read [Formulas](../formulas/grundfreibetrag.md).
 
 ## Status
 
@@ -11,33 +11,50 @@ fiskus is not on crates.io yet. Depend on it by path or git:
 fiskus = { path = "../fiskus" }
 ```
 
-## What it computes today
+## What it computes
 
-For tax years 2003 to 2026, `assess` returns the income tax (Einkommensteuer) for taxable income (zu versteuerndes Einkommen, zvE) in the basic allowance (Grundfreibetrag) zone of § 32a EStG. In that zone the tax is 0 €. Pass the year as `TaxYear::Y2003` to `TaxYear::Y2026`.
+- `assess` returns the income tax (Einkommensteuer) for taxable income (zu versteuerndes Einkommen, zvE) under the tariff of § 32a EStG, for single and joint filing.
+- `explain` returns the same tax with its steps: the zone, the unrounded tax, the average and marginal rates, and the citation of the year's tariff.
+- `tariff_zones` returns the zones of a year. `basic_allowance_eur` returns its basic allowance.
+- `solidarity_surcharge` returns the solidarity surcharge (Solidaritätszuschlag) for a year, a filing status and an income tax, with the year's free threshold (Freigrenze). It returns `None` for a year without a threshold. `solidarity_free_threshold_eur` and `solidarity_source` give the threshold and its citation.
 
-- Single filing, basic tariff (Grundtarif): zero tax up to 12 348 € of taxable income.
-- Joint filing, splitting tariff (Splittingtarif, § 32a Abs. 5 EStG): zero tax up to 24 697 € of joint taxable income.
-
-Above these amounts, `assess` returns `Error::OutsideImplementedRange`. It does not estimate the tax. Other tariff zones are not yet in fiskus.
+Every year fiskus lists is in `TaxYear::ALL`. A year without tariff zones returns its basic allowance as tax-free, and reports an income above it as outside the implemented range.
 
 fiskus does not compute taxable income yet. You pass it in as an amount.
 
-## Quick start
+## Choose a year
+
+`TaxYear` has one variant per listed year. Pick one from the list, or look it up by calendar year:
 
 ```rust
-use fiskus::{assess, Cents, Error, FilingStatus, FilingUnit, TaxYear};
+use fiskus::TaxYear;
+
+let latest = *TaxYear::ALL.last().expect("at least one year is listed");
+let by_number = TaxYear::from_year(latest.year()); // Some(latest)
+let unknown = TaxYear::from_year(0);              // None
+```
+
+## Quick start
+
+The example below uses the basic allowance of the latest year, so it stays correct when a year is added. It returns zero tax, because the zone of zero tax runs up to the allowance.
+
+```rust
+use fiskus::{Cents, Error, FilingStatus, FilingUnit, TaxYear, assess, basic_allowance_eur};
 
 fn main() -> Result<(), Error> {
+    let year = *TaxYear::ALL.last().expect("at least one year is listed");
     let unit = FilingUnit {
         filing: FilingStatus::Single,
-        taxable_income: Cents::from_euros(12_348),
+        taxable_income: Cents::from_euros(basic_allowance_eur(year)),
     };
 
-    let assessment = assess(TaxYear::Y2026, &unit)?;
+    let assessment = assess(year, &unit)?;
     assert_eq!(assessment.income_tax, Cents::new(0));
     Ok(())
 }
 ```
+
+Run the bundled examples with `cargo run --example income_tax` and `cargo run --example explain_tax`, or with `make run-example-income-tax` and `make run-example-explain-tax`.
 
 ## Inputs
 
@@ -48,7 +65,7 @@ The filing unit (Veranlagungseinheit) is `FilingUnit`. It has two fields:
 | `filing` | `FilingStatus` | `Single` (single assessment, Einzelveranlagung) or `Joint` (joint assessment, Zusammenveranlagung) |
 | `taxable_income` | `Cents` | Taxable income (zu versteuerndes Einkommen), in cents |
 
-Amounts are `Cents`, an exact integer count of cents. Build one from euros with `Cents::from_euros(12_348)`, or from cents with `Cents::new(1_234_800)`. Fractions of a euro are rounded down before the tariff is applied, as § 32a Abs. 1 Satz 1 EStG requires. An amount of 12 348.99 € is treated as 12 348 €.
+Build an amount from euros with `Cents::from_euros(12_348)`, or from cents with `Cents::new(1_234_800)`. Fractions of a euro are rounded down before the tariff applies, as § 32a Abs. 1 Satz 1 EStG requires. An amount of 1 000.99 € is taken as 1 000 €.
 
 ## Outputs
 
@@ -59,47 +76,67 @@ Amounts are `Cents`, an exact integer count of cents. Build one from euros with 
 | `taxable_income` | `Cents` | Taxable income, rounded down to whole euros |
 | `income_tax` | `Cents` | Tariff tax (tarifliche Einkommensteuer), whole euros |
 
-Read the amount in euros with `income_tax.whole_euros()`, or in cents with `income_tax.get()`.
+`explain` returns an `Explanation`. Its fields are the zone (`zone`, a `ZoneStep` or `None` in the zero zone), `unrounded_basis_tax` (a `Fraction`), `income_tax_eur`, `average_rate`, `marginal_rate`, and `source` (a `Source` with the citation, the source and the archived copy, or `None` for a year without zones).
 
 ## Errors
 
-`assess` returns `Result<Assessment, Error>`:
+`assess` and `explain` return `Result<_, Error>`:
 
 | Error | When |
 |---|---|
-| `NegativeTaxableIncome` | `taxable_income` is below zero |
-| `OutsideImplementedRange { taxable_income_eur }` | Above the basic allowance zone (joint: above 24 697 € of joint income) |
+| `NegativeTaxableIncome` | `taxable_income` is below zero. An input error, never a zero tax |
+| `OutsideImplementedRange { taxable_income_eur }` | The income is above the basic allowance, and fiskus cannot compute its tax: the year has no tariff zones, or the amount is too large for `i128` |
 
-`Error` implements `std::error::Error` and `Display`.
+`Error` implements `std::error::Error` and `Display`. Match on the variant, not on the message.
 
 ```rust
 use fiskus::{assess, Cents, Error, FilingStatus, FilingUnit, TaxYear};
 
+let year = *TaxYear::ALL.last().unwrap();
 let unit = FilingUnit {
     filing: FilingStatus::Single,
-    taxable_income: Cents::from_euros(12_349),
+    taxable_income: Cents::new(-1),
 };
-
-match assess(TaxYear::Y2026, &unit) {
-    Ok(assessment) => println!("tax: {} EUR", assessment.income_tax.whole_euros()),
-    Err(Error::OutsideImplementedRange { taxable_income_eur }) => {
-        println!("{taxable_income_eur} EUR is above the implemented range");
-    }
-    Err(other) => println!("{other}"),
+match assess(year, &unit) {
+    Ok(assessment) => println!("tax: {}", assessment.income_tax.whole_euros()),
+    Err(Error::NegativeTaxableIncome) => println!("fix the input"),
+    Err(error) => println!("cannot compute: {error}"),
 }
 ```
 
-## Tax year
+## Explanations and rates
 
-`TaxYear` has one variant per implemented year, `TaxYear::Y2003` to `TaxYear::Y2026`. Do not assume a year outside that range works.
+```rust
+use fiskus::{Cents, FilingStatus, FilingUnit, TaxYear, explain};
 
-## Not covered yet
+let year = *TaxYear::ALL.last().unwrap();
+let unit = FilingUnit {
+    filing: FilingStatus::Single,
+    taxable_income: Cents::from_euros(1_000_000),
+};
+let explanation = explain(year, &unit).unwrap();
+println!("zone {:?}, marginal rate {:.1} %", explanation.zone.map(|z| z.number), explanation.marginal_rate * 100.0);
+```
 
-- Income tax above the basic allowance zone.
-- Taxable income from income (§ 2 EStG), including income-related expenses (Werbungskosten), special expenses (Sonderausgaben) and pension and insurance expenses (Vorsorgeaufwendungen).
-- Solidarity surcharge (Solidaritätszuschlag) and church tax (Kirchensteuer).
-- Rates: marginal and average rates are not yet in fiskus.
+## Solidarity surcharge
 
-## Disclaimer
+```rust
+use fiskus::{Cents, FilingStatus, TaxYear, solidarity_surcharge};
 
-fiskus is an independent reference engine. It is not official software of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) or ELSTER, and it is not tax advice.
+let year = *TaxYear::ALL.last().expect("at least one year is listed");
+let surcharge = solidarity_surcharge(year, FilingStatus::Single, Cents::from_euros(1_000_000));
+println!("{:?}", surcharge.map(|cents| cents.whole_euros()));
+```
+
+The threshold of the year comes from its rule file. For a year without one, the result is `None`. See the [rates and surcharge](../guide/06-rates-and-surcharge.md) page.
+
+## What is not in fiskus yet
+
+- Taxable income from income (§ 2 EStG), allowances, special expenses and child allowances.
+- The special cases of § 32a Abs. 1 Satz 2 EStG and the tariff for a surviving spouse.
+- Church tax (Kirchensteuer).
+- Solidarity surcharge thresholds for the years whose statute is not yet archived.
+
+## Stability
+
+Before the crate is published, the API may change. The variants of `TaxYear` grow with each year. Match on them with a fallback arm, so a new year does not break your code.

@@ -7,3 +7,49 @@ source = "https://www.gesetze-im-internet.de/estg/__32a.html"
 retrieved = "2026-11-22"
 reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf"
 
+[source]
+citation = "§ 32a Abs. 1 Satz 2 EStG (Steuerfortentwicklungsgesetz, Art. 2 Nr. 2, BGBl. 2024 I Nr. 449)"
+source = "https://www.recht.bund.de/bgbl/1/2024/449/VO"
+retrieved = "2026-11-22"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf"
+
+[[zone]]
+from_eur = 12349
+base_eur = 12348
+step_eur = 10000
+quadratic_h = 91451
+linear_h = 140000
+constant_h = 0
+
+[[zone]]
+from_eur = 17800
+base_eur = 17799
+step_eur = 10000
+quadratic_h = 17310
+linear_h = 239700
+constant_h = 103487
+
+[[zone]]
+from_eur = 69879
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 42
+constant_h = -1113563
+
+[[zone]]
+from_eur = 277826
+base_eur = 0
+step_eur = 1
+quadratic_h = 0
+linear_h = 45
+constant_h = -1947038
+
+
+[solidarity]
+free_threshold_single_eur = 20350
+free_threshold_joint_eur = 40700
+citation = "§ 3 Abs. 3 Satz 1 SolZG (Steuerfortentwicklungsgesetz, Art. 4 Nr. 1 Buchst. a und b, BGBl. 2024 I Nr. 449)"
+source = "https://www.recht.bund.de/bgbl/1/2024/449/VO"
+retrieved = "2026-11-25"
+reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/2024-bgbl-steuerfortentwicklungsgesetz-I-449.pdf"

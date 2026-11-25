@@ -1,44 +1,47 @@
 ---
 name: add-tax-year
-description: Add a new assessment year to fiskus (basic allowance zone). Covers sourcing, files, docs, review and tests.
+description: Add a new assessment year to fiskus (basic allowance and tariff zones of § 32a EStG). Covers sourcing, files, docs, review and tests.
 ---
 
 # Add a tax year
 
-Use this when the task is "add VZ <year> to fiskus". The engine implements only the
-Grundfreibetrag zone of § 32a EStG, so a new year means a new basic allowance value
-plus the matching wiring. Follow these steps in order.
+Use this when the task is "add VZ <year> to fiskus". A year needs its basic allowance (Grundfreibetrag). If its tariff zones are sourced, it also needs its tariff. Follow these steps in order.
 
 ## 0. Input
 
-The target year is given as a four-digit calendar year, e.g. `2027`. Call it `Y`.
+The target year is a four-digit calendar year, e.g. `2027`. Call it `Y`.
+
+Before any edit, read the current range from code, not from this file: `YEARS` in `build.rs` and `TaxYear::ALL` in `src/year.rs`. The range the docs state must match them.
 
 ## 1. Verify the source (trustworthy, in this order)
 
-1. **Primary (statute):** the Bundesgesetzblatt text of the law that sets the amount.
-   - For recent years (2023+): recht.bund.de, e.g. `https://www.recht.bund.de/bgbl/1/<year>/<nr>/VO`.
-   - For older years: dejure.org lists every law amending § 32a EStG with its BGBl page (index only, not a statute): https://dejure.org/gesetze/EStG/32a.html.
-   - The amount appears as "bis <N> Euro (Grundfreibetrag)" in § 32a Abs. 1 Satz 2 Nr. 1 EStG.
-2. **Official (BMF):** the Programmablaufplan (PAP) PDF states the Grundfreibetrag as `GFB = <N>`. BMF URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/`.
-3. **Official report:** the Bundestag Existenzminimumbericht confirms the value for some years.
-4. Cross-check the candidate value against `docs/references/README.md` and the existing `rules/*.toml` to spot a typo.
+1. **Primary (statute):** the Bundesgesetzblatt (BGBl.) text of the law that sets the amount and the zones.
+   - 2023 and later: recht.bund.de, e.g. `https://www.recht.bund.de/bgbl/1/<year>/<nr>/VO`.
+   - Earlier: dejure.org lists every law amending § 32a EStG with its BGBl page (an index only): https://dejure.org/gesetze/EStG/32a.html.
+   - The basic allowance is written as "bis <N> Euro (Grundfreibetrag)" in § 32a Abs. 1 Satz 2 Nr. 1 EStG. The zones are the five formulas of § 32a Abs. 1 Satz 2 EStG.
+2. **Official (BMF):** the Programmablaufplan (PAP) PDF states `GFB = <N>` and the zone formulas. BMF URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/`.
+3. **Draft or report:** a Bundestag draft or report is a source of last resort. Mark it as a draft in the citation and in the docs, as VZ 2004 and 2005 are.
+4. Cross-check the candidate values against `docs/references/README.md`, the neighbouring years in `rules/`, and the Lohnsteuer repository (a lead only, never a source).
 
 Rules:
-- Never trust a number from memory or an LLM. Quote the statute or PAP.
+- Never trust a number from memory or from an LLM. Quote the statute or the PAP.
 - Cite one section per citation, in the form `§ 32a Abs. 1 Satz 2 Nr. 1 EStG`.
-- Euro amounts in docs are written `12 348 €` (space between thousands).
+- Euro amounts in docs are written `12 348 €`.
 
-## 2. Build / copy / prepare
+## 2. Build, copy and prepare
 
-1. Download the source PDF with `curl -sSL`, check it with `file`, record its sha256 with `shasum -a 256`.
-2. Name it with the normalized scheme: `<year>-<source>-<name>-<ref>.pdf` (drop the `secondary` marker). Examples: `2024-bgbl-existenzminimum-I-386.pdf`, `2006-bmf-pap-2006.pdf`.
+1. Download each source PDF with `curl -sSL`, check it with `file`, and record its sha256 with `shasum -a 256`.
+2. Name it `<year>-<source>-<name>-<ref>.pdf`, without the `secondary` marker. Examples: `2024-bgbl-existenzminimum-I-386.pdf`, `2006-bmf-pap-2006.pdf`.
 3. Place it in `docs/references/`.
-4. Add a row to the table in `docs/references/README.md` (file, source, used for, status, sha256, and retrieved-from URL). Update the "Adding a source" note if the scheme changed.
+4. Add a row to the table in `docs/references/README.md`: file, source, used for, status, and sha256.
+5. Check every coefficient against the text of its PDF. Extract the text (Ghostscript: `gs -q -dNOPAUSE -dBATCH -sDEVICE=txtwrite -sOutputFile=<out.txt> <pdf>`) and search for each number in the form the PAP prints, e.g. `997,6` for 997,60. Note any value that does not appear. A hit only shows that the number is in the document. Confirm that it sits in the zone formula it belongs to, by reading the formula line.
+6. Compute the expected values independently with exact fractions (Python `fractions.Fraction`), in a script under `.agents/research/` (git-ignored). Compare the script with the zones in `rules/<Y>.toml`. Do not take the expected values from fiskus's own output. Fixed figures do not go into the tests: they wait for the conformance layer.
 
 ## 3. Files to edit
 
-1. `rules/<Y>.toml` — new file:
-   ```
+1. `rules/<Y>.toml`, new file. Use this layout:
+
+   ```toml
    # Tax parameters for VZ <Y>. Every value needs a citation and source.
 
    [basic_allowance]
@@ -47,68 +50,86 @@ Rules:
    source = "<url>"
    retrieved = "<date>"
    reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/<file>.pdf"
+
+   [source]
+   citation = "§ 32a Abs. 1 Satz 2 EStG (...)"
+   source = "<url>"
+   retrieved = "<date>"
+   reference = "https://gitlab.com/kondominium/fiskus/-/raw/main/docs/references/<file>.pdf"
+
+   [[zone]]
+   from_eur = <first euro of zone 2>
+   base_eur = <allowance, or the start of the quadratic variable>
+   step_eur = 10000
+   quadratic_h = <a in hundredths>
+   linear_h = <b in hundredths>
+   constant_h = <c in hundredths>
    ```
-2. `build.rs` — add `Y` to `YEARS`.
-3. `src/year.rs` — add `Y<Y>` variant, a `ALL` entry, a `year()` arm, and a `from_year()` arm.
-4. `src/params.rs` — add a match arm in `for_year`.
-5. `tests/public_api.rs` — extend the `claimed` range `(2006..=Y)` if `Y` is the new top year; the value table lives in the unit test.
-6. `src/tariff.rs` unit tests — add `(TaxYear::Y<Y>, <N>)` to `basic_allowance_per_year_matches_the_sources`.
-7. `examples/basic_allowance.rs` — only if the example should demonstrate the new year; usually leave VZ 2026.
-8. `docs/*` — see section 4.
 
-The build fails if an entry has an unknown field, a negative or non-whole `value_eur`, a blank field, or a non-snake_case key. `make lint` fails if a `Parameters` field is unread.
+   If the statute sets the solidarity threshold of the year (§ 3 Abs. 3 SolZG), add a `[solidarity]` table with `free_threshold_single_eur`, `free_threshold_joint_eur`, `citation`, `source`, `retrieved` and `reference`. Read the amounts from the archived statute text, and cite the article of the amending law. Without the statute archived, leave the table out: the surcharge is then `None` for the year.
 
-## 4. Docs and how to think about changing
+   Repeat `[[zone]]` for each zone. Quadratic zones use `step_eur = 10000`, linear zones use `step_eur = 1` with `quadratic_h = 0`. A year without a sourced tariff has `[basic_allowance]` only, with no `[source]` and no `[[zone]]`.
+2. `build.rs`: add `Y` to `YEARS`. Keep the list in order.
+3. `src/year.rs`: add the `Y<Y>` variant with its doc comment, its entry in `ALL` (update the array length), a `year()` arm, and a `from_year()` arm.
+4. `src/params.rs`: nothing. `for_year` and `tariff_for` are generated from `YEARS`.
+5. `src/tariff.rs` and `tests/public_api.rs`: nothing. The tests read the year list and the rule data, and run for every listed year. Do not add fixed figures for the year here. They belong to the conformance layer.
+6. `examples/`, `benches/` and `scripts/guide/charts.rs`: nothing. They use the latest listed year, so the new year is picked up.
+7. `docs/formulas/`: nothing. The formula pages hold formulas and point to `rules/`, with no per-year table.
+8. Docs, see step 4. The solidarity thresholds show in `docs/formulas/solidarity-surcharge.md` and in the references table.
 
-Think: "fiskus implements the basic allowance for VZ 2006 to <Y>". Update only what claims a year or a layout:
+The build fails on a missing `[source]` for a year with zones, a first zone that does not start at the allowance plus one euro, zones out of order, a step that is not positive, or a tax jump of more than one euro at a zone start.
+
+## 4. Docs
+
+Update the range only where a page claims it. Do not copy the range from this file. Read it from the code (step 0), then update:
 
 - `README.md` and `docs/README.md`: the implemented range.
-- `docs/roadmap.md`: "except the basic allowance ... for tax years 2006 to <Y>".
-- `docs/guide/00-intro.md`: "tax years 2006 to <Y>".
-- `docs/guide/02-tax-year.md`: the supported range and `TaxYear::Y...` variants.
-- `docs/usage/README.md`: the supported range and `TaxYear::Y2006` to `TaxYear::Y<Y>`.
-- `docs/formulas/grundfreibetrag.md`: keep the VZ 2026 worked example; note that other years use their own `G` from `rules/<year>.toml`.
-- `docs/internal/build/README.md`: only if the file layout changed (it did not).
-- `docs/contributing/code.md`: only if the rules or steps changed.
+- `docs/roadmap.md`: the range in the intro, and the "Done" paragraph of milestone 4.
+- `docs/guide/00-intro.md` and `docs/guide/02-tax-year.md`: the range and the `TaxYear` variants.
+- `docs/guide/04-basic-allowance.md`: only if the zero-tax figures change, which they do for a new basic allowance. Recompute them from the code and check the page against `make charts`.
+- `docs/guide/glossary.md`: register every new German term before a page uses it, under its first letter.
+- `docs/guide/coverage.toml`: if a guide page cites a new `§`, list it for that page.
+- `docs/usage/README.md`: the range, and the example values.
+- `docs/formulas/grundfreibetrag.md`: the sample data is not a year, so it does not change.
+- `docs/references/README.md`: the sources table, and the tariff section if the new year has a tariff.
+- `docs/internal/benchmarks.md`: re-measure with `make bench` if the bench inputs change. Do not keep figures from an older run.
 
-Rules from `docs/contributing/language.md`:
+Writing rules from `docs/contributing/language.md`:
 - English prose, German statute quotes stay German.
 - English term first, German in parentheses, on first use per page.
 - `fiskus` in lowercase, including at sentence start.
 - No "we", "our", "us". Make `fiskus` the subject.
-- Cite one section per citation.
-- Euro amounts as `12 348 €`.
-- Say what fiskus implements; mark the rest "not yet in fiskus".
+- Say what fiskus implements. Mark the rest "not yet in fiskus".
 
-## 5. Review e2e
+## 5. Review end to end
 
-- Read the PDF and confirm the value, citation and source match.
-- Confirm the `reference` URL resolves to the archived file on GitLab's main branch.
-- Confirm `docs/references/README.md` row matches the file (sha256, status).
-- Confirm no stray `rules/<Y>/parameters.toml` directory layout remains.
-- Run `cargo package --list` and confirm `rules/<Y>.toml` is included.
-- Grep for stale year strings (`2026 only`, `one variant`, `parameters.toml`, `rules/<year>/`) across docs.
+- Read each source PDF and confirm the basic allowance, each zone's formula and the zone limits.
+- Confirm each `reference` is the GitLab main-branch link form, and that its file name is in `docs/references/`, with its sha256 in the README. `parameter_references_exist` checks both.
+- Build the crate's package list (`cargo package --list`). `rules/<Y>.toml` must appear. `docs/references/` is not packaged, and `build.rs` does not read it, so it can stay out of the package.
+- Grep for stale strings across the docs: `one variant`, `parameters/`, `OutsideImplementedRange` where the text says it is the zone limit, and `basic allowance zone` where the tariff is meant.
 
-## 6. Test e2e
+## 6. Test end to end
 
-Run `make gates` (lint, test-all, test-coverage, docs). All must pass. Specifically:
+Run `make gates` (lint, test-all, test-coverage, docs). All must pass. Check these in particular:
 
-- `make test-unit`: `basic_allowance_per_year_matches_the_sources` and `every_year_is_tax_free_up_to_its_basic_allowance` pass.
-- `make test-api`: `claimed_years_exist` and `out_of_range_years_are_not_supported` pass.
-- `make test-guide`: `parameter_references_exist` passes (URL + local file).
-- `make test-doc`: doc examples compile.
-- Coverage stays at or above 90%.
-- `make bench` compiles (it iterates `TaxYear::ALL`).
+- `make lint`: rustfmt and clippy with warnings denied.
+- `make test-unit`: the property tests over `TaxYear::ALL`, and `every_year_is_zero_up_to_its_basic_allowance` and `every_zone_joins_the_previous_one_within_one_euro`.
+- `make test-api`: `listed_years_are_contiguous_and_round_trip` and `years_outside_the_listed_range_are_not_supported`.
+- `make test-proofs`: the Kani harnesses pass. The tariff harness is bounded to 10^12 euros.
+- `make test-guide`: `parameter_references_exist`, `parameter_values_appear_on_the_page_that_cites_them`, the chart drift check and the chapter checks. The guide checks must actually read the rules. If a check reports zero parameters, it is broken, not passing.
+- `make test-doc`: the doc examples compile.
+- Coverage stays at 90% or above.
+- `make bench` compiles and runs when the bench inputs changed.
 
 ## 7. Limits
 
-- Years before the euro (pre-2002, DM amounts) are not compatible today: the engine uses integer cents and assumes euro. Do not add them.
-- VZ 2002 is not yet sourced: no archived document states its Grundfreibetrag directly. VZ 2003 to 2005 are sourced from the Existenzminimumbericht 2003 and the Haushaltsbegleitgesetz 2004 draft. Sourcing earlier years needs a new search (see the "Not yet in fiskus" section of `docs/references/README.md`).
-- Only the basic allowance zone is implemented. Adding the full tariff (zones 2-5 of § 32a) is a separate slice.
-- `TaxYear::from_year` returns `None` for unsupported years; `assess` cannot be called with them.
-- Never commit, push or merge. Hand over the staged slice, a commit message draft (use the `commit-message` skill) and the gate result.
----
+- Years before the first sourced year: no archived source. Sourcing an earlier year needs a new search. The "Not yet in fiskus" section of `docs/references/README.md` lists what is missing.
+- Amounts before the euro (DM) are not compatible: the engine uses integer cents and assumes euros. Do not add them.
+- A year without archived zones has no tariff. Its basic allowance alone is implemented, and income above that allowance returns `Error::OutsideImplementedRange`. Check the current state in `docs/roadmap.md`.
+- A draft text stays marked as a draft until the enacted text is archived.
+- `TaxYear::from_year` returns `None` for unsupported years, so `assess` cannot be called with them.
+- Never commit, push or merge. Hand over the staged slice, a commit message draft (use the `commit-message` skill), and the gate result.
 
-## Agents
+## Pointers
 
-Load this skill when the user asks to add a tax year. Do not restate its rules; point at `docs/contributing/code.md` and `docs/contributing/workflow.md` for gates and commits.
+Gates and the rules for code: `docs/contributing/code.md`. Tests: `docs/contributing/tests.md`. Commits: `docs/contributing/workflow.md`.
