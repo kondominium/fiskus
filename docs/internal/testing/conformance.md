@@ -10,9 +10,9 @@ This page explains the conformance layer: what it checks, how its data is built 
 
 Conformance compares fiskus with results from the income tax calculator (Einkommensteuerrechner) of the Federal Ministry of Finance (BMF). For each case it gives fiskus a taxable income and a filing status and checks the income tax it computes against the calculator's answer, to the cent.
 
-The calculator is independent of our reading of the statute, so a case catches a misreading of § 32a EStG that our own tests would repeat. Only the income tax row (Einkommensteuer) of the result is used. The total (Summe) adds the solidarity surcharge (Solidaritätszuschlag), which is out of scope.
+The calculator is independent of fiskus's reading of the statute, so a case catches a misreading of § 32a EStG that fiskus's own tests would repeat. Only the income tax row (Einkommensteuer) of the result is used. The total (Summe) adds the solidarity surcharge (Solidaritätszuschlag), which is out of scope.
 
-The BMF has confirmed that we may use its calculator output as test data. The request rate stays at one request per second or less.
+The BMF has confirmed that fiskus may use its calculator output as test data. The request rate stays at one request per second or less.
 
 ## Current state
 
@@ -42,7 +42,7 @@ Conformance covers the data, and the other layers cover the formulas. Kani proof
 
 Status: accepted.
 
-The parameters come from the statute, with a citation in `rules/`. The conformance tests show whether our code agrees with the calculator. They never supply a value that we then copy into `rules/`. Expected values in the fixtures come from the calculator, and no test copies a value from fiskus's own output. See the bad patterns in [code gates and rules](../../contributing/tests.md).
+The parameters come from the statute, with a citation in `rules/`. The conformance tests show whether fiskus agrees with the calculator. They never supply a value that is then copied into `rules/`. Expected values in the fixtures come from the calculator, and no test copies a value from fiskus's own output. See the bad patterns in [code gates and rules](../../contributing/tests.md).
 
 ### D3. Conformance is opt-in behind the `conformance` feature
 
@@ -238,7 +238,7 @@ Every new measurement goes in this table, with the date and the command. `target
 - **Zone starts for older years.** Taken from the statute history, then checked with kink cases. Until then, those years have only samples, which cannot pin a boundary.
 - **Rounding by year.** The 2001 result has cents, but 2026 has none. Check each year's rounding rules against the statute and the calculator's own explanation table on its result page.
 - **Floating-point in the BMF calculator.** Two cases (2019-0215 and 2020-0335) differ by one to two euros. fiskus uses exact integer arithmetic (Fraction), while the BMF calculator uses floating point. The statute (§ 32a Abs. 1 Satz 6) requires rounding down the final result, which fiskus does. The BMF's floating-point computation gives a slightly lower result in these two cases. This is a known discrepancy, not a fiskus bug.
-- **Plausibility of identical results.** Several 1990s options returned the same tax for 50 000 € single. This is probably correct, because the tariff did not change, but it needs a check against the tariff history before we rely on it.
+- **Plausibility of identical results.** Several 1990s options returned the same tax for 50 000 € single. This is probably correct, because the tariff did not change, but it needs a check against the tariff history before fiskus relies on it.
 - **Cross-check with the published program.** Compare the calculator with the XML pseudocode for 2025 and 2026, to show that the form and the program agree.
 - **Feature gate.** When every case passes, decide whether conformance joins `make gates` (D3).
 

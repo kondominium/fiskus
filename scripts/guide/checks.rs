@@ -285,13 +285,204 @@ fn every_illustration_is_labelled_as_one() {
     }
 }
 
-#[test]
-fn guide_writes_fiskus_in_lowercase() {
-    for chapter in coverage().chapter {
-        assert!(
-            !page(&chapter.file).contains("Fiskus"),
-            "{}: write fiskus in lowercase",
-            chapter.file
-        );
+// The language rules of docs/contributing/language.md, checked on every prose page.
+
+// Pages the rules apply to: the docs book, the agent skills and the root README. A page generated
+// by `make charts` starts with a `<!-- Generated` marker and is checked by the drift check instead.
+fn language_pages() -> Vec<PathBuf> {
+    let mut found = Vec::new();
+    files_under(&root().join("docs"), "md", &mut found);
+    files_under(&root().join(".agents/skills"), "md", &mut found);
+    found.push(root().join("README.md"));
+    found.retain(|path| !read(path).starts_with("<!-- Generated"));
+    found.sort();
+    found
+}
+
+// The lines a reader reads: fenced code, inline code, HTML comments and URLs are left out.
+fn prose_lines(text: &str) -> Vec<(usize, String)> {
+    let mut in_fence = false;
+    let mut lines = Vec::new();
+    for (index, line) in text.lines().enumerate() {
+        if line.trim_start().starts_with("```") {
+            in_fence = !in_fence;
+            continue;
+        }
+        if !in_fence {
+            lines.push((index + 1, prose_of(line)));
+        }
     }
+    lines
+}
+
+// Text in double quotes is an example of wrong usage, such as "We test every figure.", so it is left out too.
+fn prose_of(line: &str) -> String {
+    let outside_code: String = line
+        .split('`')
+        .enumerate()
+        .filter(|(index, _)| index % 2 == 0)
+        .map(|(_, part)| part)
+        .collect::<String>()
+        .split('"')
+        .enumerate()
+        .filter(|(index, _)| index % 2 == 0)
+        .map(|(_, part)| part)
+        .collect();
+    let mut without_comments = String::new();
+    let mut rest = outside_code.as_str();
+    while let Some(start) = rest.find("<!--") {
+        without_comments.push_str(rest.get(..start).unwrap_or_default());
+        rest = rest.get(start..).unwrap_or_default();
+        let Some(end) = rest.find("-->") else {
+            rest = "";
+            break;
+        };
+        rest = rest.get(end + "-->".len()..).unwrap_or_default();
+    }
+    without_comments.push_str(rest);
+    without_comments
+        .split_whitespace()
+        .filter(|word| !word.contains("://"))
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn words(line: &str) -> impl Iterator<Item = &str> {
+    line.split(|c: char| !c.is_alphanumeric())
+        .filter(|word| !word.is_empty())
+}
+
+// Fiskus is the subject of a sentence, so the docs never say we, our or us.
+fn we_our_us(line: &str) -> Vec<&'static str> {
+    let found = words(line).any(|word| matches!(word.to_lowercase().as_str(), "we" | "our" | "us"));
+    if found {
+        vec!["write fiskus as the subject, not we, our or us"]
+    } else {
+        Vec::new()
+    }
+}
+
+fn lowercase_fiskus(line: &str) -> Vec<&'static str> {
+    if words(line).any(|word| word == "Fiskus" || word == "FISKUS") {
+        vec!["write fiskus in lowercase"]
+    } else {
+        Vec::new()
+    }
+}
+
+fn one_section_per_citation(line: &str) -> Vec<&'static str> {
+    if line.contains("§§") {
+        vec!["cite one section per citation, not §§"]
+    } else {
+        Vec::new()
+    }
+}
+
+// Euro amounts are written `12 348 €`: a space between thousands, a point for cents, a space before €.
+fn euro_format(line: &str) -> Vec<&'static str> {
+    let mut reasons = Vec::new();
+    for (position, _) in line.match_indices('€') {
+        let before = line.get(..position).unwrap_or_default();
+        let after = line.get(position + '€'.len_utf8()..).unwrap_or_default();
+        if before.ends_with(|c: char| c.is_ascii_digit()) {
+            reasons.push("put a space before €");
+        }
+        if after.starts_with(|c: char| c.is_ascii_digit()) {
+            reasons.push("put € after the amount");
+        }
+        let Some(amount) = before.strip_suffix(' ') else {
+            continue;
+        };
+        let reversed_run: String = amount
+            .chars()
+            .rev()
+            .take_while(|c| c.is_ascii_digit() || *c == '.' || *c == ',')
+            .collect();
+        let run: String = reversed_run.chars().rev().collect();
+        if run.contains(',') {
+            reasons.push("use a space between thousands and a point for cents");
+        }
+        let whole = run.split('.').next().unwrap_or_default();
+        if whole.len() >= 4 && !run.contains(',') {
+            reasons.push("group thousands with a space, as in 12 348 €");
+        }
+    }
+    reasons
+}
+
+// Every breach of one rule, as `page:line: reason`, so a failure lists them all.
+fn breaches(rule: fn(&str) -> Vec<&'static str>) -> Vec<String> {
+    let mut found = Vec::new();
+    for page in language_pages() {
+        let relative = page
+            .strip_prefix(root())
+            .unwrap_or(&page)
+            .display()
+            .to_string();
+        for (number, line) in prose_lines(&read(&page)) {
+            for reason in rule(&line) {
+                found.push(format!("{relative}:{number}: {reason}: {line}"));
+            }
+        }
+    }
+    found
+}
+
+// Whether a rule reported anything for a line.
+fn flags(reasons: &[&str]) -> bool {
+    !reasons.is_empty()
+}
+
+// The rules must flag what they describe, or a zero count would prove nothing.
+#[test]
+fn language_rules_flag_their_breaches_and_pass_the_right_form() {
+    assert_eq!(euro_format("costs 12348 €").len(), 1);
+    assert!(!flags(&euro_format("costs 12 348 €")));
+    assert!(flags(&euro_format("costs 12 348,99 €")));
+    assert!(flags(&euro_format("costs 12 348.99€")));
+    assert!(flags(&euro_format("costs €12 348")));
+    assert!(flags(&we_our_us("We test every figure.")));
+    assert!(!flags(&we_our_us("fiskus tests every figure.")));
+    assert!(flags(&lowercase_fiskus("Fiskus computes the tax.")));
+    assert!(!flags(&lowercase_fiskus("fiskus computes the tax.")));
+    assert!(flags(&one_section_per_citation("§§ 32a, 26 EStG")));
+}
+
+// Code, quotes of wrong usage, comments and URLs are not prose.
+#[test]
+fn prose_leaves_out_code_quotes_comments_and_urls() {
+    assert!(!flags(&we_our_us(&prose_of("Use `we` in code only."))));
+    assert!(!flags(&we_our_us(&prose_of(
+        "Bad: \"We test every figure.\""
+    ))));
+    assert!(!flags(&we_our_us(&prose_of(
+        "<!-- we -->fiskus computes it."
+    ))));
+    assert!(!flags(&we_our_us(&prose_of(
+        "See https://example.org/us/page for details."
+    ))));
+}
+
+#[test]
+fn pages_write_fiskus_as_the_subject_not_we_our_or_us() {
+    let found = breaches(we_our_us);
+    assert!(found.is_empty(), "{}", found.join("\n"));
+}
+
+#[test]
+fn pages_write_fiskus_in_lowercase() {
+    let found = breaches(lowercase_fiskus);
+    assert!(found.is_empty(), "{}", found.join("\n"));
+}
+
+#[test]
+fn pages_cite_one_section_per_citation() {
+    let found = breaches(one_section_per_citation);
+    assert!(found.is_empty(), "{}", found.join("\n"));
+}
+
+#[test]
+fn pages_write_euro_amounts_in_the_language_format() {
+    let found = breaches(euro_format);
+    assert!(found.is_empty(), "{}", found.join("\n"));
 }

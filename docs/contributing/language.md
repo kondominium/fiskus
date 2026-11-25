@@ -4,6 +4,8 @@ Applies to humans and agents who write docs, the guide, and doc comments. Code i
 
 ## Docs and doc comments
 
+The guide tests (`make test-guide`) check the rules a program can check, on every prose page in `docs/`, the agent skills and the root README: no `we`, `our` or `us`, no `§§`, euro amounts in the form `12 348 €`, and `fiskus` in lowercase. Code, inline code, URLs, HTML comments and text in double quotes are not checked. Quotes are how a page shows wrong usage, such as "We test every figure."
+
 - Write prose in English. Statute citations and quoted statute text stay German.
 - **Term format:** the English term comes first, and the German term follows in parentheses, on first use per page. Example: tax office (Finanzamt). After that, use the English term only.
 - **Statute names:** the English name, then the German name in parentheses, then the abbreviation. Example: Income Tax Act (Einkommensteuergesetz, EStG).
