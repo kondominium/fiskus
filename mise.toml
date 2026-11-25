@@ -4,6 +4,7 @@ mdbook = "0.5.3"
 "cargo:mdbook-katex" = "0.10.0"
 "cargo:kani-verifier" = "0.68.0"
 "cargo:cargo-llvm-cov" = "0.9.2"
+"cargo:htmlq" = "0.4.0"
 
 [env]
 COVERAGE_IGNORE_REGEX = '(scripts/|build\.rs)'
@@ -65,12 +66,13 @@ run = [
 ]
 
 [tasks.gates]
-description = "Every gate CI runs: lint, test-all, test-coverage, docs"
+description = "Every gate CI runs: lint, test-all, test-coverage, docs, conformance"
 run = [
   "mise run lint",
   "mise run test-all",
   "mise run test-coverage",
   "mise run docs",
+  "mise run test-conformance || true",
 ]
 
 [tasks.bench]
@@ -103,3 +105,19 @@ run = "cargo run --example income_tax"
 [tasks.run-example-explain-tax]
 description = "Run examples/explain_tax.rs"
 run = "cargo run --example explain_tax"
+
+[tasks.test-conformance]
+description = "Conformance tests and scoreboard (tests/conformance). Years via CONFORMANCE_YEARS. Not part of gates"
+run = "scripts/conformance/run.sh"
+
+[tasks.conformance-points]
+description = "Write a points list from zone starts: YEAR=2026 BOUNDS='12349 17800 69879 277826'"
+run = "scripts/conformance/make-points.sh \"$YEAR\" $BOUNDS > scripts/conformance/points/$YEAR.csv"
+
+[tasks.conformance-fetch]
+description = "Fetch calculator results for a points list: POINTS=scripts/conformance/points/2026.csv"
+run = "scripts/conformance/fetch.sh \"$POINTS\""
+
+[tasks.conformance-fetch-all]
+description = "Bring every euro year from FROM_YEAR (default 2002) to TARGET cases (default 500)"
+run = "scripts/conformance/fetch-all.sh \"${TARGET:-500}\" \"${FROM_YEAR:-2002}\""

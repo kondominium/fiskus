@@ -30,6 +30,7 @@
 
 - [Build](internal/build/README.md)
 - [Testing](internal/testing/README.md)
+- [Conformance](internal/testing/conformance.md)
 - [Benchmarks](internal/benchmarks.md)
 
 # Contributing

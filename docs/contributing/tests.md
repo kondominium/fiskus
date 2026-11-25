@@ -15,6 +15,7 @@ Run tests through their `make` target, never a raw `cargo test`, so the flags ma
 | `make test-proofs` | Kani proofs in `src/` | Pure functions over a stated bound |
 | `make test-all` | All of the above, except coverage | Before handover |
 | `make test-coverage` | Line coverage, fails below 90% | Before handover |
+| `make test-conformance` | Calculator conformance cases, per year, with a scoreboard | Part of `make gates` (informational). 2002 has 406 zone-missing; 2019 and 2020 have 1 floating-point discrepancy each |
 | `make bench` | Criterion benchmarks | Hot-path changes. Not a gate |
 
 ## The test pyramid
@@ -29,7 +30,7 @@ Each layer answers one question, and a test belongs to the lowest layer that can
 | API | Does the public contract behave as documented? | `tests/public_api.rs`, `fiskus::` paths only | Use internal modules |
 | Doc | Does each example compile and run? | `///` examples on public items | Show a figure that a change would silently break |
 | Guide | Do the guide and the rules agree? | `scripts/guide/checks.rs` and the chart drift check | Be worked around. Extend it for a new rule |
-| Conformance | Does fiskus match the BMF calculator for chosen incomes? | Not yet in fiskus. It is the next milestone, on its own branch | Be added to the other layers |
+| Conformance | Does fiskus match the BMF calculator for chosen incomes? | `tests/conformance/`, fixtures in `tests/fixtures/conformance/`. Behind the `conformance` feature | Pin a figure in the other layers. Add cases only through the fetch scripts |
 
 **Figures belong to conformance.** The unit, property, proof and API layers use the rule data and the properties of the tariff, never a fixed figure for a year. The tests run for every year in `TaxYear::ALL`, so a new year is covered without an edit. Fixed figures wait for the conformance layer, where they are checked against the BMF calculator.
 

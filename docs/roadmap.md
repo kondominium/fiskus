@@ -41,9 +41,11 @@ The order is deliberate. Each milestone depends on the ones before it. The build
 
 **Goal:** find bugs by comparing fiskus with the results of the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) calculator. This is the next milestone. It lives on its own branch, so the unit, property and proof layers stay free of fixed figures per year.
 
-- Take the BMF results for chosen incomes, about 2,000 cases planned. Not yet in fiskus.
-- Check the terms of use of the BMF results before any fixture is committed to the repository.
-- Run the cases as conformance tests, and record each difference as a bug.
+- The euro years come first, 2002 to 2026. Each year has at least 300 BMF results for chosen incomes, with a target of 500. The BMF has confirmed that we may use its output as test data, at one request per second or less.
+- Run the cases as conformance tests, one test per year. `make test-conformance` prints a scoreboard of the cases each year passes and fails, and each difference is recorded as a bug. The test stays red until every zone of milestone 4 exists.
+- The checkpoint is done when every tariff zone passes every case in the euro years, to the cent.
+- Then return to 1958. That needs a currency decision for the Deutsche Mark amounts, and the zone starts and parameters of each older year, checked against the calculator.
+- The details are in [conformance](internal/testing/conformance.md).
 
 ## 6. Release and TypeScript-compatible driver
 

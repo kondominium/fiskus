@@ -19,6 +19,10 @@ include = [
     "/LICENSE*",
 ]
 
+[features]
+# Runs the conformance tests (`make test-conformance`). Off by default: it fails until fiskus has every tariff zone.
+conformance = []
+
 [lints.rust]
 unsafe_code = "forbid"
 unexpected_cfgs = { level = "warn", check-cfg = ["cfg(kani)"] }
@@ -42,6 +46,11 @@ path = "scripts/guide/charts.rs"
 [[test]]
 name = "guide_checks"
 path = "scripts/guide/checks.rs"
+
+[[test]]
+name = "conformance"
+path = "tests/conformance/main.rs"
+required-features = ["conformance"]
 
 [[bench]]
 name = "tariff"

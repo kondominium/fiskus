@@ -52,13 +52,13 @@ The arrow on the left shows the cost to run, which rises towards the top. The ba
 
 A proof does not extrapolate from examples. Checking ten thousand inputs and checking the whole bound are different claims, and only the second one is a proof. Proofs suit small functions with a clear boundary. Where a rule is too large for a proof to finish, property tests carry it.
 
-## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/scale.svg'); mask-image: url('../assets/icons/scale.svg')"></span>Conformance (not yet in fiskus)
+## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/scale.svg'); mask-image: url('../assets/icons/scale.svg')"></span>Conformance (in progress)
 
-**What it does.** Conformance checks the data. It compares fiskus with results from the income tax calculator (Einkommensteuerrechner) that the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) publishes. The set starts at around two thousand cases, chosen around the zone boundaries and across each year's income ranges, and it grows over time. fiskus must agree with each result to the cent.
+**What it does.** Conformance checks the data. It compares fiskus with results from the income tax calculator (Einkommensteuerrechner) that the Federal Ministry of Finance (Bundesministerium der Finanzen, BMF) publishes. Each euro year from 2002 to 2026 has 500 cases, chosen around the zone boundaries and across each year's income ranges. fiskus must agree with each result to the cent. It is part of `make gates`.
 
 **In theory.** This is differential testing: two independent implementations receive the same input, and any difference marks a bug in one of them. The BMF calculator is the reference for the data, so a match means fiskus gives the same answer as the official calculator for those inputs.
 
-**In practice.** The expected values are the BMF-provided results, never fiskus's own output. The cases are committed, so the test runs offline. A sample of thousands cannot cover every income, and conformance does not claim that it does. Kani covers the formulas across their bounds, and conformance covers the data. The layer is planned work and not yet in fiskus. Until it lands, no statement in these docs depends on it. A year that fiskus lists but that has no reference data yet is reported as a gap, not as a pass.
+**In practice.** The expected values are the BMF-provided results, never fiskus's own output. The cases are committed, so the test runs offline. It runs year by year and prints a scoreboard of the cases each year passes and fails. A sample cannot cover every income, and conformance does not claim that it does. Kani covers the formulas across their bounds, and conformance covers the data. The tariff zones for 2004 to 2026 are implemented; 2003 (and 2002) are not. Two cases in 2019 and 2020 differ by one to two euros due to floating-point in the BMF calculator. See [conformance](conformance.md).
 
 ## <span class="section-icon" style="-webkit-mask-image: url('../assets/icons/ruler.svg'); mask-image: url('../assets/icons/ruler.svg')"></span>Coverage
 
