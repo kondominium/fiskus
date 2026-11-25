@@ -2,7 +2,7 @@
 
 | VZ | Basic allowance (€) | Tariff citation | Archived copy |
 |---|---|---|---|
-| 2003 | 7 426 | no tariff zones | — |
+| 2003 | 7 235 | no tariff zones | — |
 | 2004 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif VZ 2004 (BMF-Einkommensteuerrechner) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
 | 2005 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif nach dem Entwurf des Haushaltsbegleitgesetzes 2004 (BT-Drs. 15/1502), in Kraft ab VZ 2004 | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
 | 2006 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2006 (UPTAB05) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2006-bmf-pap-2006.pdf) |

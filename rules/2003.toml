@@ -1,8 +1,8 @@
 # Tax parameters for VZ 2003. Every value needs a citation and source.
 
 [basic_allowance]
-value_eur = 7426
-citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG (Steuersenkungsgesetz, BGBl. 2000 I S. 1433)"
-source = "https://dserver.bundestag.de/btd/14/077/1407765.pdf"
-retrieved = "2026-11-24"
-reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2003-bt-drs-existenzminimum-14-7765.pdf"
+value_eur = 7235
+citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG in der Fassung des Steuerentlastungsgesetzes 1999/2000/2002 (BGBl. 1999 I S. 402), für VZ 2003 unverändert nach § 52 Abs. 41 Nr. 1 EStG 1997 in der Fassung des Flutopfersolidaritätsgesetzes (BGBl. 2002 I S. 3651; Entwurf BT-Drs. 14/9894, Art. 1 Nr. 4)"
+source = "https://dserver.bundestag.de/btd/14/098/1409894.pdf"
+retrieved = "2026-11-26"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2002-bt-drs-flutopfersolidaritaetsgesetz-entwurf-14-9894.pdf"

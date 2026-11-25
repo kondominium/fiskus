@@ -38,6 +38,7 @@ Source tiers, strongest first:
 | `2024-bmf-pap-letter-2024.pdf` | BMF letter of 23 February 2024 on the amended PAP 2024. It contains no PAP itself, so the 2024 value is taken from the statute | not used for values | official letter | …/2024-02-23-geaenderte-PAP-2024-anwendung-ab-dem-1-april-2024-bmf-schreiben.pdf | `e7aebd4686a0eda70e7709a5de56a8fa9afb4e48382479fd216117fc3fa2d2ce` |
 | `2025-bmf-pap-2025.pdf` | BMF Programmablaufplan 2025, amended | VZ 2025 check, states "auf 12.096 Euro" | official | …/2025-01-22-geaenderte-PAP-2025-anlage-1.pdf | `092de325b1e3258cff16a617b1963f923a82e98952e53c345ba7403ddbd45a53` |
 | `2026-bmf-pap-2026.pdf` | BMF Programmablaufplan 2026, `GFB = 12348` | VZ 2026 check | official | …/2025-11-12-PAP-2026-anlage-1.pdf | `5da38acd544868ddcb0bc7f43030bd7d6ee9aa455dff0f42ad59732634e33a48` |
+| `2025-bmf-tarifhistorie-steuerrechner.pdf` | BMF tariff history of the income tax calculator (Tarifhistorie, file dated 2025-10-14). Section 15 gives the Einkommensteuertarif 2002 (2002 to 2003): zones, the 36 € rounding rule (§ 32a Abs. 2) and the basic allowance 7 235 €. Section 16 gives the 2004 tariff (7 664 €) | VZ 2002, 2003 zones | official | `ac1f0fe259559233057e8d5a2eac2259d9af877522964c9583792e52cd85a8ad` |
 
 The PAP URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/Downloads/Steuern/Steuerarten/Lohnsteuer/Programmablaufplan/`, abbreviated `…/` above. Each PAP is also listed by the [Lohnsteuer repository](https://github.com/MarcelLehmann/Lohnsteuer) (Apache-2.0, a generator built from these PAPs). The BMF files were used directly, and no code from that repository was copied.
 
@@ -50,7 +51,8 @@ The PAP URLs share the base `https://www.bundesfinanzministerium.de/Content/DE/D
 | `2022-bt-drs-existenzminimumbericht-19-22800.pdf` | 13th report, BT-Drs. 19/22800 | VZ 2020, 2022 context | official report | `a8342cccf9fd20e66dbaaaba54f49e8836aed4de6e481bae4b005ee0d7969367` |
 | `2024-bt-drs-existenzminimumbericht-20-04443.pdf` | 14th report, BT-Drs. 20/4443 | VZ 2024 context | official report | `31038bb446f4fd270880c103747e8413724b47c55623d058e0820aa67cc61b5f` |
 | `2022-bt-drs-inflationsausgleichsgesetz-entwurf-20-3496.pdf` | Inflation Compensation Act draft (Inflationsausgleichsgesetz, InflAusG), BT-Drs. 20/3496, with the reasons for 2022 and 2023 | VZ 2022, 2023 context | draft | `d4cb500f899290599ca676edd0fd738b21a96277e4ed45e6fd54c18c973decd7` |
-| `2003-bt-drs-existenzminimum-14-7765.pdf` | Report on the subsistence minimum for 2003, BT-Drs. 14/7765, footnote 6 cites the Tax Cut Act (BGBl. I 2000 S. 1433) | VZ 2003 | official report, gives 7 426 € | `12924029bc8bcdddfacf33efafe3366a72cb041576ccbdc3cfc1627adfd0582e` |
+| `2002-bt-drs-flutopfersolidaritaetsgesetz-entwurf-14-9894.pdf` | Bill of the Flood Victims Solidarity Act (Flutopfersolidaritätsgesetz), BT-Drs. 14/9894, 26.08.2002, with its reasons. Art. 1 Nr. 4 (§ 52 Abs. 41 Nr. 1 EStG 1997) postpones the 2003 tariff stage, the basic allowance from 7 235 € to 7 426 €, to VZ 2004. The enacted text (BGBl. 2002 I S. 3651) is not archived | VZ 2003 | official draft with reasons | `b0c12af4f33785ec61f5892b38d06adfc1fb8c2922b2f500f9a77ebfccdbe3ff` |
+| `2003-bt-drs-existenzminimum-14-7765.pdf` | Report on the subsistence minimum for 2003, BT-Drs. 14/7765, footnote 6 cites the Tax Cut Act (BGBl. I 2000 S. 1433) | VZ 2003 | official report, gives 7 426 € for the 2003 stage that BT-Drs. 14/9894 postponed to VZ 2004; VZ 2003 is 7 235 € | `12924029bc8bcdddfacf33efafe3366a72cb041576ccbdc3cfc1627adfd0582e` |
 | `2000-bt-drs-steuersenkungsgesetz-entwurf-14-3074.pdf` | Tax Cut Act draft, BT-Drs. 14/3074 | context | draft | `594a588c13e66848e9a0cd32de9796db690270ea1eb5d6b0482e8978863b1b17` |
 | `2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf` | Budget Accompanying Act 2004 draft, BT-Drs. 15/1502 | VZ 2004, 2005 | draft, states "bis 7 664 Euro (Grundfreibetrag)" | `c009f601079bbadcf085e994a4aebdf7e3f71a9da620215707b2ba5c36ada75e` |
 | `2005-bt-drs-existenzminimum-15-2462.pdf` | Report on the subsistence minimum for 2005, BT-Drs. 15/2462 | VZ 2005 context | official report | `3d1f5ee5a107b42d662d2a359f18ca47c171239e593b9ce006b361cbdd19c3fe` |
@@ -72,7 +74,7 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 
 ## Not yet in fiskus
 
-- **VZ 2002.** Not archived and not yet verified. The Steuersenkungsgesetz (BGBl. I 2000 S. 1433) raises the Grundfreibetrag stufenweise, but no archived source states the VZ 2002 value directly. Needs a search before adding. VZ 2003 to 2005 are now in fiskus.
+- **VZ 2002.** The 2002 tariff is the tariff of VZ 2003 (BMF tariff history, section 15, "2002 - 2003"), so there is no separate 2002 rules file. The 2002 text of § 32a is in the Steuerentlastungsgesetz 1999/2000/2002 (BGBl. I 1999 S. 402), which is not archived. VZ 2003 to 2005 are now in fiskus.
 - **Dates and sources to check later.** The 2014 PAP is a draft. The 2006 to 2008 setting laws are not traced yet, although their values are confirmed.
 - **bgbl.de and recht.bund.de.** recht.bund.de serves issues from 2023 on, such as BGBl. 2024 I Nr. 386 above. It returned 404 for BGBl. 2022 I Nr. 49 and Nr. 17, two issues that dejure.org lists, so pre-2023 issues are not there. bgbl.de serves a JavaScript page for every URL form tried.
 
@@ -81,7 +83,7 @@ These buzer.de transcriptions of the statute are kept as a record. For VZ 2009 t
 - **BMF withholding guidance (PAP), VZ 2006 to 2023.** The coefficients were checked against each year's PAP text in `docs/references`. The Lohnsteuer repository (Apache-2.0) mirrors the BMF's XML and generated Java for each year. The tariff method was read from that Java, and no code was copied.
 - **Statute, VZ 2024 to 2026.** BGBl. 2024 I Nr. 386 and Nr. 449, in `docs/references`.
 - **Draft, VZ 2004 and 2005.** The tariff is the § 32a text of the Haushaltsbegleitgesetz 2004 draft (BT-Drs. 15/1502, in `docs/references`). The draft moves the tariff of 2005 forward to VZ 2004, and the 2006 PAP has the same coefficients. The enacted text (BGBl. 2003 I S. 3076) is not archived yet, so these years are marked as draft.
-- **Not yet in fiskus, VZ 2003.** No archived source gives the zones of the 2003 tariff.
+- **Zones of VZ 2003, not in rules/ yet (slice 3.3).** The zones and the 36 € rounding rule are in the BMF tariff history (section 15) and in the § 32a text of 2002. The statute text of 2002 is not archived, so the zone citation waits for it.
 - **Not stored:** the repository's XML and Java files. Their origin at the BMF is not yet verified, because the bmf-steuerrechner.de site returned HTTP 503 during this work.
 
 How the coefficients were checked: every coefficient of VZ 2006 to 2023 was searched for in the text of its PAP, in the form the PAP prints it (for example `997,6` for 997,60). All were found. The structure was checked by the build: each zone starts where the previous one ends, with a tax difference of at most one euro. For VZ 2024 to 2026 the coefficients were read against the statute text. The Lohnsteuer repository was used only as a lead, not as a source.

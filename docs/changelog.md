@@ -20,3 +20,7 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 
 - Functions that return a value now carry `#[must_use]`, so ignoring a result is a compiler warning. Results are unchanged.
 - The `reference` link of every rules file, and of each `[solidarity]` table, points at the GitHub repository. These links were on GitLab. The figures are unchanged.
+
+### Fixed
+
+- The basic allowance for VZ 2003 is 7 235 €, not 7 426 €. The 7 426 € stage was postponed to VZ 2004 by the Flutopfersolidaritätsgesetz (BGBl. 2002 I S. 3651). No computed tax changes, because the 2003 tariff is not in fiskus yet.
