@@ -1,0 +1,34 @@
+# Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
+# Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
+#
+# Supply-chain policy for `cargo deny check`, run by `make lint`. Dependencies are dev-only
+# (criterion, proptest, serde, toml); the library itself has none.
+
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+
+[licenses]
+version = 2
+confidence-threshold = 0.93
+# Permissive licenses only. AGPL-3.0-only is fiskus itself. Every dependency is dual-licensed
+# (for example MIT OR Apache-2.0), so one of its licenses here is enough.
+allow = [
+    "AGPL-3.0-only",
+    "Apache-2.0",
+    "MIT",
+    "Unicode-3.0",
+]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "all"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

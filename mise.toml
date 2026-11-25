@@ -5,6 +5,7 @@ mdbook = "0.5.3"
 "cargo:kani-verifier" = "0.68.0"
 "cargo:cargo-llvm-cov" = "0.9.2"
 "cargo:htmlq" = "0.4.0"
+"cargo:cargo-deny" = "0.22.1"
 
 [env]
 COVERAGE_IGNORE_REGEX = '(scripts/|build\.rs)'
@@ -14,10 +15,12 @@ description = "Build the library, examples, tests and benches"
 run = "cargo build --all-targets"
 
 [tasks.lint]
-description = "rustfmt check and clippy with warnings denied"
+description = "rustfmt, clippy and rustdoc with warnings denied, and cargo-deny"
 run = [
   "cargo fmt --all -- --check",
   "cargo clippy --all-targets --all-features -- -D warnings",
+  "RUSTDOCFLAGS=\"-D warnings\" cargo doc --no-deps --all-features",
+  "cargo deny check",
 ]
 
 [tasks.test-unit]

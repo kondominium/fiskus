@@ -42,3 +42,16 @@ jobs:
           name: criterion
           path: target/criterion
           retention-days: 90
+
+  latest-deps:
+    name: Tests with the latest dependencies (nightly)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Install pinned tools with mise
+        uses: jdx/mise-action@v5
+      - name: Update the lockfile to the newest dependency versions
+        run: cargo update
+      - name: Run every test category (make test-all)
+        run: make test-all

@@ -8,7 +8,7 @@ Run `make gates` before handover. It runs every gate CI runs, and CI runs the sa
 
 | Gate | Command | CI job |
 |---|---|---|
-| Lint: rustfmt and clippy, warnings denied | `make lint` | `lint` |
+| Lint: rustfmt, clippy and rustdoc, warnings denied, and cargo-deny | `make lint` | `lint` |
 | Tests: unit, property, doc, public API, guide, proofs | `make test-all` | `test` |
 | Coverage: lines at least 90% | `make test-coverage` | `coverage` |
 | Docs: the book builds | `make docs` | `docs` |
@@ -34,6 +34,10 @@ The lint rules live in `Cargo.toml` (`[lints]`) and `clippy.toml`. `make lint` d
 An exception is written as `#[expect(..., reason = "...")]` next to the code it covers, or as a file-level `#![expect(...)]` in a tool target. The reason names the fact that makes the exception safe, for example "the charts place points in SVG units". `expect` fails when its lint no longer fires, so an exception cannot outlive its cause. Generated code is the one place that uses `allow`, because its output cannot carry a comment.
 
 Tests may unwrap, expect, panic, index and print (`clippy.toml`). Library code may not.
+
+## Dependencies
+
+`Cargo.lock` is committed, so every gate and every CI run uses the same versions. The library has no runtime dependencies. The lock pins the development tools and the test crates. `deny.toml` sets the policy that `make lint` checks: advisories, licenses from an allowlist, and crates.io as the only source. The nightly `latest-deps` job runs `make test-all` after `cargo update`, so a breaking release of a test dependency shows up within a day.
 
 ## Style and docs
 
