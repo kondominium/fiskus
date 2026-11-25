@@ -195,7 +195,7 @@ A grouped option such as `2010` covers 2010 to 2012. The BMF treats the years in
 
 ## Operations
 
-Commands are in `mise.toml` and the Makefile.
+Commands are in `mise.toml` and the Makefile. The step-by-step how-to for fetching, with its triage and its troubleshooting, is the `add-conformance-cases` skill in `.agents/skills/`.
 
 - Probe a question without writing anything: `make conformance-cases YEAR=2026 KIND=samples COUNT=2 DRY_RUN=1`. That is four requests, one per second. For one hand-written case, pipe a line into `scripts/conformance/fetch.sh --dry-run`.
 - Fetch the kinks or the samples of an option: `make conformance-cases YEAR=2010 KIND=kinks`, or `KIND=samples COUNT=50`. A run resumes where it stopped. It reports how many cases it fetched and how many it skipped, because the fixture already had them.

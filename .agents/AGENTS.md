@@ -17,3 +17,4 @@ Hard rules:
 - Run tests only through `make test-*` targets.
 - Scratch work goes in `.agents/research/` and `.agents/plans/`. Both are git-ignored.
 - To draft a commit message, use the `commit-message` skill (`.agents/skills/commit-message.md`).
+- To fetch BMF calculator results into the conformance fixtures, use the `add-conformance-cases` skill (`.agents/skills/add-conformance-cases.md`).
