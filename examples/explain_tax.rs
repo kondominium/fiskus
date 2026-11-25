@@ -4,6 +4,14 @@
 //!
 //! Run with `cargo run --example explain_tax`.
 
+#![expect(
+    clippy::print_stdout,
+    clippy::expect_used,
+    clippy::float_arithmetic,
+    clippy::cast_precision_loss,
+    reason = "an example prints the steps it computes, in decimal for a reader; it stops with a message if the year list is empty"
+)]
+
 use fiskus::{
     Cents, Error, FilingStatus, FilingUnit, TaxYear, explain, solidarity_free_threshold_eur,
     solidarity_surcharge, tariff_zones,
@@ -53,7 +61,7 @@ fn main() -> Result<(), Error> {
             );
             println!(
                 "solidarity surcharge: free threshold {threshold} EUR, surcharge {} EUR",
-                surcharge.map_or(0, |surcharge| surcharge.whole_euros())
+                surcharge.map_or(0, Cents::whole_euros)
             );
         }
         None => println!("solidarity surcharge: no free threshold listed for this year"),

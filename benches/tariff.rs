@@ -5,6 +5,14 @@
 //!
 //! The inputs come from `TaxYear::ALL`, the basic allowance and the zone data, so the benchmark
 //! follows the rule files without edits.
+#![expect(
+    clippy::expect_used,
+    reason = "a benchmark stops with a message if the year list is empty"
+)]
+#![expect(
+    missing_docs,
+    reason = "criterion_group! generates an undocumented entry point"
+)]
 
 use criterion::{Criterion, Throughput, black_box, criterion_group, criterion_main};
 use fiskus::{
@@ -44,7 +52,7 @@ fn assess_calls(c: &mut Criterion) {
             units.iter().fold(0i128, |sink, (year, unit)| {
                 sink ^ assess(black_box(*year), black_box(unit)).map_or(0, |a| a.income_tax.get())
             })
-        })
+        });
     });
     group.finish();
 }
@@ -58,7 +66,7 @@ fn explain_calls(c: &mut Criterion) {
             units.iter().fold(0i128, |sink, (year, unit)| {
                 sink ^ explain(black_box(*year), black_box(unit)).map_or(0, |e| e.income_tax_eur)
             })
-        })
+        });
     });
     group.finish();
 }
@@ -71,7 +79,7 @@ fn error_path(c: &mut Criterion) {
     };
     let mut group = c.benchmark_group("assess");
     group.bench_function("negative_income", |b| {
-        b.iter(|| assess(black_box(year), black_box(&negative)).is_err())
+        b.iter(|| assess(black_box(year), black_box(&negative)).is_err());
     });
     group.finish();
 }
@@ -92,9 +100,9 @@ fn surcharge(c: &mut Criterion) {
         b.iter(|| {
             inputs.iter().fold(0i128, |sink, (year, filing, tax)| {
                 sink ^ solidarity_surcharge(black_box(*year), black_box(*filing), black_box(*tax))
-                    .map_or(0, |surcharge| surcharge.get())
+                    .map_or(0, Cents::get)
             })
-        })
+        });
     });
     group.finish();
 }

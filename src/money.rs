@@ -6,21 +6,25 @@ pub struct Cents(i128);
 
 impl Cents {
     /// Creates an amount from a count of cents.
+    #[must_use]
     pub const fn new(cents: i128) -> Self {
         Self(cents)
     }
 
     /// Creates an amount from whole euros. Saturates at the `i128` limits instead of overflowing.
+    #[must_use]
     pub const fn from_euros(euros: i128) -> Self {
         Self(euros.saturating_mul(100))
     }
 
     /// Returns the amount in cents.
+    #[must_use]
     pub const fn get(self) -> i128 {
         self.0
     }
 
     /// Rounds down to the whole euro (towards negative infinity).
+    #[must_use]
     pub const fn whole_euros(self) -> i128 {
         self.0.div_euclid(100)
     }

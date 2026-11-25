@@ -1,0 +1,12 @@
+# Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
+# Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
+#
+# Clippy settings. The lints themselves are set in Cargo.toml under [lints.clippy].
+# Tests may unwrap, expect, panic, index and print: a failing test should say why.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-indexing-slicing-in-tests = true
+allow-print-in-tests = true
+# Words that doc_markdown must not treat as code: statute abbreviations and terms from the rules.
+doc-valid-idents = ["EStG", "SolZG", "BGBl", "PAP", "zvE", "KiGAnhG", "StabSiG", "SteFeG"]

@@ -2,6 +2,13 @@
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //! Keeps the guide in `docs/guide` in step with the code. See `docs/contributing/guide.md`.
 
+#![expect(
+    clippy::panic,
+    clippy::unwrap_used,
+    clippy::expect_used,
+    reason = "a guide check fails by panicking with the file that broke it, so the test output names the file"
+)]
+
 use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -73,7 +80,7 @@ fn articles(text: &str) -> BTreeSet<String> {
         .map(|(index, _)| text[index + '§'.len_utf8()..].trim_start_matches(' '))
         .map(|rest| {
             rest.chars()
-                .take_while(|c| c.is_ascii_alphanumeric())
+                .take_while(char::is_ascii_alphanumeric)
                 .collect::<String>()
         })
         .filter(|article| article.starts_with(|c: char| c.is_ascii_digit()))

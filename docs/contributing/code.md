@@ -27,6 +27,14 @@ Run `make gates` before handover. It runs every gate CI runs, and CI runs the sa
 - Identifiers are English. Types, functions, fields, variables, constants, files, test names and parameter keys never use German, even where German is the precise tax term: one language keeps code consistent and searchable.
 - Docs and doc comments follow the [language rules](language.md), including German terms in parentheses after the English term. Why: readers find the German term, while code keeps the English name.
 
+## Lints
+
+The lint rules live in `Cargo.toml` (`[lints]`) and `clippy.toml`. `make lint` denies every warning, for every target. `missing_docs`, the pedantic group and the safety lints (`unwrap_used`, `expect_used`, `panic`, `indexing_slicing`, `float_arithmetic`) all apply.
+
+An exception is written as `#[expect(..., reason = "...")]` next to the code it covers, or as a file-level `#![expect(...)]` in a tool target. The reason names the fact that makes the exception safe, for example "the charts place points in SVG units". `expect` fails when its lint no longer fires, so an exception cannot outlive its cause. Generated code is the one place that uses `allow`, because its output cannot carry a comment.
+
+Tests may unwrap, expect, panic, index and print (`clippy.toml`). Library code may not.
+
 ## Style and docs
 
 - Prefer well-named functions over comment blocks. Name the step, don't narrate it. Comments are for the why the code can't say. Why: a function name is read at every call site, while a comment drifts from the code.

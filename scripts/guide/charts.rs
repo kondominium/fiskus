@@ -9,7 +9,18 @@
 //! Colors are CSS variables with light fallbacks, so the book's themes restyle each chart
 //! (see `docs/theme/fiskus.css`). Each chart uses the signal color for one highlighted point only.
 
+#![expect(
+    clippy::float_arithmetic,
+    clippy::cast_precision_loss,
+    clippy::cast_possible_truncation,
+    clippy::expect_used,
+    clippy::print_stdout,
+    clippy::print_stderr,
+    reason = "the charts place points in SVG units, which are floating point; tax figures stay integers and come from the API; the generator prints the files it wrote or found out of date"
+)]
+
 use std::error::Error as StdError;
+use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 use std::process::ExitCode;
@@ -126,8 +137,9 @@ fn tariff_coefficients() -> Result<String> {
             ),
             None => ("no tariff zones".to_string(), "—".to_string()),
         };
-        out += &format!(
-            "| {} | {} | {} | {} |\n",
+        let _ = writeln!(
+            out,
+            "| {} | {} | {} | {} |",
             year.year(),
             group(basic_allowance_eur(year)),
             citation,
@@ -140,11 +152,12 @@ fn tariff_coefficients() -> Result<String> {
     for year in TaxYear::ALL {
         let zones = tariff_zones(year);
         if zones.is_empty() {
-            out += &format!("| {} | — | no zones | | | | | |\n", year.year());
+            let _ = writeln!(out, "| {} | — | no zones | | | | | |", year.year());
         }
         for zone in zones {
-            out += &format!(
-                "| {} | {} | {} | {} | {} | {} | {} | {} |\n",
+            let _ = writeln!(
+                out,
+                "| {} | {} | {} | {} | {} | {} | {} | {} |",
                 year.year(),
                 zone.number,
                 group(zone.from_eur),
@@ -503,8 +516,8 @@ fn tax_by_income() -> Result<String> {
 
 /// The basic allowance of every listed year, as steps.
 fn allowance_history() -> Result<String> {
-    let first = TaxYear::ALL[0].year();
-    let last = TaxYear::ALL[TaxYear::ALL.len() - 1].year();
+    let first = TaxYear::ALL.first().ok_or("no year is listed")?.year();
+    let last = TaxYear::ALL.last().ok_or("no year is listed")?.year();
     let steps: Vec<(i128, i128)> = TaxYear::ALL
         .into_iter()
         .map(|year| (i128::from(year.year()), basic_allowance_eur(year)))
@@ -561,7 +574,7 @@ fn first_income(max: i128, holds: impl Fn(i128) -> Result<bool>) -> Result<Optio
     }
     let (mut low, mut high) = (0, max);
     while low < high {
-        let middle = (low + high) / 2;
+        let middle = low.midpoint(high);
         if holds(middle)? {
             high = middle;
         } else {
@@ -573,6 +586,10 @@ fn first_income(max: i128, holds: impl Fn(i128) -> Result<bool>) -> Result<Optio
 
 /// Income tax, solidarity surcharge and the points where the surcharge starts and reaches 5.5 %,
 /// for a single filer and the latest year.
+#[expect(
+    clippy::struct_field_names,
+    reason = "every field is a euro amount at one point of the surcharge, and the name says which point"
+)]
 struct SolidarityBreakdown {
     threshold_tax_eur: i128,
     start_income_eur: Option<i128>,
@@ -703,13 +720,15 @@ fn solidarity_breakdown_table() -> Result<String> {
         "<!-- Generated from rules/ by scripts/guide/charts.rs (make charts). Do not edit by hand. -->\n\n",
     );
     out += "| Point | Income tax (€) | Taxable income, single filer (€) |\n|---|---|---|\n";
-    out += &format!(
-        "| Free threshold (Freigrenze) of § 3 Abs. 3 SolZG | {} | {} |\n",
+    let _ = writeln!(
+        out,
+        "| Free threshold (Freigrenze) of § 3 Abs. 3 SolZG | {} | {} |",
         group(breakdown.threshold_tax_eur),
         income(breakdown.start_income_eur)
     );
-    out += &format!(
-        "| Full 5.5 % rate from (mitigation zone ends) | {} | {} |\n",
+    let _ = writeln!(
+        out,
+        "| Full 5.5 % rate from (mitigation zone ends) | {} | {} |",
         tax(breakdown.full_rate_tax_eur),
         income(breakdown.full_rate_income_eur)
     );
@@ -734,8 +753,9 @@ fn tax_by_income_table() -> Result<String> {
         1, 10_000, 20_000, 30_000, 50_000, 100_000, 150_000, 200_000, 250_000, 300_000,
     ] {
         let explanation = explain(year, &unit(FilingStatus::Single, Cents::from_euros(euros)))?;
-        out += &format!(
-            "| {} | {} | {:.1} % | {:.1} % |\n",
+        let _ = writeln!(
+            out,
+            "| {} | {} | {:.1} % | {:.1} % |",
             group(euros),
             group(explanation.income_tax_eur),
             explanation.average_rate * 100.0,
@@ -749,7 +769,7 @@ fn tax_by_income_table() -> Result<String> {
 fn income_range(max: i128) -> impl Iterator<Item = i128> {
     let step = (max / 400).max(1);
     (0..=max)
-        .step_by(step as usize)
+        .step_by(usize::try_from(step).unwrap_or(1))
         .chain([max])
         .filter(move |euros| *euros <= max)
 }
@@ -775,7 +795,7 @@ fn nice_step(max: f64, ticks: f64) -> f64 {
 fn y_ticks(plot: &Plot, max: f64, label: &dyn Fn(f64) -> String) -> String {
     let step = nice_step(max, 4.0);
     (0..)
-        .map(|index| step * index as f64)
+        .map(|index| step * f64::from(index))
         .take_while(|value| *value <= max + f64::EPSILON)
         .map(|value| {
             text(
@@ -792,7 +812,7 @@ fn y_ticks(plot: &Plot, max: f64, label: &dyn Fn(f64) -> String) -> String {
 fn x_ticks(plot: &Plot, max: f64, label: &dyn Fn(f64) -> String) -> String {
     let step = nice_step(max, 4.0);
     (0..)
-        .map(|index| step * index as f64)
+        .map(|index| step * f64::from(index))
         .take_while(|value| *value <= max + f64::EPSILON)
         .map(|value| {
             text(

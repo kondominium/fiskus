@@ -14,6 +14,10 @@ pub(crate) struct Parameters {
 
 /// Where a year's tariff comes from: the § citation, the source it was taken from, and the archived copy.
 #[derive(Debug)]
+#[expect(
+    clippy::struct_field_names,
+    reason = "the source field names the source the figure was taken from"
+)]
 pub(crate) struct Source {
     pub citation: &'static str,
     pub source: &'static str,

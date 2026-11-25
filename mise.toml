@@ -17,7 +17,7 @@ run = "cargo build --all-targets"
 description = "rustfmt check and clippy with warnings denied"
 run = [
   "cargo fmt --all -- --check",
-  "cargo clippy --all-targets -- -D warnings",
+  "cargo clippy --all-targets --all-features -- -D warnings",
 ]
 
 [tasks.test-unit]

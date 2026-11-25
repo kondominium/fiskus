@@ -1,6 +1,14 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
+//! Build script: reads `rules/<year>.toml`, checks every value, and writes the tables that
+//! `src/params.rs` includes. A bad file fails the build, and the message names the file and the reason.
+#![expect(
+    clippy::panic,
+    reason = "a build script fails the build by panicking, and Cargo prints the message"
+)]
+
 use std::env;
+use std::fmt::Write as _;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -44,6 +52,10 @@ struct Parameter {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+#[expect(
+    clippy::struct_field_names,
+    reason = "the fields are the keys of the [source] table in the rules files"
+)]
 struct Source {
     citation: String,
     source: String,
@@ -83,94 +95,141 @@ fn generate() -> Result<(), String> {
         println!("cargo:rerun-if-changed={}", path.display());
         let file = load(&path)?;
 
-        generated.push_str(&format!(
-            "static PARAMETERS_{year}: Parameters = Parameters {{\n    basic_allowance: Parameter {{ value_eur: {} }},\n}};\n",
-            file.basic_allowance.value_eur
-        ));
+        let _ = writeln!(
+            generated,
+            "static PARAMETERS_{year}: Parameters = Parameters {{\n    basic_allowance: Parameter {{ value_eur: {} }},\n}};",
+            lit(file.basic_allowance.value_eur)
+        );
 
         has_source.push((year, file.source.is_some()));
         if let Some(source) = &file.source {
-            sources.push_str(&format!(
-                "static SOURCE_{year}: Source = Source {{ citation: {:?}, source: {:?}, reference: {:?} }};\n",
+            let _ = writeln!(
+                sources,
+                "static SOURCE_{year}: Source = Source {{ citation: {:?}, source: {:?}, reference: {:?} }};",
                 source.citation, source.source, source.reference
-            ));
+            );
         }
 
         if let Some(solidarity) = &file.solidarity {
             check_solidarity(solidarity)
                 .map_err(|reason| format!("rules/{year}.toml: [solidarity] {reason}"))?;
-            solidarity_tables.push_str(&format!(
-                "static SOLIDARITY_{year}: Solidarity = Solidarity {{ free_threshold_single_eur: {}, free_threshold_joint_eur: {}, source: Source {{ citation: {:?}, source: {:?}, reference: {:?} }} }};\n",
-                solidarity.free_threshold_single_eur,
-                solidarity.free_threshold_joint_eur,
+            let _ = writeln!(
+                solidarity_tables,
+                "static SOLIDARITY_{year}: Solidarity = Solidarity {{ free_threshold_single_eur: {}, free_threshold_joint_eur: {}, source: Source {{ citation: {:?}, source: {:?}, reference: {:?} }} }};",
+                lit(solidarity.free_threshold_single_eur),
+                lit(solidarity.free_threshold_joint_eur),
                 solidarity.citation,
                 solidarity.source,
                 solidarity.reference
-            ));
+            );
         }
         has_solidarity.push((year, file.solidarity.is_some()));
 
-        tariffs.push_str(&format!(
-            "static TARIFF_{year}: [Zone; {}] = [\n",
+        let _ = writeln!(
+            tariffs,
+            "static TARIFF_{year}: [Zone; {}] = [",
             file.zone.len()
-        ));
+        );
         for zone in &file.zone {
-            tariffs.push_str(&format!(
-                "    Zone {{ from_eur: {}, base_eur: {}, step_eur: {}, quadratic_h: {}, linear_h: {}, constant_h: {} }},\n",
-                zone.from_eur, zone.base_eur, zone.step_eur, zone.quadratic_h, zone.linear_h, zone.constant_h
-            ));
+            let _ = writeln!(
+                tariffs,
+                "    Zone {{ from_eur: {}, base_eur: {}, step_eur: {}, quadratic_h: {}, linear_h: {}, constant_h: {} }},",
+                lit(zone.from_eur),
+                lit(zone.base_eur),
+                lit(zone.step_eur),
+                lit(zone.quadratic_h),
+                lit(zone.linear_h),
+                lit(zone.constant_h)
+            );
         }
         tariffs.push_str("];\n");
     }
 
-    generated.push_str(
-        "\npub(crate) fn for_year(year: TaxYear) -> &'static Parameters {\n    match year {\n",
+    lookup_fn(
+        &mut generated,
+        "",
+        "for_year",
+        "&'static Parameters",
+        YEARS.map(|year| (year, format!("&PARAMETERS_{year}"))),
     );
-    for year in YEARS {
-        generated.push_str(&format!(
-            "        TaxYear::Y{year} => &PARAMETERS_{year},\n"
-        ));
-    }
-    generated.push_str("    }\n}\n\n");
-
     generated.push_str(&tariffs);
-    generated.push_str(
-        "\npub(crate) fn tariff_for(year: TaxYear) -> &'static [Zone] {\n    match year {\n",
+    lookup_fn(
+        &mut generated,
+        "",
+        "tariff_for",
+        "&'static [Zone]",
+        YEARS.map(|year| (year, format!("&TARIFF_{year}"))),
     );
-    for year in YEARS {
-        generated.push_str(&format!("        TaxYear::Y{year} => &TARIFF_{year},\n"));
-    }
-    generated.push_str("    }\n}\n");
-
     generated.push_str(&sources);
     generated.push_str(&solidarity_tables);
-    generated.push_str(
-        "\npub(crate) fn solidarity_for(year: TaxYear) -> Option<&'static Solidarity> {\n    match year {\n",
+    lookup_fn(
+        &mut generated,
+        "#[allow(clippy::match_same_arms, reason = \"the years without a threshold share the None arm\")]\n",
+        "solidarity_for",
+        "Option<&'static Solidarity>",
+        optional_arms(has_solidarity, "SOLIDARITY"),
     );
-    for (year, present) in has_solidarity {
-        let value = if present {
-            format!("Some(&SOLIDARITY_{year})")
-        } else {
-            "None".to_string()
-        };
-        generated.push_str(&format!("        TaxYear::Y{year} => {value},\n"));
-    }
-    generated.push_str("    }\n}\n");
-    generated.push_str(
-        "\npub(crate) fn tariff_source_for(year: TaxYear) -> Option<&'static Source> {\n    match year {\n",
+    lookup_fn(
+        &mut generated,
+        "",
+        "tariff_source_for",
+        "Option<&'static Source>",
+        optional_arms(has_source, "SOURCE"),
     );
-    for (year, sourced) in has_source {
-        let source = if sourced {
-            format!("Some(&SOURCE_{year})")
-        } else {
-            "None".to_string()
-        };
-        generated.push_str(&format!("        TaxYear::Y{year} => {source},\n"));
-    }
-    generated.push_str("    }\n}\n");
 
     let target = out_dir.join("parameters.rs");
     fs::write(&target, generated).map_err(|e| format!("{}: {e}", target.display()))
+}
+
+/// Writes `pub(crate) fn name(year) -> return_type`, a `match` with one arm per year. `attribute`
+/// goes above the function, and is empty when the function needs none.
+fn lookup_fn(
+    out: &mut String,
+    attribute: &str,
+    name: &str,
+    return_type: &str,
+    arms: impl IntoIterator<Item = (u16, String)>,
+) {
+    let _ = writeln!(
+        out,
+        "\n{attribute}pub(crate) fn {name}(year: TaxYear) -> {return_type} {{\n    match year {{"
+    );
+    for (year, value) in arms {
+        let _ = writeln!(out, "        TaxYear::Y{year} => {value},");
+    }
+    out.push_str("    }\n}\n");
+}
+
+/// One arm per year: `Some(&{table}_{year})` when the year has that table, `None` otherwise.
+fn optional_arms(
+    years: Vec<(u16, bool)>,
+    table: &'static str,
+) -> impl Iterator<Item = (u16, String)> {
+    years.into_iter().map(move |(year, present)| {
+        let value = if present {
+            format!("Some(&{table}_{year})")
+        } else {
+            "None".to_string()
+        };
+        (year, value)
+    })
+}
+
+/// Writes an integer as a Rust literal with digit groups, so `12348` becomes `12_348`.
+fn lit(value: i128) -> String {
+    let digits = value.unsigned_abs().to_string();
+    let mut grouped = String::new();
+    for (index, digit) in digits.chars().enumerate() {
+        if index > 0 && (digits.len() - index).is_multiple_of(3) {
+            grouped.push('_');
+        }
+        grouped.push(digit);
+    }
+    if value < 0 {
+        format!("-{grouped}")
+    } else {
+        grouped
+    }
 }
 
 fn check_solidarity(solidarity: &SolidarityDef) -> Result<(), String> {
@@ -207,7 +266,7 @@ fn load(path: &Path) -> Result<YearFile, String> {
         (None, false) => return Err(fail("zones given without a [source] table".into())),
         (Some(_), true) => return Err(fail("[source] given without any [[zone]] entries".into())),
         (Some(source), false) => {
-            check_source(source).map_err(|reason| fail(format!("[source] {reason}")))?
+            check_source(source).map_err(|reason| fail(format!("[source] {reason}")))?;
         }
     }
     check_zones(&file.zone, allowance_eur).map_err(fail)?;
@@ -246,13 +305,13 @@ fn check_source(source: &Source) -> Result<(), String> {
 }
 
 fn check_zones(zones: &[ZoneDef], allowance_eur: i128) -> Result<(), String> {
-    if zones.is_empty() {
+    let Some(first) = zones.first() else {
         return Ok(());
-    }
-    if zones[0].from_eur != allowance_eur + 1 {
+    };
+    if first.from_eur != allowance_eur + 1 {
         return Err(format!(
             "first zone starts at {} but the basic allowance is {allowance_eur}",
-            zones[0].from_eur
+            first.from_eur
         ));
     }
     for zone in zones {
@@ -263,11 +322,11 @@ fn check_zones(zones: &[ZoneDef], allowance_eur: i128) -> Result<(), String> {
             ));
         }
     }
-    for pair in zones.windows(2) {
-        if pair[1].from_eur <= pair[0].from_eur {
+    for (previous, zone) in zones.iter().zip(zones.iter().skip(1)) {
+        if zone.from_eur <= previous.from_eur {
             return Err(format!(
                 "zone from {} is not after {}",
-                pair[1].from_eur, pair[0].from_eur
+                zone.from_eur, previous.from_eur
             ));
         }
     }

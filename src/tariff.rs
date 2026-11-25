@@ -9,9 +9,11 @@ use crate::{Assessment, Cents, Error, FilingStatus, FilingUnit, TaxYear};
 /// The tax is always a whole number of euros, in cents. Joint filers are taxed on half of their
 /// income and the result is doubled (§ 32a Abs. 5 EStG).
 ///
-/// Returns [`Error::NegativeTaxableIncome`] for negative income, and
-/// [`Error::OutsideImplementedRange`] above the basic allowance when fiskus has no tariff zones
-/// for the year, or when the amount is too large to compute in `i128`.
+/// # Errors
+///
+/// - [`Error::NegativeTaxableIncome`] for negative income.
+/// - [`Error::OutsideImplementedRange`] above the basic allowance when fiskus has no tariff zones
+///   for the year, or when the amount is too large to compute in `i128`.
 ///
 /// # Examples
 ///
@@ -38,6 +40,10 @@ pub fn assess(year: TaxYear, unit: &FilingUnit) -> Result<Assessment, Error> {
 /// The result has the same tax as [`assess`], plus the zone used, the unrounded tax, the rates,
 /// and the citation of the year's tariff. Amounts are whole euros. `unrounded_basis_tax` is a
 /// fraction of euros, before the tax is rounded down.
+///
+/// # Errors
+///
+/// Returns the same errors as [`assess`].
 ///
 /// # Examples
 ///
@@ -68,14 +74,17 @@ pub fn explain(year: TaxYear, unit: &FilingUnit) -> Result<Explanation, Error> {
         taxable_income_eur,
         basis_eur,
         basic_allowance_eur: allowance_eur,
-        zone: basis.zone.map(|index| zone_step(index, &zones[index])),
+        zone: basis
+            .zone
+            .and_then(|index| zones.get(index).map(|zone| zone_step(index, zone))),
         unrounded_basis_tax: basis.unrounded,
         basis_tax_eur: basis.tax_eur,
         income_tax_eur,
         average_rate: ratio(income_tax_eur, taxable_income_eur),
         marginal_rate: basis
             .zone
-            .map_or(0.0, |index| marginal_rate(&zones[index], basis_eur)),
+            .and_then(|index| zones.get(index))
+            .map_or(0.0, |zone| marginal_rate(zone, basis_eur)),
         source: params::tariff_source_for(year).map(Source::from),
     })
 }
@@ -96,6 +105,7 @@ pub fn explain(year: TaxYear, unit: &FilingUnit) -> Result<Explanation, Error> {
 /// assert_eq!(zones[0].number, 2);
 /// assert_eq!(zones[0].from_eur, basic_allowance_eur(year) + 1);
 /// ```
+#[must_use]
 pub fn tariff_zones(year: TaxYear) -> Vec<ZoneStep> {
     params::tariff_for(year)
         .iter()
@@ -117,6 +127,7 @@ pub fn tariff_zones(year: TaxYear) -> Vec<ZoneStep> {
 /// let year = *TaxYear::ALL.first().unwrap();
 /// assert!(basic_allowance_eur(year) > 0);
 /// ```
+#[must_use]
 pub fn basic_allowance_eur(year: TaxYear) -> i128 {
     params::for_year(year).basic_allowance.value_eur
 }
@@ -194,6 +205,7 @@ impl Fraction {
     };
 
     /// The value rounded down to whole euros (towards negative infinity).
+    #[must_use]
     pub fn floor(self) -> i128 {
         self.numerator.div_euclid(self.denominator)
     }
@@ -301,7 +313,8 @@ fn zone_fraction(zone: &Zone, basis_eur: i128) -> Option<Fraction> {
 
 fn zone_step(index: usize, zone: &Zone) -> ZoneStep {
     ZoneStep {
-        number: (index + 2) as u8,
+        // Zones per year are few, so the fallback is never taken.
+        number: u8::try_from(index + 2).unwrap_or(u8::MAX),
         from_eur: zone.from_eur,
         base_eur: zone.base_eur,
         step_eur: zone.step_eur,
@@ -312,6 +325,11 @@ fn zone_step(index: usize, zone: &Zone) -> ZoneStep {
 }
 
 /// Derivative of the zone's tax with respect to the basis, as a fraction of one euro.
+#[expect(
+    clippy::float_arithmetic,
+    clippy::cast_precision_loss,
+    reason = "the marginal rate is an f64 for display, and no tax figure is computed from it"
+)]
 fn marginal_rate(zone: &Zone, basis_eur: i128) -> f64 {
     let t = (basis_eur - zone.base_eur) as f64 / zone.step_eur as f64;
     let quadratic = zone.quadratic_h as f64 / 100.0;
@@ -319,6 +337,11 @@ fn marginal_rate(zone: &Zone, basis_eur: i128) -> f64 {
     (2.0 * quadratic * t + linear) / zone.step_eur as f64
 }
 
+#[expect(
+    clippy::float_arithmetic,
+    clippy::cast_precision_loss,
+    reason = "the average rate is an f64 for display, and no tax figure is computed from it"
+)]
 fn ratio(numerator_eur: i128, denominator_eur: i128) -> f64 {
     Some(denominator_eur)
         .filter(|denominator| *denominator > 0)
@@ -434,6 +457,12 @@ mod verification {
 }
 
 #[cfg(test)]
+#[expect(
+    clippy::float_arithmetic,
+    clippy::cast_precision_loss,
+    clippy::float_cmp,
+    reason = "the rate tests compare f64 display values, with a tolerance where they differ"
+)]
 mod tests {
     use super::*;
     use proptest::prelude::*;
@@ -794,6 +823,6 @@ mod tests {
 
     #[test]
     fn at_least_one_year_has_zones() {
-        assert!(!years_with_zones().is_empty());
+        assert_ne!(years_with_zones(), Vec::<TaxYear>::new());
     }
 }

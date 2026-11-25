@@ -55,6 +55,7 @@ pub enum TaxYear {
 
 impl TaxYear {
     /// Calendar year of the assessment year, so `TaxYear::Y2026.year()` is 2026.
+    #[must_use]
     pub const fn year(self) -> u16 {
         match self {
             Self::Y2003 => 2003,
@@ -85,6 +86,7 @@ impl TaxYear {
     }
 
     /// Returns the variant for `year` if fiskus implements that assessment year, otherwise `None`.
+    #[must_use]
     pub fn from_year(year: u16) -> Option<Self> {
         Self::ALL.into_iter().find(|variant| variant.year() == year)
     }

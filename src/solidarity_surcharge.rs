@@ -29,6 +29,7 @@ const MITIGATION_RATE_DENOMINATOR: i128 = 1000;
 /// let surcharge = solidarity_surcharge(year, FilingStatus::Single, Cents::from_euros(1_000_000));
 /// assert!(surcharge.is_some());
 /// ```
+#[must_use]
 pub fn solidarity_surcharge(
     year: TaxYear,
     filing: FilingStatus,
@@ -56,6 +57,7 @@ pub fn solidarity_surcharge(
 /// let joint = solidarity_free_threshold_eur(year, FilingStatus::Joint).unwrap();
 /// assert!(joint >= single);
 /// ```
+#[must_use]
 pub fn solidarity_free_threshold_eur(year: TaxYear, filing: FilingStatus) -> Option<i128> {
     let solidarity = params::solidarity_for(year)?;
     Some(match filing {
@@ -75,6 +77,7 @@ pub fn solidarity_free_threshold_eur(year: TaxYear, filing: FilingStatus) -> Opt
 /// let year = *TaxYear::ALL.last().unwrap();
 /// assert!(solidarity_source(year).is_some());
 /// ```
+#[must_use]
 pub fn solidarity_source(year: TaxYear) -> Option<Source> {
     params::solidarity_for(year).map(|solidarity| Source::from(&solidarity.source))
 }

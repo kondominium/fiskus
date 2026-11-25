@@ -1,5 +1,6 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
+//! Compares fiskus with the income tax results of the BMF calculator, one test per euro year option.
 //
 // Conformance: fiskus against recorded results from an official calculator. The fixtures are generated
 // by the scripts described in docs/internal/testing/conformance.md. The tests are gated behind the
@@ -14,6 +15,10 @@ const DEFAULT_LAST_YEAR: u32 = 2025;
 // Every year needs at least this many cases. A smaller sample says too little about the year, so it fails.
 const MIN_CASES_PER_YEAR: usize = 300;
 
+#[expect(
+    clippy::struct_field_names,
+    reason = "the fields are the columns of a fixture row"
+)]
 struct Case {
     case_id: String,
     year_option: String,

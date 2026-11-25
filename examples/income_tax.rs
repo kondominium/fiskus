@@ -5,6 +5,12 @@
 //! The incomes are multiples of the basic allowance, so the example stays correct when a new year
 //! is added. Run with `cargo run --example income_tax`.
 
+#![expect(
+    clippy::print_stdout,
+    clippy::expect_used,
+    reason = "an example prints its result, and stops with a message if the year list is empty"
+)]
+
 use fiskus::{Cents, Error, FilingStatus, FilingUnit, TaxYear, assess, basic_allowance_eur};
 
 fn main() -> Result<(), Error> {
