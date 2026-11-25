@@ -11,8 +11,9 @@ Read these before you change anything:
 Hard rules:
 
 - Run `make gates` before handover, and report its result. A failing gate is not handed over.
-- Never commit, push or merge. Hand over the staged files (one slice), a commit message draft and the gate result.
-- Branch from `main`. Keep your branch current with `git rebase origin/main`. Never merge `main` into a branch.
+- Never commit, push, tag or merge. Hand over the staged files (one slice), a commit message draft and the gate result.
+- Work on `main` and stage there. Run `git pull --ff-only` first, and stop if the tree is not clean before you start. Never create a branch, unless the owner asks for one.
+- If you do work on a branch, branch from `main`, keep it current with `git rebase origin/main`, and never merge `main` into it.
 - Run tests only through `make test-*` targets.
 - Scratch work goes in `.agents/research/` and `.agents/plans/`. Both are git-ignored.
 - To draft a commit message, use the `commit-message` skill (`.agents/skills/commit-message.md`).

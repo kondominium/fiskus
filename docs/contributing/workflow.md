@@ -42,6 +42,8 @@ Good title: `Round joint halves down before the zone check`. Bad title: `Update 
 
 ## Agents
 
-- Agents branch, rebase, run `make gates`, and draft the commit message. The `commit-message` skill (`.agents/skills/commit-message.md`) follows this page.
-- Agents never commit, push or merge.
+- Agents work on `main`, and stage their slice there. Before a slice, run `git pull --ff-only` on `main`, and check that the tree is clean. No branch is needed, because the owner reviews and commits each slice.
+- Agents run `make gates`, and draft the commit message with the `commit-message` skill (`.agents/skills/commit-message.md`). That skill follows this page.
+- Agents never commit, push, tag or merge. The owner does those steps.
 - Hand over: the staged files (one slice only), the commit message draft, and the `make gates` result.
+- Humans may keep using branches and the daily flow above. The rebase rules still apply to any branch.

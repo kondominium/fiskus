@@ -10,7 +10,7 @@ The rules live in `docs/contributing/workflow.md`, section "Commit messages". Fo
 Steps:
 
 1. Read the "Commit messages" section of `docs/contributing/workflow.md`, the "Rules" section of `docs/contributing/code.md`, and the language rules in `docs/contributing/language.md` (the body is English).
-2. Check the branch with `git branch --show-current`. Stop and report if it is `main`. Agents work on a branch, never on `main` (see `docs/contributing/workflow.md`).
+2. Check the branch with `git branch --show-current`. Agents stage on `main` (see `docs/contributing/workflow.md`), so `main` is expected. Stop and report only if the branch is something other than `main` and the owner has not asked for it. Run `git fetch origin` and stop if `main` is behind `origin/main`.
 3. Check the staged slice:
    - `git diff --cached --name-only` lists only the files of this slice. Stop if it lists unrelated files, or if it is empty.
    - `git status --short` shows nothing that belongs to the slice and is unstaged. Report any such file.
