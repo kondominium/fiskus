@@ -26,6 +26,7 @@ fiskus is an independent reference engine for German income tax (Einkommensteuer
 | [Formulas](formulas/grundfreibetrag.md) | The formulas and boundaries, with citations |
 | [Internal](internal/build/README.md) | How fiskus is built, tested and measured: [Build](internal/build/README.md), [Testing](internal/testing/README.md), [Benchmarks](internal/benchmarks.md) |
 | [Contributing](contributing/index.md) | Workflow, code rules, tests, language, guide, design |
+| [Changelog](changelog.md) | What changed in each release |
 
 ## License
 

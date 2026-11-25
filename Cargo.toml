@@ -15,6 +15,7 @@ include = [
     "/rules/**/*.toml",
     "/Cargo.toml",
     "/docs/README.md",
+    "/docs/changelog.md",
     "/docs/logos/fiskus-light-mode-on-white.svg",
     "/LICENSE*",
 ]

@@ -25,6 +25,7 @@
 # Project
 
 - [Roadmap](roadmap.md)
+- [Changelog](changelog.md)
 
 # Internal
 

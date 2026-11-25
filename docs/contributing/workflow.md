@@ -37,6 +37,7 @@ Set this once, so a plain `git pull` rebases: `git config pull.rebase true`.
 - Body: English. Say what changed and why. The diff already shows how. Wrap at 72 characters.
 - Scope: one slice per commit. Stage only that slice's files.
 - Gate: `make gates` passes before the commit.
+- Changelog: a change that users can notice adds a line under `Unreleased` in `docs/changelog.md`, in the same slice. Internal-only slices say so in the handover.
 
 Good title: `Round joint halves down before the zone check`. Bad title: `Update code`. A reviewer can tell the slice from the title.
 

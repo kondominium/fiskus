@@ -15,6 +15,7 @@ Steps:
    - `git diff --cached --name-only` lists only the files of this slice. Stop if it lists unrelated files, or if it is empty.
    - `git status --short` shows nothing that belongs to the slice and is unstaged. Report any such file.
    - Nothing from `.agents/research/` or `.agents/plans/` is staged. Both are git-ignored, so a staged file there means the ignore rule was bypassed. Stop and report it.
+   - If the slice changes anything a user can notice, `docs/changelog.md` is staged and has a line under `Unreleased`. Stop and report it if not. An internal-only slice needs no line, but the handover says so.
 4. Run `make gates` and record its exit code. If it fails, stop and report the failing gate. Do not draft a message for a failing slice.
 5. Draft the title and body as the workflow section describes:
    - Title: imperative, verb first, 72 characters or fewer, no type prefix. Check the length with `printf '%s' "<title>" | wc -c`.
