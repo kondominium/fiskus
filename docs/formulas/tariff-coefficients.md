@@ -2,7 +2,7 @@
 
 | VZ | Basic allowance (€) | Tariff citation | Archived copy |
 |---|---|---|---|
-| 2003 | 7 235 | no tariff zones | — |
+| 2003 | 7 235 | § 32a Abs. 1 Satz 2 Nr. 2 bis 4 EStG in der Fassung des Steuerentlastungsgesetzes 1999/2000/2002 (BGBl. 1999 I S. 402), für VZ 2003 unverändert nach § 52 Abs. 41 Nr. 1 EStG 1997 in der Fassung des Flutopfersolidaritätsgesetzes (BGBl. 2002 I S. 3651; Entwurf BT-Drs. 14/9894, Art. 1 Nr. 4) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2002-estg-32a-transcription-parmentier.txt) |
 | 2004 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif VZ 2004 (BMF-Einkommensteuerrechner) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
 | 2005 | 7 664 | § 32a Abs. 1 Satz 2 EStG, Tarif nach dem Entwurf des Haushaltsbegleitgesetzes 2004 (BT-Drs. 15/1502), in Kraft ab VZ 2004 | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2004-bt-drs-haushaltsbegleitgesetz-entwurf-15-1502.pdf) |
 | 2006 | 7 664 | § 32a Abs. 1 Satz 2 EStG, tariff of the BMF Programmablaufplan for 2006 (UPTAB05) | [PDF](https://github.com/kondominium/fiskus/raw/main/docs/references/2006-bmf-pap-2006.pdf) |
@@ -31,7 +31,9 @@ Each zone is `a·t² + b·t + c` with `t = (x − base) / step`. `x` is the whol
 
 | VZ | Zone | From (€) | Base (€) | Step (€) | a | b | c |
 |---|---|---|---|---|---|---|---|
-| 2003 | — | no zones | | | | | |
+| 2003 | 2 | 7 236 | 7 200 | 10 000 | 768.85 | 1 990 | 0 |
+| 2003 | 3 | 9 252 | 9 216 | 10 000 | 278.65 | 2 300 | 432 |
+| 2003 | 4 | 55 008 | 0 | 10 | 0 | 4.85 | −9 872 |
 | 2004 | 2 | 7 665 | 7 664 | 10 000 | 793.10 | 1 600 | 0 |
 | 2004 | 3 | 12 740 | 12 739 | 10 000 | 265.78 | 2 405 | 1 016 |
 | 2004 | 4 | 52 152 | 0 | 1 | 0 | 0.45 | −8 845 |

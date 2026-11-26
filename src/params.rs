@@ -32,11 +32,20 @@ pub(crate) struct Solidarity {
     pub source: Source,
 }
 
+/// The § 32a Abs. 2 table step: the basis is rounded down to a multiple of `width_eur`, then raised by
+/// `added_eur`, so the tax is flat over each block.
+#[derive(Debug)]
+pub(crate) struct TableStep {
+    pub width_eur: i128,
+    pub added_eur: i128,
+}
+
 /// One progressive zone of the tariff (§ 32a Abs. 1 Satz 2 EStG).
 ///
 /// Tax on a basis `x` inside the zone is `a·t² + b·t + c`, with `t = (x − base_eur) / step_eur`.
 /// The coefficients are `quadratic_h`, `linear_h` and `constant_h` in hundredths of a euro, so
-/// `quadratic_h = 91451` means `a = 914.51`. Linear zones have `quadratic_h = 0` and `step_eur = 1`.
+/// `quadratic_h = 91451` means `a = 914.51`. Linear zones have `quadratic_h = 0`, and a `step_eur` of 1,
+/// or of 10 where the slope has a half-hundredth (0,485 is `linear_h = 485` with `step_eur = 10`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) struct Zone {
     pub from_eur: i128,

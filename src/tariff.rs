@@ -65,7 +65,8 @@ pub fn explain(year: TaxYear, unit: &FilingUnit) -> Result<Explanation, Error> {
     let allowance_eur = basic_allowance_eur(year);
     let zones = params::tariff_for(year);
     let basis_eur = filing_basis_eur(unit.filing, taxable_income_eur);
-    let basis = basis_tax(zones, allowance_eur, basis_eur).ok_or_else(|| outside.clone())?;
+    let table = params::table_step_for(year);
+    let basis = basis_tax(zones, allowance_eur, table, basis_eur).ok_or_else(|| outside.clone())?;
     let income_tax_eur = income_tax_eur(unit.filing, basis.tax_eur).ok_or(outside)?;
 
     Ok(Explanation {
@@ -73,6 +74,7 @@ pub fn explain(year: TaxYear, unit: &FilingUnit) -> Result<Explanation, Error> {
         filing: unit.filing,
         taxable_income_eur,
         basis_eur,
+        tariff_basis_eur: basis.tariff_basis_eur,
         basic_allowance_eur: allowance_eur,
         zone: basis
             .zone
@@ -84,7 +86,7 @@ pub fn explain(year: TaxYear, unit: &FilingUnit) -> Result<Explanation, Error> {
         marginal_rate: basis
             .zone
             .and_then(|index| zones.get(index))
-            .map_or(0.0, |zone| marginal_rate(zone, basis_eur)),
+            .map_or(0.0, |zone| marginal_rate(zone, basis.tariff_basis_eur)),
         source: params::tariff_source_for(year).map(Source::from),
     })
 }
@@ -146,6 +148,9 @@ pub struct Explanation {
     pub taxable_income_eur: i128,
     /// Basis for the tariff: the taxable income for single filers, half of it for joint filers.
     pub basis_eur: i128,
+    /// Basis the zone formula uses: `basis_eur` after the § 32a Abs. 2 table step. Equal to `basis_eur`
+    /// for a year without a table step.
+    pub tariff_basis_eur: i128,
     /// Basic allowance (Grundfreibetrag) of the year, in whole euros.
     pub basic_allowance_eur: i128,
     /// The zone that applies to the basis, or `None` in the zero zone.
@@ -168,8 +173,9 @@ pub struct Explanation {
 ///
 /// The tax on a basis `x` inside the zone is `a·t² + b·t + c`, with `t = (x − base_eur) / step_eur`.
 /// The coefficients `a`, `b` and `c` are `quadratic_h`, `linear_h` and `constant_h` in hundredths
-/// of a euro, so `quadratic_h = 91451` means `a = 914.51`. Linear zones have `quadratic_h = 0`
-/// and `step_eur = 1`.
+/// of a euro, so `quadratic_h = 91451` means `a = 914.51`. Linear zones have `quadratic_h = 0`,
+/// and a `step_eur` of 1, or of 10 where the slope has a half-hundredth (0,485 is `linear_h = 485`
+/// with `step_eur = 10`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ZoneStep {
     /// Zone number in § 32a Abs. 1 EStG: 2 for the first progressive zone, up to 5.
@@ -237,6 +243,7 @@ impl From<&params::Source> for Source {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 struct BasisTax {
     zone: Option<usize>,
+    tariff_basis_eur: i128,
     unrounded: Fraction,
     tax_eur: i128,
 }
@@ -262,17 +269,36 @@ fn income_tax_eur(filing: FilingStatus, tax_on_basis_eur: i128) -> Option<i128> 
     }
 }
 
-/// Tax on `basis_eur` under `zones`. `None` when the basis is above the allowance and no zone
-/// covers it, or when the computation does not fit in `i128`.
-fn basis_tax(zones: &[Zone], allowance_eur: i128, basis_eur: i128) -> Option<BasisTax> {
-    let zero = BasisTax {
-        zone: None,
-        unrounded: Fraction::ZERO,
-        tax_eur: 0,
-    };
-    (basis_eur <= allowance_eur)
-        .then_some(zero)
-        .or_else(|| zone_for(zones, basis_eur))
+/// Tax on `basis_eur` under `zones`, after the table step of the year if it has one. The zero zone
+/// is decided on the basis itself, and the zones on the stepped basis. `None` when the stepped basis
+/// is above the allowance and no zone covers it, or when the computation does not fit in `i128`.
+fn basis_tax(
+    zones: &[Zone],
+    allowance_eur: i128,
+    table: Option<&params::TableStep>,
+    basis_eur: i128,
+) -> Option<BasisTax> {
+    if basis_eur <= allowance_eur {
+        return Some(BasisTax {
+            zone: None,
+            tariff_basis_eur: basis_eur,
+            unrounded: Fraction::ZERO,
+            tax_eur: 0,
+        });
+    }
+    zone_for(zones, table_basis(table, basis_eur)?)
+}
+
+/// The § 32a Abs. 2 table step: the basis rounded down to a multiple of the width, then raised by the
+/// added amount. Without a table step the basis is unchanged.
+fn table_basis(table: Option<&params::TableStep>, basis_eur: i128) -> Option<i128> {
+    match table {
+        None => Some(basis_eur),
+        Some(step) => basis_eur
+            .div_euclid(step.width_eur)
+            .checked_mul(step.width_eur)?
+            .checked_add(step.added_eur),
+    }
 }
 
 fn zone_for(zones: &[Zone], basis_eur: i128) -> Option<BasisTax> {
@@ -284,6 +310,7 @@ fn zone_for(zones: &[Zone], basis_eur: i128) -> Option<BasisTax> {
         .and_then(|(index, zone)| {
             zone_fraction(zone, basis_eur).map(|unrounded| BasisTax {
                 zone: Some(index),
+                tariff_basis_eur: basis_eur,
                 unrounded,
                 tax_eur: unrounded.floor(),
             })
@@ -353,7 +380,7 @@ mod verification {
     use super::*;
 
     fn tax_on(zones: &[Zone], allowance_eur: i128, basis_eur: i128) -> Option<i128> {
-        basis_tax(zones, allowance_eur, basis_eur).map(|basis| basis.tax_eur)
+        basis_tax(zones, allowance_eur, None, basis_eur).map(|basis| basis.tax_eur)
     }
 
     // Bounds keep the proofs tractable. Overflow is handled by checked arithmetic, and the
@@ -392,6 +419,26 @@ mod verification {
         kani::assume(basis_eur <= allowance_eur && basis_eur >= -BOUND_EUR);
 
         assert_eq!(tax_on(&[zone], allowance_eur, basis_eur), Some(0));
+    }
+
+    // The table step of § 32a Abs. 2 (2002 text): 36 € blocks, plus 18 €. The width is fixed to the statute's
+    // value, because a symbolic width makes the solver time out. The unit tests cover other widths.
+    // The stepped basis stays within its block, and never decreases for a higher basis.
+    #[kani::proof]
+    fn table_step_keeps_the_basis_within_its_block_and_monotone() {
+        let step = params::TableStep {
+            width_eur: 36,
+            added_eur: 18,
+        };
+        let first: i128 = kani::any();
+        let second: i128 = kani::any();
+        kani::assume(first >= 0 && first <= BOUND_EUR);
+        kani::assume(second >= first && second <= BOUND_EUR);
+
+        let low = table_basis(Some(&step), first).unwrap();
+        let high = table_basis(Some(&step), second).unwrap();
+        assert!(low - first <= 18 && low - first > 18 - 36);
+        assert!(low <= high);
     }
 
     // Above the allowance with no zones, there is no tax to compute, so the result is an error.
@@ -493,7 +540,7 @@ mod tests {
     }
 
     fn tax_on(zones: &[Zone], allowance_eur: i128, basis_eur: i128) -> Option<i128> {
-        basis_tax(zones, allowance_eur, basis_eur).map(|basis| basis.tax_eur)
+        basis_tax(zones, allowance_eur, None, basis_eur).map(|basis| basis.tax_eur)
     }
 
     fn fixture_tax(basis_eur: i128) -> Option<i128> {
@@ -576,10 +623,12 @@ mod tests {
         }
     }
 
-    // Tax never jumps by more than one euro at a zone start: the zones join, as § 32a requires.
+    // Tax never jumps by more than one euro at a zone start, so the zones join, as § 32a requires. With
+    // a table step the basis moves by a whole block at a zone start, so the jump may be one block.
     #[test]
-    fn every_zone_joins_the_previous_one_within_one_euro() {
+    fn every_zone_joins_the_previous_one() {
         for year in TaxYear::ALL {
+            let largest_jump = params::table_step_for(year).map_or(1, |step| step.width_eur);
             for zone in tariff_zones(year) {
                 let below = Unit::single((zone.from_eur - 1) * 100);
                 let at = Unit::single(zone.from_eur * 100);
@@ -587,9 +636,36 @@ mod tests {
                     continue;
                 };
                 let jump = at.income_tax.whole_euros() - below.income_tax.whole_euros();
-                assert!((0..=1).contains(&jump), "{year:?} at {}", zone.from_eur);
+                assert!(
+                    (0..=largest_jump).contains(&jump),
+                    "{year:?} at {}",
+                    zone.from_eur
+                );
             }
         }
+    }
+
+    // VZ 2003 uses the 2002 tariff (BMF tariff history, section 15, and the § 32a text of 2002). The basis is
+    // rounded to 36 € blocks before the zones apply, so the tax is flat inside a block: 7 236 to 7 271 € pay 10 €.
+    #[test]
+    fn year_2003_rounds_the_basis_to_its_block_before_the_zones() {
+        let tax = |euros: i128| {
+            assess(TaxYear::Y2003, &Unit::single(euros * 100))
+                .unwrap()
+                .income_tax
+                .whole_euros()
+        };
+        assert_eq!(tax(7_235), 0);
+        assert_eq!(tax(7_236), 10);
+        assert_eq!(tax(7_253), 10);
+        assert_eq!(tax(7_272), 17);
+        assert_eq!(tax(9_251), 436);
+        assert_eq!(tax(9_252), 444);
+        assert_eq!(tax(55_007), 16_798);
+        assert_eq!(tax(55_008), 16_815);
+        // Joint filers: the half, 7 236 €, is the basis.
+        let joint = assess(TaxYear::Y2003, &Unit::joint(14_472 * 100)).unwrap();
+        assert_eq!(joint.income_tax, Cents::from_euros(20));
     }
 
     // Each zone's numbers agree with its own formula, taken from the rule data.
@@ -632,6 +708,13 @@ mod tests {
         0..TaxYear::ALL.len()
     }
 
+    fn years_with_table_step() -> Vec<TaxYear> {
+        TaxYear::ALL
+            .into_iter()
+            .filter(|year| params::table_step_for(*year).is_some())
+            .collect()
+    }
+
     fn years_with_zones() -> Vec<TaxYear> {
         TaxYear::ALL
             .into_iter()
@@ -667,14 +750,27 @@ mod tests {
             prop_assert!(low_tax <= high_tax);
         }
 
-        // One more euro of income adds 0 € or 1 € of tax, since every marginal rate is below 100 %.
+        // Without a table step, one more euro of income adds 0 € or 1 € of tax, since every marginal rate is below 100 %.
         #[test]
         fn one_more_euro_adds_at_most_one_euro_of_tax(index in year_index(), euros in 0..2_000_000i128) {
             let year = TaxYear::ALL[index];
-            prop_assume!(!tariff_zones(year).is_empty());
+            prop_assume!(!tariff_zones(year).is_empty() && params::table_step_for(year).is_none());
             let tax = |e: i128| assess(year, &Unit::single(e * 100)).unwrap().income_tax.whole_euros();
             let step = tax(euros + 1) - tax(euros);
             prop_assert!(step == 0 || step == 1);
+        }
+
+        // With a table step the tax is flat inside each block, and a whole block adds at most one euro per euro.
+        #[test]
+        fn tax_is_flat_inside_each_table_block(index in 0..64usize, euros in 0..2_000_000i128) {
+            let years = years_with_table_step();
+            let year = years[index % years.len()];
+            let width = params::table_step_for(year).unwrap().width_eur;
+            let tax = |e: i128| assess(year, &Unit::single(e * 100)).unwrap().income_tax.whole_euros();
+            let block_start = euros - euros.rem_euclid(width);
+            prop_assert_eq!(tax(euros), tax(block_start));
+            let rise = tax(block_start + width) - tax(block_start);
+            prop_assert!((0..=width).contains(&rise), "{year:?} at {euros}: a block rises by {rise}");
         }
 
         // Joint tax is exactly twice the single tax on half of the income, rounded down.
@@ -767,14 +863,16 @@ mod tests {
     // in income, so the central difference over one euro on each side equals the derivative exactly.
     proptest! {
         #[test]
-        fn marginal_rate_matches_the_central_difference_of_the_unrounded_tax(index in year_index(), euros in 1..2_000_000i128) {
+        fn marginal_rate_matches_the_central_difference_of_the_unrounded_tax(index in year_index(), euros in 40..2_000_000i128) {
             let year = TaxYear::ALL[index];
             prop_assume!(!tariff_zones(year).is_empty());
+            // With a table step the basis moves by a block per block, so the difference spans one block.
+            let width = params::table_step_for(year).map_or(1, |step| step.width_eur);
             let at = |e: i128| explain(year, &Unit::single(e * 100)).unwrap();
-            let (below, here, above) = (at(euros - 1), at(euros), at(euros + 1));
+            let (below, here, above) = (at(euros - width), at(euros), at(euros + width));
             prop_assume!(below.zone == here.zone && here.zone == above.zone && here.zone.is_some());
             let unrounded = |e: &Explanation| e.unrounded_basis_tax.numerator as f64 / e.unrounded_basis_tax.denominator as f64;
-            let central = (unrounded(&above) - unrounded(&below)) / 2.0;
+            let central = (unrounded(&above) - unrounded(&below)) / (2.0 * width as f64);
             prop_assert!((central - here.marginal_rate).abs() < 1e-8, "{year:?} at {euros}: {central} vs {}", here.marginal_rate);
         }
 

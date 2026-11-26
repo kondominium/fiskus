@@ -6,3 +6,44 @@ citation = "§ 32a Abs. 1 Satz 2 Nr. 1 EStG in der Fassung des Steuerentlastungs
 source = "https://dserver.bundestag.de/btd/14/098/1409894.pdf"
 retrieved = "2026-11-26"
 reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2002-bt-drs-flutopfersolidaritaetsgesetz-entwurf-14-9894.pdf"
+
+[source]
+citation = "§ 32a Abs. 1 Satz 2 Nr. 2 bis 4 EStG in der Fassung des Steuerentlastungsgesetzes 1999/2000/2002 (BGBl. 1999 I S. 402), für VZ 2003 unverändert nach § 52 Abs. 41 Nr. 1 EStG 1997 in der Fassung des Flutopfersolidaritätsgesetzes (BGBl. 2002 I S. 3651; Entwurf BT-Drs. 14/9894, Art. 1 Nr. 4)"
+source = "http://www.parmentier.de/steuer/32a02.htm"
+retrieved = "2026-11-26"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2002-estg-32a-transcription-parmentier.txt"
+
+[table_step]
+width_eur = 36
+added_eur = 18
+citation = "§ 32a Abs. 2 EStG in der Fassung des Steuerentlastungsgesetzes 1999/2000/2002 (BGBl. 1999 I S. 402), für VZ 2003 unverändert nach § 52 Abs. 41 Nr. 1 EStG 1997 in der Fassung des Flutopfersolidaritätsgesetzes (BGBl. 2002 I S. 3651; Entwurf BT-Drs. 14/9894, Art. 1 Nr. 4)"
+source = "http://www.parmentier.de/steuer/32a02.htm"
+retrieved = "2026-11-26"
+reference = "https://github.com/kondominium/fiskus/raw/main/docs/references/2002-estg-32a-transcription-parmentier.txt"
+
+# Zone 2: t = (x - 7 200) / 10 000, tax = (768,85 t + 1 990) t.
+[[zone]]
+from_eur = 7236
+base_eur = 7200
+step_eur = 10000
+quadratic_h = 76885
+linear_h = 199000
+constant_h = 0
+
+# Zone 3: t = (x - 9 216) / 10 000, tax = (278,65 t + 2 300) t + 432.
+[[zone]]
+from_eur = 9252
+base_eur = 9216
+step_eur = 10000
+quadratic_h = 27865
+linear_h = 230000
+constant_h = 43200
+
+# Zone 4: tax = 0,485 x - 9 872. The slope is 48,5 hundredths, so t = x / 10 gives it in whole hundredths.
+[[zone]]
+from_eur = 55008
+base_eur = 0
+step_eur = 10
+quadratic_h = 0
+linear_h = 485
+constant_h = -987200

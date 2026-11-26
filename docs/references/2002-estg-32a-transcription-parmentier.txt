@@ -1,0 +1,38 @@
+Transcription of § 32a EStG as of 2002 (Einkommensteuertarif), from http://www.parmentier.de/steuer/32a02.htm,
+retrieved 2026-11-26. Unquoted secondary source: kept as a record. The enacted text is BGBl. 1999 I S. 402
+(Steuerentlastungsgesetz 1999/2000/2002), which is not archived. Use it to read the formulas, not as the citation.
+
+§ 32a EStG, Einkommensteuergesetz 2002
+aus dem Einkommensteuergesetz (EStG) von 2002
+§ 32 a Einkommensteuertarif
+(1) Die tarifliche Einkommensteuer bemißt sich nach dem zu versteuernden Einkommen. Sie beträgt vorbehaltlich der §§ 32b, 34, 34b
+und 34c jeweils in Euro für zu versteuernde Einkommen
+1. bis 7 235 Euro (Grundfreibetrag):
+0;
+2. von 7 236 Euro bis 9 251 Euro:
+(768,85 · y + 1 990) · y;
+3. von 9 252 Euro bis 55 007 Euro:
+(278,65 · z + 2 300) · z + 432;
+4. von 55 008 Euro an:
+0,485 · x  9 872.
+"y" ist ein Zehntausendstel des 7 200 Euro übersteigenden Teils des nach
+Absatz 2 ermittelten zu versteuernden Einkommens. "z" ist ein
+Zehntausendstel des 9 216 Euro übersteigenden Teils des nach Absatz 2
+ermittelten zu versteuernden Einkommens. "x" ist das nach Absatz 2
+ermittelte zu versteuernde Einkommen.";
+(2) Das zu versteuernde Einkommen ist auf den nächsten durch 36 ohne Rest
+teilbaren vollen Euro-Betrag abzurunden, wenn es nicht bereits durch
+36 ohne Rest teilbar ist, und um 18 Euro zu erhöhen."
+(3) Die zur Berechnung der tariflichen Einkommensteuer erforderlichen Rechenschritte sind in der Reihenfolge auszuführen, die
+sich nach dem Horner-Schema ergibt. Dabei sind die sich aus den
+Multiplikationen ergebenden Zwischenergebnisse für jeden
+weiteren Rechenschritt mit drei Dezimalstellen anzusetzen; die
+nachfolgenden Dezimalstellen sind fortzulassen. Der sich ergebende
+Steuerbetrag ist auf den nächsten vollen Euro-Betrag
+abzurunden.
+(4) weggefallen
+(5) Angaben zum Splittingtarif ........
+zurück zur Hauptseite |
+Einkommensteuerberechnung 2002 |
+§ 32a Einkommensteuertarif (2001)
+E-Mail: steuer@parmentier.de-->

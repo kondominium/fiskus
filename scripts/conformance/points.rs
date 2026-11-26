@@ -2,7 +2,8 @@
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
 //! Writes conformance cases to stdout, one per line: `year_option,filing_status,taxable_income_cents,role`.
 //!
-//! `kinks` gives the incomes at the basic allowance and at each zone start: one euro below, at, with
+//! `kinks` gives the incomes at the basic allowance and at each zone start, and at the next 36 € block
+//! after each zone start (where a § 32a Abs. 2 table step moves the tax): one euro below, at, with
 //! 0.99 € more, and one euro above, for single and for joint filing. It adds zero, one odd joint income
 //! (the halving rounds it down) and two tail incomes. The starts come from `rules/`, so a wrong start shows
 //! as a mismatch. `samples` gives `count` seeded incomes per filing status, spread over four bands.
@@ -73,6 +74,9 @@ fn fiskus_year(option: &YearOption) -> Option<TaxYear> {
 fn kink_cases(year: TaxYear) -> Vec<Case> {
     let mut starts = vec![basic_allowance_eur(year)];
     starts.extend(tariff_zones(year).iter().map(|zone| zone.from_eur));
+    // The next block after each zone start. A table step (VZ 2003) moves the tax there; other years get the
+    // same four points, which cost a few requests and show nothing new.
+    starts.extend(tariff_zones(year).iter().map(|zone| zone.from_eur + 36));
     starts.sort_unstable();
     starts.dedup();
 

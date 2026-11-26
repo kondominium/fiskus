@@ -26,7 +26,21 @@ struct YearFile {
     source: Option<Source>,
     #[serde(default)]
     zone: Vec<ZoneDef>,
+    table_step: Option<TableStepDef>,
     solidarity: Option<SolidarityDef>,
+}
+
+/// The § 32a Abs. 2 table step: the basis is rounded down to a multiple of `width_eur`, then raised
+/// by `added_eur`. The citation fields say where the rule comes from.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct TableStepDef {
+    width_eur: i128,
+    added_eur: i128,
+    citation: String,
+    source: String,
+    retrieved: String,
+    reference: String,
 }
 
 #[derive(Deserialize)]
@@ -90,6 +104,7 @@ fn generate() -> Result<(), String> {
     let mut has_source = Vec::new();
     let mut solidarity_tables = String::new();
     let mut has_solidarity = Vec::new();
+    let mut table_steps = Vec::new();
     for year in YEARS {
         let path = manifest_dir.join(format!("rules/{year}.toml"));
         println!("cargo:rerun-if-changed={}", path.display());
@@ -124,6 +139,13 @@ fn generate() -> Result<(), String> {
             );
         }
         has_solidarity.push((year, file.solidarity.is_some()));
+
+        table_steps.push((
+            year,
+            file.table_step
+                .as_ref()
+                .map(|step| (step.width_eur, step.added_eur)),
+        ));
 
         let _ = writeln!(
             tariffs,
@@ -162,6 +184,7 @@ fn generate() -> Result<(), String> {
     );
     generated.push_str(&sources);
     generated.push_str(&solidarity_tables);
+    write_table_steps(&mut generated, &table_steps);
     lookup_fn(
         &mut generated,
         "#[allow(clippy::match_same_arms, reason = \"the years without a threshold share the None arm\")]\n",
@@ -171,7 +194,7 @@ fn generate() -> Result<(), String> {
     );
     lookup_fn(
         &mut generated,
-        "",
+        "#[allow(clippy::unnecessary_wraps, reason = \"a year may have no tariff zones, and then no source\")]\n",
         "tariff_source_for",
         "Option<&'static Source>",
         optional_arms(has_source, "SOURCE"),
@@ -179,6 +202,34 @@ fn generate() -> Result<(), String> {
 
     let target = out_dir.join("parameters.rs");
     fs::write(&target, generated).map_err(|e| format!("{}: {e}", target.display()))
+}
+
+/// Writes one `TableStep` per year that has a table step, and the `table_step_for` lookup. `steps` holds
+/// `(width_eur, added_eur)` for each year, or `None` for a year without one.
+fn write_table_steps(out: &mut String, steps: &[(u16, Option<(i128, i128)>)]) {
+    for (year, step) in steps {
+        if let Some((width, added)) = step {
+            let _ = writeln!(
+                out,
+                "static TABLE_STEP_{year}: TableStep = TableStep {{ width_eur: {}, added_eur: {} }};",
+                lit(*width),
+                lit(*added)
+            );
+        }
+    }
+    lookup_fn(
+        out,
+        "#[allow(clippy::match_same_arms, reason = \"the years without a table step share the None arm\")]\n",
+        "table_step_for",
+        "Option<&'static TableStep>",
+        optional_arms(
+            steps
+                .iter()
+                .map(|(year, step)| (*year, step.is_some()))
+                .collect(),
+            "TABLE_STEP",
+        ),
+    );
 }
 
 /// Writes `pub(crate) fn name(year) -> return_type`, a `match` with one arm per year. `attribute`
@@ -269,7 +320,19 @@ fn load(path: &Path) -> Result<YearFile, String> {
             check_source(source).map_err(|reason| fail(format!("[source] {reason}")))?;
         }
     }
-    check_zones(&file.zone, allowance_eur).map_err(fail)?;
+    let table = match &file.table_step {
+        None => None,
+        Some(step) => {
+            if file.zone.is_empty() {
+                return Err(fail(
+                    "[table_step] given without any [[zone]] entries".into(),
+                ));
+            }
+            check_table_step(step).map_err(|reason| fail(format!("[table_step] {reason}")))?;
+            Some((step.width_eur, step.added_eur))
+        }
+    };
+    check_zones(&file.zone, allowance_eur, table).map_err(fail)?;
     Ok(file)
 }
 
@@ -304,7 +367,35 @@ fn check_source(source: &Source) -> Result<(), String> {
     Ok(())
 }
 
-fn check_zones(zones: &[ZoneDef], allowance_eur: i128) -> Result<(), String> {
+fn check_table_step(step: &TableStepDef) -> Result<(), String> {
+    if step.width_eur < 1 {
+        return Err(format!("width_eur {} is not positive", step.width_eur));
+    }
+    if step.added_eur < 0 || step.added_eur >= step.width_eur {
+        return Err(format!(
+            "added_eur {} is not inside one block of {} euros",
+            step.added_eur, step.width_eur
+        ));
+    }
+    for (field, text) in [
+        ("citation", &step.citation),
+        ("source", &step.source),
+        ("retrieved", &step.retrieved),
+        ("reference", &step.reference),
+    ] {
+        if text.trim().is_empty() {
+            return Err(format!("{field} is empty"));
+        }
+    }
+    Ok(())
+}
+
+/// `table` is `(width_eur, added_eur)` of the year's table step, if it has one.
+fn check_zones(
+    zones: &[ZoneDef],
+    allowance_eur: i128,
+    table: Option<(i128, i128)>,
+) -> Result<(), String> {
     let Some(first) = zones.first() else {
         return Ok(());
     };
@@ -330,14 +421,31 @@ fn check_zones(zones: &[ZoneDef], allowance_eur: i128) -> Result<(), String> {
             ));
         }
     }
+    // With a table step the zones are evaluated on the stepped basis, and a zone may start at the
+    // next block, so the tax can move by up to one block at a zone start.
+    let stepped = |euros: i128| match table {
+        Some((width, added)) => euros.div_euclid(width) * width + added,
+        None => euros,
+    };
+    let tolerance = table.map_or(1, |(width, _)| width);
+    if let Some((width, _)) = table {
+        for zone in zones {
+            if zone.from_eur.rem_euclid(width) != 0 {
+                return Err(format!(
+                    "zone from {} does not start a table block of {width} euros",
+                    zone.from_eur
+                ));
+            }
+        }
+    }
     let mut previous: Option<&ZoneDef> = None;
     for zone in zones {
-        let at_start = zone_value(zone, zone.from_eur);
+        let at_start = zone_value(zone, stepped(zone.from_eur));
         let before = match previous {
-            Some(prev) => zone_value(prev, zone.from_eur - 1),
+            Some(prev) => zone_value(prev, stepped(zone.from_eur - 1)),
             None => 0,
         };
-        if (at_start - before).abs() > 1 {
+        if (at_start - before).abs() > tolerance {
             return Err(format!(
                 "tax jumps at {}: {before} € before, {at_start} € at the start of the zone",
                 zone.from_eur

@@ -32,7 +32,7 @@ The numerator is one integer, and the floor is taken once, at the end of the zon
 
 ## Rounding
 
-Taxable income is rounded down to whole euros before the tariff applies (§ 32a Abs. 1 Satz 1 EStG). The tax is rounded down once, at the end of the zone. Because the zones join, the tax changes by at most one euro at each zone start.
+Taxable income is rounded down to whole euros before the tariff applies (§ 32a Abs. 1 Satz 1 EStG). The tax is rounded down once, at the end of the zone. Because the zones join, the tax changes by at most one euro at each zone start. VZ 2003 has the table step of § 32a Abs. 2 EStG, which holds the tax flat over blocks of 36 € and moves it at each block edge. See [table steps](table-steps.md).
 
 ## Joint filers
 
