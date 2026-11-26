@@ -72,7 +72,7 @@ Rules:
 2. `build.rs`: add `Y` to `YEARS`. Keep the list in order.
 3. `src/year.rs`: add the `Y<Y>` variant with its doc comment, its entry in `ALL` (update the array length), a `year()` arm, and a `from_year()` arm.
 4. `src/params.rs`: nothing. `for_year` and `tariff_for` are generated from `YEARS`.
-5. `src/tariff.rs` and `tests/public_api.rs`: nothing. The tests read the year list and the rule data, and run for every listed year. Do not add fixed figures for the year here. They belong to the conformance layer.
+5. `src/tariff.rs` and `scripts/tests/public_api.rs`: nothing. The tests read the year list and the rule data, and run for every listed year. Do not add fixed figures for the year here. They belong to the conformance layer.
 6. `examples/`, `benches/` and `scripts/guide/charts.rs`: nothing. They use the latest listed year, so the new year is picked up.
 7. `docs/formulas/`: nothing. The formula pages hold formulas and point to `rules/`, with no per-year table.
 8. Docs, see step 4. The solidarity thresholds show in `docs/formulas/solidarity-surcharge.md` and in the references table.

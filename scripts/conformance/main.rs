@@ -3,6 +3,14 @@
 //! Conformance with the BMF income tax calculator, for every tax year. The layer is described in
 //! `docs/internal/testing/README.md`. Run with `make test-conformance`.
 
+#![expect(
+    clippy::print_stdout,
+    clippy::panic,
+    clippy::indexing_slicing,
+    clippy::expect_used,
+    reason = "conformance test prints a scoreboard and validates fixtures"
+)]
+
 use fiskus::{Cents, FilingStatus, FilingUnit, TaxYear, assess};
 use std::collections::{BTreeSet, HashMap};
 
@@ -11,8 +19,8 @@ const MIN_CASES_PER_YEAR: usize = 300;
 
 const HEADER: &str =
     "case_id,year_option,filing_status,taxable_income_cents,income_tax_cents,role,run_id";
-const YEAR_OPTIONS: &str = include_str!("../../scripts/conformance/year-options.csv");
-const RUNS: &str = include_str!("../fixtures/conformance/runs.csv");
+const YEAR_OPTIONS: &str = include_str!("year-options.csv");
+const RUNS: &str = include_str!("../../tests/fixtures/conformance/runs.csv");
 
 // Open problems: cases where the calculator and fiskus differ. The exact tax is a whole euro, and the
 // calculator's floating point gives one euro less. Each case is counted apart and must keep both values,
@@ -24,26 +32,86 @@ const OPEN_PROBLEMS: [(&str, i128, i128); 2] = [
 
 // One fixture per year option, written by scripts/conformance/fetch.sh.
 const FIXTURES: [(&str, &str); 20] = [
-    ("2026", include_str!("../fixtures/conformance/2026.csv")),
-    ("2025", include_str!("../fixtures/conformance/2025.csv")),
-    ("2024", include_str!("../fixtures/conformance/2024.csv")),
-    ("2023", include_str!("../fixtures/conformance/2023.csv")),
-    ("2022", include_str!("../fixtures/conformance/2022.csv")),
-    ("2021", include_str!("../fixtures/conformance/2021.csv")),
-    ("2020", include_str!("../fixtures/conformance/2020.csv")),
-    ("2019", include_str!("../fixtures/conformance/2019.csv")),
-    ("2018", include_str!("../fixtures/conformance/2018.csv")),
-    ("2017", include_str!("../fixtures/conformance/2017.csv")),
-    ("2016", include_str!("../fixtures/conformance/2016.csv")),
-    ("2015", include_str!("../fixtures/conformance/2015.csv")),
-    ("2014", include_str!("../fixtures/conformance/2014.csv")),
-    ("2013", include_str!("../fixtures/conformance/2013.csv")),
-    ("2010", include_str!("../fixtures/conformance/2010.csv")),
-    ("2009", include_str!("../fixtures/conformance/2009.csv")),
-    ("2007", include_str!("../fixtures/conformance/2007.csv")),
-    ("2005", include_str!("../fixtures/conformance/2005.csv")),
-    ("2004", include_str!("../fixtures/conformance/2004.csv")),
-    ("2002", include_str!("../fixtures/conformance/2002.csv")),
+    (
+        "2026",
+        include_str!("../../tests/fixtures/conformance/2026.csv"),
+    ),
+    (
+        "2025",
+        include_str!("../../tests/fixtures/conformance/2025.csv"),
+    ),
+    (
+        "2024",
+        include_str!("../../tests/fixtures/conformance/2024.csv"),
+    ),
+    (
+        "2023",
+        include_str!("../../tests/fixtures/conformance/2023.csv"),
+    ),
+    (
+        "2022",
+        include_str!("../../tests/fixtures/conformance/2022.csv"),
+    ),
+    (
+        "2021",
+        include_str!("../../tests/fixtures/conformance/2021.csv"),
+    ),
+    (
+        "2020",
+        include_str!("../../tests/fixtures/conformance/2020.csv"),
+    ),
+    (
+        "2019",
+        include_str!("../../tests/fixtures/conformance/2019.csv"),
+    ),
+    (
+        "2018",
+        include_str!("../../tests/fixtures/conformance/2018.csv"),
+    ),
+    (
+        "2017",
+        include_str!("../../tests/fixtures/conformance/2017.csv"),
+    ),
+    (
+        "2016",
+        include_str!("../../tests/fixtures/conformance/2016.csv"),
+    ),
+    (
+        "2015",
+        include_str!("../../tests/fixtures/conformance/2015.csv"),
+    ),
+    (
+        "2014",
+        include_str!("../../tests/fixtures/conformance/2014.csv"),
+    ),
+    (
+        "2013",
+        include_str!("../../tests/fixtures/conformance/2013.csv"),
+    ),
+    (
+        "2010",
+        include_str!("../../tests/fixtures/conformance/2010.csv"),
+    ),
+    (
+        "2009",
+        include_str!("../../tests/fixtures/conformance/2009.csv"),
+    ),
+    (
+        "2007",
+        include_str!("../../tests/fixtures/conformance/2007.csv"),
+    ),
+    (
+        "2005",
+        include_str!("../../tests/fixtures/conformance/2005.csv"),
+    ),
+    (
+        "2004",
+        include_str!("../../tests/fixtures/conformance/2004.csv"),
+    ),
+    (
+        "2002",
+        include_str!("../../tests/fixtures/conformance/2002.csv"),
+    ),
 ];
 
 #[expect(

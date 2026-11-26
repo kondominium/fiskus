@@ -29,3 +29,5 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 ### Fixed
 
 - The basic allowance for VZ 2003 is 7 235 €, not 7 426 €. The 7 426 € stage was postponed to VZ 2004 by the Flutopfersolidaritätsgesetz (BGBl. 2002 I S. 3651). No computed tax changes, because the 2003 tariff is not in fiskus yet.
+
+[Unreleased]: https://github.com/kondominium/fiskus/commits/main

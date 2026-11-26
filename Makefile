@@ -1,7 +1,7 @@
 .SILENT:
 MISE ?= $(shell which mise)
 
-.PHONY: help build lint test-unit test-doc test-api test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-income-tax run-example-explain-tax test-conformance conformance-cases
+.PHONY: help build lint test-unit test-doc test-api test-proofs test-all test-coverage gates bench docs docs-serve docs-clean charts run-example-income-tax run-example-explain-tax test-conformance conformance-cases package-check release
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {name[NR] = $$1; desc[NR] = $$2; if (length($$1) > width) width = length($$1)} END {fmt = "  %-" width "s %s\n"; for (i = 1; i <= NR; i++) printf fmt, name[i], desc[i]}'
@@ -59,3 +59,10 @@ test-conformance: ## Conformance tests and scoreboard. Year options: make test-c
 
 conformance-cases: ## Fetch BMF results for generated cases: make conformance-cases YEAR=2026 KIND=kinks|samples [COUNT=50] [DRY_RUN=1]
 	YEAR=$(YEAR) KIND=$(KIND) COUNT=$(COUNT) DRY_RUN=$(DRY_RUN) $(MISE) run conformance-cases
+
+package-check: ## Check the packaged crate
+	$(MISE) run package-check
+
+release: ## Prepare a release (requires VERSION=x.y.z)
+	@if [ -z "$(VERSION)" ]; then echo "VERSION is required"; exit 1; fi
+	@scripts/release/release.sh "$(VERSION)"

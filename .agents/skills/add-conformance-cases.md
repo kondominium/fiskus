@@ -61,7 +61,7 @@ Run `mise install` once. It provides `htmlq` and the other tools the scripts use
 6. **Triage a mismatch.** For each failing case, compare the fiskus value with the calculator's, and work out which side is wrong:
    - A zone start or coefficient in `rules/` differs from the statute: that is a rules bug. Fix it in its own slice, with the statute citation.
    - fiskus's formula or rounding differs from the statute: that is a code bug. Write a failing test first, then fix it in its own slice.
-   - The difference is one euro, and the exact value is a whole euro: this may be the BMF's floating point. Do not list it yourself. Report it to the owner with both exact values, and the double-precision model that the conformance section of `docs/internal/testing/README.md` describes. The owner decides whether it goes into `OPEN_PROBLEMS` in `tests/conformance/main.rs`.
+   - The difference is one euro, and the exact value is a whole euro: this may be the BMF's floating point. Do not list it yourself. Report it to the owner with both exact values, and the double-precision model that the conformance section of `docs/internal/testing/README.md` describes. The owner decides whether it goes into `OPEN_PROBLEMS` in `scripts/conformance/main.rs`.
    - Never edit the fixture to make a case pass.
 7. **Hand over.** Stage only the fixture files and `runs.csv`:
 
@@ -75,7 +75,7 @@ Run `mise install` once. It provides `htmlq` and the other tools the scripts use
 
 1. Add the dropdown value to `scripts/conformance/year-options.csv`, with its first and last year.
 2. Add the year to fiskus with the `add-tax-year` skill. The option maps to one of fiskus's years, so the code needs that year first.
-3. In `tests/conformance/main.rs`, add the option to `FIXTURES`, with an empty fixture file that has only the header. The tax years come from `year-options.csv`.
+3. In `scripts/conformance/main.rs`, add the option to `FIXTURES`, with an empty fixture file that has only the header. The tax years come from `year-options.csv`.
 4. Fetch the kinks and the samples, as in steps 1 to 4.
 5. Run `make test-conformance YEARS=<option>`, and triage as in step 6.
 

@@ -10,7 +10,7 @@ Run tests through their `make` target, never a raw `cargo test`, so the flags ma
 |---|---|---|
 | `make test-unit` | Unit and property tests in `src/` | The quick loop while coding |
 | `make test-doc` | Doc tests | Doc examples |
-| `make test-api` | `tests/public_api.rs` | What users import, errors, conversions |
+| `make test-api` | `scripts/tests/public_api.rs` | What users import, errors, conversions |
 | `make test-proofs` | Kani proofs in `src/` | Pure functions over a stated bound |
 | `make test-all` | All of the above, except coverage | Before handover |
 | `make test-coverage` | Line coverage, fails below 90% | Before handover |
@@ -26,10 +26,10 @@ Each layer answers one question, and a test belongs to the lowest layer that can
 | Unit | Does this function do what its rule says, on a small case? | `#[cfg(test)] mod tests` beside the code | Pin a figure of a real year |
 | Property | Does the rule hold for every input in a range? | `proptest` in the same modules, and `tests/` for the public API | Pin a figure of a real year |
 | Proof (Kani) | Does this pure function hold for every input in a bound? | `#[cfg(kani)] mod verification` | Be unbounded. Each proof states its bound |
-| API | Does the public contract behave as documented? | `tests/public_api.rs`, `fiskus::` paths only | Use internal modules |
+| API | Does the public contract behave as documented? | `scripts/tests/public_api.rs`, `fiskus::` paths only | Use internal modules |
 | Doc | Does each example compile and run? | `///` examples on public items | Show a figure that a change would silently break |
 | Guide | Do the guide and the rules agree? | `scripts/guide/checks.rs` and the chart drift check | Be worked around. Extend it for a new rule |
-| Conformance | Does fiskus match the BMF calculator for chosen incomes? | `tests/conformance/`, fixtures in `tests/fixtures/conformance/`. Part of `make test-all` | Pin a figure in the other layers. Add cases only through the fetch scripts |
+| Conformance | Does fiskus match the BMF calculator for chosen incomes? | `scripts/conformance/`, fixtures in `tests/fixtures/conformance/`. Part of `make test-all` | Pin a figure in the other layers. Add cases only through the fetch scripts |
 
 **Figures belong to conformance.** The unit, property, proof and API layers use the rule data and the properties of the tariff, never a fixed figure for a year. The tests run for every year in `TaxYear::ALL`, so a new year is covered without an edit. Fixed figures wait for the conformance layer, where they are checked against the BMF calculator.
 

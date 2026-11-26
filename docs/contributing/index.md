@@ -7,6 +7,7 @@ Start with [Workflow](workflow.md), then read the page for the part you are touc
 | Page | Read it for |
 |---|---|
 | [Workflow](workflow.md) | Branches, rebasing, commits, handover |
+| [Releasing](releasing.md) | Cutting a release, version policy, recovery |
 | [Code](code.md) | Gates, code rules, style, examples |
 | [Tests](tests.md) | Which test layer proves a claim, benchmarks |
 | [Guide](guide.md) | Changing `docs/guide/`, its charts and icons |

@@ -9,8 +9,13 @@ readme = "docs/README.md"
 description = "Einkommensteuer (German income tax) reference engine. Not official BMF software."
 keywords = ["tax", "einkommensteuer", "germany", "reference"]
 categories = ["finance"]
+autoexamples = false
+autotests = false
+autobenches = false
+
 include = [
     "/src/**/*.rs",
+    "/scripts/**/*.rs",
     "/build.rs",
     "/rules/**/*.toml",
     "/Cargo.toml",
@@ -76,8 +81,13 @@ path = "scripts/guide/checks.rs"
 
 [[test]]
 name = "conformance"
-path = "tests/conformance/main.rs"
+path = "scripts/conformance/main.rs"
+
+[[test]]
+name = "public_api"
+path = "scripts/tests/public_api.rs"
 
 [[bench]]
 name = "tariff"
+path = "scripts/bench/tariff.rs"
 harness = false

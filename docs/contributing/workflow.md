@@ -49,3 +49,5 @@ Good title: `Round joint halves down before the zone check`. Bad title: `Update 
 - No planning references: a commit message never names its slice, phase or checkpoint numbers, or any planning status. Say what changed, why, and what is not done. The docs follow the same rule.
 - Hand over: the staged files (one slice only), the commit message draft, and the `make gates` result.
 - Humans may keep using branches and the daily flow above. The rebase rules still apply to any branch.
+
+See [Releasing](releasing.md) for the version policy and the release steps.

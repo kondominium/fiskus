@@ -6,6 +6,7 @@ mdbook = "0.5.3"
 "cargo:cargo-llvm-cov" = "0.9.2"
 "cargo:htmlq" = "0.4.0"
 "cargo:cargo-deny" = "0.22.1"
+"cargo:cargo-semver-checks" = "0.44.0"
 
 [env]
 COVERAGE_IGNORE_REGEX = '(scripts/|build\.rs)'
@@ -32,7 +33,7 @@ description = "Doc tests on public items"
 run = "cargo test --doc"
 
 [tasks.test-api]
-description = "Black-box tests of the public API in tests/public_api.rs"
+description = "Black-box tests of the public API in scripts/tests/public_api.rs"
 run = "cargo test --test public_api"
 
 [tasks.test-proofs]
@@ -64,12 +65,13 @@ run = [
 ]
 
 [tasks.gates]
-description = "Every gate CI runs: lint, test-all, test-coverage, docs"
+description = "Every gate CI runs: lint, test-all, test-coverage, docs, package-check"
 run = [
   "mise run lint",
   "mise run test-all",
   "mise run test-coverage",
   "mise run docs",
+  "mise run package-check",
 ]
 
 [tasks.bench]
@@ -104,9 +106,17 @@ description = "Run examples/explain_tax.rs"
 run = "cargo run --example explain_tax"
 
 [tasks.test-conformance]
-description = "Conformance tests and scoreboard (tests/conformance). Year options via CONFORMANCE_YEARS, default all"
+description = "Conformance tests and scoreboard (scripts/conformance). Year options via CONFORMANCE_YEARS, default all"
 run = "cargo test --test conformance -- --nocapture"
 
 [tasks.conformance-cases]
 description = "Fetch BMF results for generated cases: YEAR=2026 KIND=kinks|samples COUNT=50, DRY_RUN=1 to probe without writing"
 run = "mkdir -p target/conformance && cargo run -q --example conformance_points -- \"$YEAR\" \"$KIND\" \"${COUNT:-50}\" > target/conformance/cases.csv && scripts/conformance/fetch.sh ${DRY_RUN:+--dry-run} < target/conformance/cases.csv"
+
+[tasks.package-check]
+description = "Check the packaged crate: cargo publish --dry-run, size under 200 KB, no forbidden paths"
+run = [
+  "cargo publish --dry-run --allow-dirty",
+  "test \"$(stat -f%z target/package/fiskus-*.crate)\" -lt 204800",
+  "! cargo package --list --allow-dirty | grep -E '^(tests/|benches/|examples/|docs/references/|fixtures/)'",
+]
