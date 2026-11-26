@@ -85,8 +85,8 @@ Update the range only where a page claims it. Do not copy the range from this fi
 
 - `README.md` and `docs/README.md`: the implemented range.
 - `docs/roadmap.md`: the range in the intro, and the "Done" paragraph of milestone 4.
-- `docs/guide/00-intro.md` and `docs/guide/02-tax-year.md`: the range and the `TaxYear` variants.
-- `docs/guide/04-basic-allowance.md`: only if the zero-tax figures change, which they do for a new basic allowance. Recompute them from the code and check the page against `make charts`.
+- `docs/guide/README.md`: the range and the `TaxYear` variants.
+- `docs/guide/README.md`: only if the zero-tax figures change, which they do for a new basic allowance. Recompute them from the code and check the page against `make charts`.
 - `docs/guide/glossary.md`: register every new German term before a page uses it, under its first letter.
 - `docs/guide/coverage.toml`: if a guide page cites a new `§`, list it for that page.
 - `docs/usage/README.md`: the range, and the example values.

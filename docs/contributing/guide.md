@@ -41,6 +41,7 @@ The guide has no illustrations. Every figure a chart shows is drawn from the cod
 - Icons are 24-unit line icons. Each file sets `width` and `height` to 32, keeps `stroke="currentColor"`, and sets `style="color: var(--chart-ink, #0f3d2e)"` on the root `<svg>`, so the icon follows the theme.
 - The Lucide notice lives in `docs/guide/assets/icons/LICENSE-LUCIDE.txt`. Keep it when icons are added or removed.
 - `make test-all` fails if a page does not have exactly one icon, or if the icon file is missing.
+- An info box is a short aside, usually a fiskus reference. Wrap it in `<div class="info-box">`, with a blank line after the opening tag, then `\{{#include assets/callouts/lightbulb.svg}}`, then the text. The lamp is in `docs/guide/assets/callouts/`, not `assets/icons/`, so it does not count toward the page icon. A worked example uses the same box with the calculator, `\{{#include assets/callouts/calculator.svg}}`, and the text starts with "**Worked example.**".
 
 ## Page layout
 

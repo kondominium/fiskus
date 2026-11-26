@@ -128,7 +128,7 @@ let surcharge = solidarity_surcharge(year, FilingStatus::Single, Cents::from_eur
 println!("{:?}", surcharge.map(|cents| cents.whole_euros()));
 ```
 
-The threshold of the year comes from its rule file. For a year without one, the result is `None`. See the [rates and surcharge](../guide/06-rates-and-surcharge.md) page.
+The threshold of the year comes from its rule file. For a year without one, the result is `None`. See the [rates and surcharge](../guide/README.md#rates-and-surcharge-steuersatz-und-solidaritätszuschlag) section.
 
 ## What is not in fiskus yet
 

@@ -110,3 +110,26 @@
 #mdbook-theme-ayu {
   display: none;
 }
+
+/* An info box: a short aside with the lamp icon, set apart from the text around it. */
+.info-box {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--quote-bg);
+  border-left: 4px solid var(--quote-border);
+  border-radius: 4px;
+}
+
+.info-box > svg {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin-top: 0.15rem;
+}
+
+.info-box > p {
+  margin: 0;
+}

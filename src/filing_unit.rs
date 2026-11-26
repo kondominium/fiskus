@@ -5,7 +5,7 @@ use crate::Cents;
 /// Filing status (Veranlagungsform, § 26 EStG).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FilingStatus {
-    /// Single assessment (Einzelveranlagung, § 26a EStG), basic tariff (Grundtarif).
+    /// One person taxed alone, on the basic tariff (Grundtarif, § 32a Abs. 1 EStG).
     Single,
     /// Joint assessment (Zusammenveranlagung, § 26b EStG), splitting tariff (Splittingtarif).
     Joint,

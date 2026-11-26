@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Each calendar year runs from 1 January to 31 December</title>
+<rect x="140.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="170.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">10</text>
+<rect x="210.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="240.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">11</text>
+<rect x="280.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="310.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">12</text>
+<rect x="400.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-ink, #0f3d2e); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="430.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">01</text>
+<rect x="470.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-ink, #0f3d2e); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="500.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">02</text>
+<rect x="540.0" y="150.0" width="60.0" height="48.0" style="fill: var(--chart-ink, #0f3d2e); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1"/>
+<text x="570.0" y="179.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">03</text>
+<line x1="370.0" y1="134.0" x2="370.0" y2="214.0" style="stroke: #e0391f" stroke-width="1"/>
+<polyline points="360.0,244.0 300.0,244.0" fill="none" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="308.0,238.0 300.0,244.0 308.0,250.0" fill="none" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="2" stroke-linejoin="round"/>
+<text x="290.0" y="249.0" text-anchor="end" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">2025</text>
+<polyline points="380.0,244.0 440.0,244.0" fill="none" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="432.0,238.0 440.0,244.0 432.0,250.0" fill="none" style="stroke: var(--chart-ink, #0f3d2e)" stroke-width="2" stroke-linejoin="round"/>
+<text x="450.0" y="249.0" text-anchor="start" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">2026</text>
+<text x="360.0" y="294.0" text-anchor="end" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">31 Dec 2025</text>
+<text x="380.0" y="294.0" text-anchor="start" font-size="14" style="fill: var(--chart-ink, #0f3d2e)">1 Jan 2026</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
+<title>Each layer starts from what is left after the one before</title>
+<rect x="40.0" y="24.0" width="560.0" height="44.0" style="fill: var(--chart-ink, #0f3d2e); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="52.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">Total income</text>
+<rect x="68.0" y="76.0" width="504.0" height="44.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="104.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">− Allowances</text>
+<rect x="96.0" y="128.0" width="448.0" height="44.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="156.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">− Special expenses</text>
+<rect x="124.0" y="180.0" width="392.0" height="44.0" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="208.0" text-anchor="middle" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">− Child allowances</text>
+<rect x="152.0" y="232.0" width="336.0" height="44.0" style="fill: var(--chart-ink, #0f3d2e); stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="260.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">= Taxable income</text>
+<rect x="180.0" y="284.0" width="280.0" height="44.0" style="fill: #e0391f; stroke: var(--chart-ink, #0f3d2e)" stroke-width="1.5"/>
+<text x="320.0" y="312.0" text-anchor="middle" font-size="15" style="fill: var(--chart-zone, #f3f0e8)">→ Tariff tax</text>
+</svg>

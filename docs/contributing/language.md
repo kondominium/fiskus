@@ -20,3 +20,11 @@ The guide tests (run by `make test-all`) check the rules a program can check, on
 - Never refer to planning notes in the docs: no slice, phase or checkpoint numbers, and no status of planned work. Planning status goes stale. Say what the code does, in plain words.
 - Source files start with the English and German disclaimer lines, as in `src/money.rs`.
 - The guide's overview page carries the disclaimer: not official BMF or ELSTER software, and not tax advice.
+
+## Voice
+
+The guide explains German income tax as a friendly explainer. Use short sentences and one idea per paragraph. Open each page with the everyday question it answers, and show one concrete example before the rule. Say what a rule does, and give no tax advice.
+
+A claim about fiskus carries its evidence: a generated number, a chart, or a link to the test that enforces it. A superlative needs a figure, so write "about 42 million assessments per second on one core", not "very fast".
+
+Use precise words for authority. Write "checked against the BMF calculator". Do not describe fiskus as "certified", "official" or "approved by" the BMF. In `docs/`, do not write "guaranteed", "100 % accurate", "best" or "perfect".

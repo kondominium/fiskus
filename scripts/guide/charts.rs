@@ -59,8 +59,11 @@ fn main() -> ExitCode {
 fn run() -> Result<ExitCode> {
     let check = std::env::args().skip(1).any(|arg| arg == "--check");
     let docs = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("docs");
-    let charts: [(&str, Render); 8] = [
-        ("rounding", rounding),
+    let charts: [(&str, Render); 11] = [
+        ("calendar", calendar_months),
+        ("layers", layers_stack),
+        ("rate-steps", rate_steps),
+        ("joint-splitting", joint_splitting),
         ("zero-zone", zero_zone),
         ("tariff-rates", tariff_rates),
         ("solidarity-surcharge", solidarity_surcharge_chart),
@@ -194,68 +197,105 @@ fn unit(filing: FilingStatus, taxable_income: Cents) -> FilingUnit {
     }
 }
 
-fn rounding() -> Result<String> {
+/// The steps from total income to the tariff tax, drawn as a stack. Each layer is narrower than the
+/// one above it, because it starts from what is left after that one. No figures are drawn here.
+#[allow(
+    clippy::unnecessary_wraps,
+    reason = "the chart table takes every renderer with the same Result signature"
+)]
+fn layers_stack() -> Result<String> {
+    let steps = [
+        ("Total income", "total"),
+        ("− Allowances", "deduct"),
+        ("− Special expenses", "deduct"),
+        ("− Child allowances", "deduct"),
+        ("= Taxable income", "total"),
+        ("→ Tariff tax", "tariff"),
+    ];
+    let mut body = String::new();
+    for (index, &(label, kind)) in steps.iter().enumerate() {
+        let width = 560.0 - 56.0 * index as f64;
+        let left = (WIDTH - width) / 2.0;
+        let top = 24.0 + 52.0 * index as f64;
+        let (fill, text_fill) = match kind {
+            "deduct" => (ZONE, INK),
+            "tariff" => (SIGNAL, ZONE),
+            _ => (INK, ZONE),
+        };
+        let _ = writeln!(
+            body,
+            "<rect x=\"{left:.1}\" y=\"{top:.1}\" width=\"{width:.1}\" height=\"44.0\" style=\"fill: {fill}; stroke: {INK}\" stroke-width=\"1.5\"/>"
+        );
+        let _ = writeln!(
+            body,
+            "<text x=\"{:.1}\" y=\"{:.1}\" text-anchor=\"middle\" font-size=\"{LABEL}\" style=\"fill: {text_fill}\">{label}</text>",
+            WIDTH / 2.0,
+            top + 28.0
+        );
+    }
+    Ok(document(
+        "Each layer starts from what is left after the one before",
+        &body,
+    ))
+}
+
+/// The marginal rate as steps of 5 000 € of taxable income, and the average rate as a line, for a
+/// single filer. Each step is the rate on the next euro in that band; the average is the share of
+/// the whole taxable income that tax takes.
+fn rate_steps() -> Result<String> {
     let year = sample_year();
-    let allowance = basic_allowance_eur(year);
-    let start = (allowance - 1) * 100;
-    let end = (allowance + 1) * 100 + 99;
-    let points = (start..=end)
-        .map(|cents| {
-            assess(year, &unit(FilingStatus::Single, Cents::new(cents)))
-                .map(|assessment| (cents, assessment.taxable_income.whole_euros()))
+    let max_income: i128 = 100_000;
+    let band: i128 = 5_000;
+    let mut steps: Vec<(i128, i128, f64)> = Vec::new();
+    for start in (0..max_income / band).map(|index| index * band) {
+        let middle = start + band / 2;
+        let explanation = explain(year, &unit(FilingStatus::Single, Cents::from_euros(middle)))?;
+        steps.push((start, start + band, explanation.marginal_rate));
+    }
+    let average = income_range(max_income)
+        .map(|euros| {
+            explain(year, &unit(FilingStatus::Single, Cents::from_euros(euros)))
+                .map(|explanation| (euros, explanation.average_rate))
         })
         .collect::<std::result::Result<Vec<_>, Error>>()?;
-    let (low, high) = bounds(points.iter().map(|&(_, euros)| euros));
+    let max_rate = steps.iter().map(|&(_, _, rate)| rate).fold(0.0, f64::max);
+    let top = (max_rate * 10.0).ceil() / 10.0;
     let plot = Plot {
-        x: (start as f64, end as f64),
-        y: (low as f64 - 0.5, high as f64 + 0.5),
+        x: (0.0, max_income as f64),
+        y: (0.0, top),
     };
 
-    let curve: Vec<(f64, f64)> = points
+    let mut stairs = Vec::new();
+    let mut previous = 0.0;
+    for &(start, end, rate) in &steps {
+        stairs.push((plot.px(start as f64), plot.py(previous)));
+        stairs.push((plot.px(start as f64), plot.py(rate)));
+        stairs.push((plot.px(end as f64), plot.py(rate)));
+        previous = rate;
+    }
+    let average: Vec<(f64, f64)> = average
         .iter()
-        .map(|&(cents, euros)| (plot.px(cents as f64), plot.py(euros as f64)))
+        .map(|&(euros, rate)| (plot.px(euros as f64), plot.py(rate)))
         .collect();
-    let mut body = axes() + &polyline(&curve, INK, 2.5);
-    body += &(start..=end)
-        .step_by(100)
-        .map(|cents| {
-            text(
-                plot.px(cents as f64),
-                HEIGHT - BOTTOM + 22.0,
-                "middle",
-                TICK,
-                &euros_cents(cents),
-            )
-        })
-        .collect::<String>();
-    body += &[low, high]
-        .into_iter()
-        .map(|amount| {
-            text(
-                LEFT - 10.0,
-                plot.py(amount as f64) + 5.0,
-                "end",
-                TICK,
-                &euros(amount),
-            )
-        })
-        .collect::<String>();
 
-    let (dot_x, dot_y) = (plot.px(end as f64), plot.py(high as f64));
-    body += &circle(dot_x, dot_y, 5.0, SIGNAL);
-    body += &text(
-        LEFT + 8.0,
+    let mut body = axes() + &polyline(&stairs, INK, 2.5);
+    body += &polyline_dashed(&average, INK, 2.5);
+    body += &legend(
+        LEFT + 12.0,
         TOP + 16.0,
-        "start",
-        LABEL,
-        &format!("{} is taken as {}", euros_cents(end), euros(high)),
+        &[
+            ("Marginal rate, per 5 000 € step", false),
+            ("Average rate", true),
+        ],
     );
+    body += &y_ticks(&plot, top, &percent);
+    body += &x_ticks(&plot, max_income as f64, &|value| euros(value as i128));
     body += &axis_titles(
-        "Taxable income (zvE), to the cent",
-        "Amount used for the tariff",
+        "Taxable income (zvE), single filer, whole euros",
+        &format!("Tax rate, VZ {}", year.year()),
     );
     Ok(document(
-        "Taxable income is rounded down to whole euros",
+        "The marginal rate steps up with taxable income, and the average rate rises more slowly",
         &body,
     ))
 }
@@ -349,12 +389,13 @@ fn tariff_rates() -> Result<String> {
         .map(|&(euros, _, marginal)| (plot.px(euros as f64), plot.py(marginal)))
         .collect();
 
-    let mut body = axes() + &polyline(&average, INK, 2.5);
-    body += &polyline_dashed(&marginal, INK, 2.5);
+    // Same convention as rate-steps: the marginal rate is solid, the average rate is dashed.
+    let mut body = axes() + &polyline(&marginal, INK, 2.5);
+    body += &polyline_dashed(&average, INK, 2.5);
     body += &legend(
         LEFT + 12.0,
         TOP + 16.0,
-        &[("Average rate", false), ("Marginal rate", true)],
+        &[("Marginal rate", false), ("Average rate", true)],
     );
     body += &y_ticks(&plot, top, &percent);
     body += &x_ticks(&plot, max_income as f64, &|value| euros(value as i128));
@@ -473,6 +514,49 @@ fn progressive_rates() -> Result<String> {
 }
 
 /// Income tax for a single filer from 1 € to 300 000 €, for the latest year.
+/// Single and joint income tax on the same combined income: the splitting that joint filers get.
+fn joint_splitting() -> Result<String> {
+    let year = sample_year();
+    let max_income = 200_000;
+    let mut single = Vec::new();
+    let mut joint = Vec::new();
+    for euros in income_range(max_income) {
+        let as_single = assess(year, &unit(FilingStatus::Single, Cents::from_euros(euros)))?;
+        let as_joint = assess(year, &unit(FilingStatus::Joint, Cents::from_euros(euros)))?;
+        single.push((euros, as_single.income_tax.whole_euros()));
+        joint.push((euros, as_joint.income_tax.whole_euros()));
+    }
+    let max_tax = single.last().map_or(0, |&(_, tax)| tax);
+    let plot = Plot {
+        x: (0.0, max_income as f64),
+        y: (0.0, max_tax as f64),
+    };
+    let curve = |points: &[(i128, i128)]| -> Vec<(f64, f64)> {
+        points
+            .iter()
+            .map(|&(euros, tax)| (plot.px(euros as f64), plot.py(tax as f64)))
+            .collect()
+    };
+
+    let mut body = axes() + &polyline(&curve(&single), INK, 2.5);
+    body += &polyline_dashed(&curve(&joint), INK, 2.5);
+    body += &y_ticks(&plot, max_tax as f64, &|value| euros(value as i128));
+    body += &x_ticks(&plot, max_income as f64, &|value| euros(value as i128));
+    body += &legend(
+        LEFT + 16.0,
+        TOP + 16.0,
+        &[("Single filer", false), ("Married couple, joint", true)],
+    );
+    body += &axis_titles(
+        "Combined taxable income (zvE), whole euros",
+        &format!("Income tax in euros, VZ {}", year.year()),
+    );
+    Ok(document(
+        "Joint filers pay less tax than a single filer on the same income",
+        &body,
+    ))
+}
+
 fn tax_by_income() -> Result<String> {
     let year = sample_year();
     let max_income = 300_000;
@@ -559,6 +643,87 @@ fn allowance_history() -> Result<String> {
     body += &axis_titles("Assessment year (VZ)", "Basic allowance in euros");
     Ok(document(
         "The basic allowance of each assessment year",
+        &body,
+    ))
+}
+
+/// The turn of the year, zoomed in: the last three months of the year before and the first three
+/// months of the sample year, with arrows that point away from the boundary between them.
+#[allow(
+    clippy::unnecessary_wraps,
+    reason = "the chart table takes every renderer with the same Result signature"
+)]
+fn calendar_months() -> Result<String> {
+    let year = sample_year().year();
+    let years = [year - 1, year];
+    let months = [["10", "11", "12"], ["01", "02", "03"]];
+    let cell = 60.0;
+    let gap = 10.0;
+    let left_start = 140.0;
+    let right_start = left_start + 3.0 * cell + 2.0 * gap + 60.0;
+    let boundary = (left_start + 3.0 * cell + 2.0 * gap + right_start) / 2.0;
+    let top = 150.0;
+    let height = 48.0;
+    let arrow_y = top + height + 46.0;
+    let below = arrow_y + 50.0;
+    let mut body = String::new();
+    for (group, names) in months.iter().enumerate() {
+        let start = if group == 0 { left_start } else { right_start };
+        let (fill, ink) = if group == 0 { (ZONE, INK) } else { (INK, ZONE) };
+        for (index, name) in names.iter().enumerate() {
+            let x = start + index as f64 * (cell + gap);
+            let _ = writeln!(
+                body,
+                "<rect x=\"{x:.1}\" y=\"{top:.1}\" width=\"{cell:.1}\" height=\"{height:.1}\" style=\"fill: {fill}; stroke: {INK}\" stroke-width=\"1\"/>"
+            );
+            let _ = writeln!(
+                body,
+                "<text x=\"{:.1}\" y=\"{:.1}\" text-anchor=\"middle\" font-size=\"{LABEL}\" style=\"fill: {ink}\">{name}</text>",
+                x + cell / 2.0,
+                top + height / 2.0 + 5.0
+            );
+        }
+    }
+    body += &line(boundary, top - 16.0, boundary, top + height + 16.0, SIGNAL);
+    // Left arrow from the boundary to the year before, right arrow from the boundary to the year after.
+    body += &polyline(&[(360.0, arrow_y), (300.0, arrow_y)], INK, 2.0);
+    body += &polyline(
+        &[
+            (308.0, arrow_y - 6.0),
+            (300.0, arrow_y),
+            (308.0, arrow_y + 6.0),
+        ],
+        INK,
+        2.0,
+    );
+    body += &text(290.0, arrow_y + 5.0, "end", LABEL, &years[0].to_string());
+    body += &polyline(&[(380.0, arrow_y), (440.0, arrow_y)], INK, 2.0);
+    body += &polyline(
+        &[
+            (432.0, arrow_y - 6.0),
+            (440.0, arrow_y),
+            (432.0, arrow_y + 6.0),
+        ],
+        INK,
+        2.0,
+    );
+    body += &text(450.0, arrow_y + 5.0, "start", LABEL, &years[1].to_string());
+    body += &text(
+        boundary - 10.0,
+        below,
+        "end",
+        TICK,
+        &format!("31 Dec {}", years[0]),
+    );
+    body += &text(
+        boundary + 10.0,
+        below,
+        "start",
+        TICK,
+        &format!("1 Jan {}", years[1]),
+    );
+    Ok(document(
+        "Each calendar year runs from 1 January to 31 December",
         &body,
     ))
 }
@@ -671,8 +836,8 @@ fn marginal_rate_with_solidarity() -> Result<String> {
     body += &polyline(&including, INK, 2.5);
     body += &polyline_dashed(&excluding, INK, 2.5);
     body += &legend(
-        LEFT + 12.0,
-        TOP + 16.0,
+        plot.px(150_000.0),
+        plot.py(0.30),
         &[
             ("Including solidarity", false),
             ("Excluding solidarity", true),
@@ -687,8 +852,8 @@ fn marginal_rate_with_solidarity() -> Result<String> {
             .map_or(0.0, |&(_, _, with)| with);
         body += &circle(plot.px(start as f64), plot.py(at_start), 5.0, SIGNAL);
         body += &text(
-            plot.px(start as f64) + 10.0,
-            plot.py(at_start) + 22.0,
+            plot.px(start as f64) + 12.0,
+            plot.py(at_start) + 34.0,
             "start",
             LABEL,
             &format!("Surcharge starts at {}", euros(start)),
@@ -785,12 +950,6 @@ fn income_range(max: i128) -> impl Iterator<Item = i128> {
         .filter(move |euros| *euros <= max)
 }
 
-fn bounds(values: impl Iterator<Item = i128>) -> (i128, i128) {
-    values.fold((i128::MAX, i128::MIN), |(low, high), value| {
-        (low.min(value), high.max(value))
-    })
-}
-
 /// A tick step of 1, 2 or 5 times a power of ten, so that `max` takes about `ticks` steps.
 fn nice_step(max: f64, ticks: f64) -> f64 {
     let raw = (max / ticks).max(f64::MIN_POSITIVE);
@@ -855,14 +1014,6 @@ fn legend(x: f64, y: f64, entries: &[(&str, bool)]) -> String {
 
 fn euros(value: i128) -> String {
     format!("{} €", group(value))
-}
-
-fn euros_cents(cents: i128) -> String {
-    format!(
-        "{}.{:02} €",
-        group(cents.div_euclid(100)),
-        cents.rem_euclid(100)
-    )
 }
 
 fn percent(value: f64) -> String {

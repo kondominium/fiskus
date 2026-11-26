@@ -4,15 +4,7 @@
 
 # Guide
 
-- [About](guide/00-intro.md)
-- [Overview](guide/README.md)
-- [Filing unit](guide/01-who-is-taxed-together.md)
-- [Tax year](guide/02-tax-year.md)
-- [Taxable income](guide/03-taxable-income.md)
-- [Basic allowance](guide/04-basic-allowance.md)
-- [Tariff](guide/05-tariff.md)
-- [Rates and surcharge](guide/06-rates-and-surcharge.md)
-- [How fiskus thinks](guide/07-how-fiskus-thinks.md)
+- [How income taxes are calculated in Germany](guide/README.md)
 - [Glossary](guide/glossary.md)
 
 # Using
