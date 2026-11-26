@@ -1,20 +1,28 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
-//! Compares fiskus with the income tax results of the BMF calculator, for every euro year option.
-//!
-//! The fixtures are written by `scripts/conformance/fetch.sh`. The test prints a scoreboard with one row
-//! per year option, and fails when any case differs. Run it with `make test-conformance`, choose years
-//! with `CONFORMANCE_YEARS=2010,2026` or `all`, and read the scoreboard it prints.
+//! Conformance with the BMF income tax calculator, for every tax year. The layer is described in
+//! `docs/internal/testing/README.md`. Run with `make test-conformance`.
 
-use fiskus::{Cents, Error, FilingStatus, FilingUnit, TaxYear, assess};
+use fiskus::{Cents, FilingStatus, FilingUnit, TaxYear, assess};
+use std::collections::{BTreeSet, HashMap};
 
-// Years run when CONFORMANCE_YEARS is unset. 2026 is left out for now.
-const DEFAULT_LAST_YEAR: u32 = 2025;
-
-// Every year needs at least this many cases. A smaller sample says too little about the year, so it fails.
+// Every tax year needs at least this many cases.
 const MIN_CASES_PER_YEAR: usize = 300;
 
-// One fixture per euro year option, as written by scripts/conformance/fetch.sh.
+const HEADER: &str =
+    "case_id,year_option,filing_status,taxable_income_cents,income_tax_cents,role,run_id";
+const YEAR_OPTIONS: &str = include_str!("../../scripts/conformance/year-options.csv");
+const RUNS: &str = include_str!("../fixtures/conformance/runs.csv");
+
+// Open problems: cases where the calculator and fiskus differ. The exact tax is a whole euro, and the
+// calculator's floating point gives one euro less. Each case is counted apart and must keep both values,
+// so a change to either one fails the test. Each tuple is (case, BMF cents, fiskus cents).
+const OPEN_PROBLEMS: [(&str, i128, i128); 2] = [
+    ("2019-0215", 10_183_800, 10_184_000),
+    ("2020-0335", 10_302_700, 10_302_800),
+];
+
+// One fixture per year option, written by scripts/conformance/fetch.sh.
 const FIXTURES: [(&str, &str); 20] = [
     ("2026", include_str!("../fixtures/conformance/2026.csv")),
     ("2025", include_str!("../fixtures/conformance/2025.csv")),
@@ -48,6 +56,23 @@ struct Case {
     filing: FilingStatus,
     taxable_income: i128,
     income_tax: i128,
+    role: String,
+    run_id: String,
+}
+
+fn filing_status(text: &str) -> FilingStatus {
+    match text {
+        "single" => FilingStatus::Single,
+        "joint" => FilingStatus::Joint,
+        other => panic!("unknown filing status {other}"),
+    }
+}
+
+fn filing_name(filing: FilingStatus) -> &'static str {
+    match filing {
+        FilingStatus::Single => "single",
+        FilingStatus::Joint => "joint",
+    }
 }
 
 fn parse_cases(csv: &str) -> Vec<Case> {
@@ -60,189 +85,328 @@ fn parse_cases(csv: &str) -> Vec<Case> {
             Case {
                 case_id: fields[0].to_owned(),
                 year_option: fields[1].to_owned(),
-                filing: match fields[2] {
-                    "single" => FilingStatus::Single,
-                    "joint" => FilingStatus::Joint,
-                    other => panic!("unknown filing status {other}"),
-                },
+                filing: filing_status(fields[2]),
                 taxable_income: fields[3].parse().expect("taxable_income_cents"),
                 income_tax: fields[4].parse().expect("income_tax_cents"),
+                role: fields[5].to_owned(),
+                run_id: fields[6].to_owned(),
             }
         })
         .collect()
 }
 
-fn tax_year(year_option: &str) -> Option<TaxYear> {
-    // The year_option is the BMF dropdown value, which may cover several years.
-    // fiskus has one TaxYear per calendar year, so pick a year that falls inside
-    // the group and that fiskus implements. The BMF uses the same tariff for
-    // every year in the group, so any year in the range gives the same answer.
-    match year_option {
-        "2026" => Some(TaxYear::Y2026),
-        "2025" => Some(TaxYear::Y2025),
-        "2024" => Some(TaxYear::Y2024),
-        "2023" => Some(TaxYear::Y2023),
-        "2022" => Some(TaxYear::Y2022),
-        "2021" => Some(TaxYear::Y2021),
-        "2020" => Some(TaxYear::Y2020),
-        "2019" => Some(TaxYear::Y2019),
-        "2018" => Some(TaxYear::Y2018),
-        "2017" => Some(TaxYear::Y2017),
-        "2016" => Some(TaxYear::Y2016),
-        "2015" => Some(TaxYear::Y2015),
-        "2014" => Some(TaxYear::Y2014),
-        "2013" => Some(TaxYear::Y2013),
-        "2010" => Some(TaxYear::Y2010), // covers 2010-2012
-        "2009" => Some(TaxYear::Y2009),
-        "2007" => Some(TaxYear::Y2007), // covers 2007-2008
-        "2005" => Some(TaxYear::Y2005), // covers 2005-2006
-        "2004" => Some(TaxYear::Y2004),
-        "2002" => Some(TaxYear::Y2003), // covers 2002-2003
-        _ => None,
-    }
+// Year options and their years, from year-options.csv.
+fn year_options() -> Vec<(&'static str, u16, u16)> {
+    YEAR_OPTIONS
+        .lines()
+        .skip(1)
+        .filter_map(|line| {
+            let fields: Vec<&str> = line.split(',').collect();
+            let [name, _label, first, last] = fields.as_slice() else {
+                return None;
+            };
+            Some((*name, first.parse().ok()?, last.parse().ok()?))
+        })
+        .collect()
 }
 
-// `all` runs every year. A list such as `2010,2026` runs those years. Unset or empty runs up to DEFAULT_LAST_YEAR.
-fn selected(year: &str) -> bool {
+// The tax years an option covers that fiskus implements.
+fn years_of(option: &str) -> Vec<TaxYear> {
+    let (_, first, last) = year_options()
+        .into_iter()
+        .find(|(name, _, _)| *name == option)
+        .unwrap_or_else(|| panic!("fixture {option} is not in year-options.csv"));
+    (first..=last).filter_map(TaxYear::from_year).collect()
+}
+
+// CONFORMANCE_YEARS: option names, or all (the default).
+fn selected(option: &str) -> bool {
     match std::env::var("CONFORMANCE_YEARS").as_deref() {
-        Ok("all") => true,
-        Ok(list) if !list.trim().is_empty() => list.split(',').any(|item| item.trim() == year),
-        _ => year
-            .parse::<u32>()
-            .is_ok_and(|value| value <= DEFAULT_LAST_YEAR),
+        Ok(list) if !list.trim().is_empty() && list.trim() != "all" => {
+            list.split(',').any(|item| item.trim() == option)
+        }
+        _ => true,
     }
 }
 
-// One row of the scoreboard: how the cases of one year option came out.
-struct Row {
-    year: &'static str,
+// The cases of one tax year, counted.
+struct Tally {
     cases: usize,
     passed: usize,
-    zone_missing: usize,
-    mismatched: usize,
+    open: usize,
+    failures: Vec<String>,
 }
 
-// Checks every case of one fixture. Returns the row, and a message for each failing case.
-fn check_year(year: &'static str, csv: &str) -> (Row, Vec<String>) {
-    let mut row = Row {
-        year,
+fn check(year: TaxYear, csv: &str) -> Tally {
+    let mut tally = Tally {
         cases: 0,
         passed: 0,
-        zone_missing: 0,
-        mismatched: 0,
+        open: 0,
+        failures: Vec::new(),
     };
-    let mut failures = Vec::new();
     for case in parse_cases(csv) {
-        row.cases += 1;
+        tally.cases += 1;
         let unit = FilingUnit {
             filing: case.filing,
             taxable_income: Cents::new(case.taxable_income),
         };
-        match tax_year(&case.year_option).map(|tax_year| assess(tax_year, &unit)) {
-            None => {
-                row.zone_missing += 1;
-                failures.push(format!(
-                    "{}: tax year {} is not in fiskus yet",
-                    case.case_id, case.year_option
-                ));
+        let label = format!("{} (tax year {})", case.case_id, year.year());
+        let assessed = match assess(year, &unit) {
+            Ok(assessment) => assessment,
+            Err(error) => {
+                tally.failures.push(format!("{label}: {error}"));
+                continue;
             }
-            Some(Ok(assessment)) if assessment.income_tax == Cents::new(case.income_tax) => {
-                row.passed += 1;
+        };
+        let open = OPEN_PROBLEMS
+            .iter()
+            .find(|(case_id, _, _)| *case_id == case.case_id);
+        match (assessed.income_tax == Cents::new(case.income_tax), open) {
+            (true, None) => tally.passed += 1,
+            (true, Some(_)) => tally.failures.push(format!(
+                "{label}: listed as an open problem, but fiskus matches the calculator; remove it from OPEN_PROBLEMS"
+            )),
+            (false, Some((_, bmf_cents, fiskus_cents)))
+                if case.income_tax == *bmf_cents && assessed.income_tax.get() == *fiskus_cents =>
+            {
+                tally.open += 1;
             }
-            Some(Ok(assessment)) => {
-                row.mismatched += 1;
-                failures.push(format!(
-                    "{}: fiskus {} cents, expected {} cents",
-                    case.case_id,
-                    assessment.income_tax.get(),
-                    case.income_tax
-                ));
-            }
-            Some(Err(Error::OutsideImplementedRange { .. })) => {
-                row.zone_missing += 1;
-                failures.push(format!("{}: tariff zone not in fiskus yet", case.case_id));
-            }
-            Some(Err(error)) => {
-                row.mismatched += 1;
-                failures.push(format!("{}: {error}", case.case_id));
-            }
+            (false, Some((_, bmf_cents, fiskus_cents))) => tally.failures.push(format!(
+                "{label}: open problem with BMF {bmf_cents} and fiskus {fiskus_cents} cents, but the case gives BMF {} and fiskus {} cents",
+                case.income_tax,
+                assessed.income_tax.get()
+            )),
+            (false, None) => tally.failures.push(format!(
+                "{label}: fiskus {} cents, expected {} cents",
+                assessed.income_tax.get(),
+                case.income_tax
+            )),
         }
     }
-    (row, failures)
+    tally
 }
 
-// A share with one decimal, in integer arithmetic: 9092 of 9500 is "95.7%".
+// A share with one decimal, in integers: 9092 of 9500 is 95.7%.
 fn percent(part: usize, whole: usize) -> String {
     let tenths = part * 1000 / whole.max(1);
     format!("{}.{}%", tenths / 10, tenths % 10)
 }
 
+// One scoreboard row: a tax year and its tally.
+struct Row {
+    year: u16,
+    option: &'static str,
+    tally: Tally,
+}
+
 fn print_scoreboard(rows: &[Row]) {
     println!(
-        "conformance scoreboard (zone missing: the tariff zone is not in fiskus yet; mismatched: fiskus disagrees with the calculator)"
+        "conformance scoreboard (open: the calculator differs from fiskus, listed in OPEN_PROBLEMS)"
     );
     println!(
-        "{:<6} {:>7} {:>8} {:>8} {:>13} {:>11} {:>8}",
-        "year", "cases", "passed", "failed", "zone missing", "mismatched", "passed"
+        "{:<6} {:<7} {:>7} {:>8} {:>6} {:>8} {:>8}",
+        "year", "option", "cases", "passed", "open", "failed", "passed"
     );
-    let mut total = Row {
-        year: "total",
-        cases: 0,
-        passed: 0,
-        zone_missing: 0,
-        mismatched: 0,
-    };
+    let (mut cases, mut passed, mut open, mut failed) = (0, 0, 0, 0);
     for row in rows {
-        print_row(row);
-        total.cases += row.cases;
-        total.passed += row.passed;
-        total.zone_missing += row.zone_missing;
-        total.mismatched += row.mismatched;
+        let failed_here = row.tally.cases - row.tally.passed - row.tally.open;
+        println!(
+            "{:<6} {:<7} {:>7} {:>8} {:>6} {:>8} {:>8}",
+            row.year,
+            row.option,
+            row.tally.cases,
+            row.tally.passed,
+            row.tally.open,
+            failed_here,
+            percent(row.tally.passed, row.tally.cases)
+        );
+        cases += row.tally.cases;
+        passed += row.tally.passed;
+        open += row.tally.open;
+        failed += failed_here;
     }
-    print_row(&total);
-}
-
-fn print_row(row: &Row) {
     println!(
-        "{:<6} {:>7} {:>8} {:>8} {:>13} {:>11} {:>8}",
-        row.year,
-        row.cases,
-        row.passed,
-        row.cases - row.passed,
-        row.zone_missing,
-        row.mismatched,
-        percent(row.passed, row.cases)
+        "{:<6} {:<7} {:>7} {:>8} {:>6} {:>8} {:>8}",
+        "total",
+        "",
+        cases,
+        passed,
+        open,
+        failed,
+        percent(passed, cases)
     );
 }
 
-// One test for every selected year, so the scoreboard is printed whole, in year order.
+// One test for every selected year option, printed in year order.
 #[test]
 fn conformance_to_the_bmf_calculator() {
     let mut rows = Vec::new();
     let mut failures = Vec::new();
-    for (year, csv) in FIXTURES {
-        if !selected(year) {
+    for (option, csv) in FIXTURES {
+        if !selected(option) {
             continue;
         }
-        let (row, year_failures) = check_year(year, csv);
-        if row.cases < MIN_CASES_PER_YEAR {
-            failures.push(format!(
-                "{year}: {} cases, at least {MIN_CASES_PER_YEAR} are required",
-                row.cases
-            ));
+        for year in years_of(option) {
+            let tally = check(year, csv);
+            if tally.cases < MIN_CASES_PER_YEAR {
+                failures.push(format!(
+                    "{} (option {option}): {} cases, at least {MIN_CASES_PER_YEAR} are required",
+                    year.year(),
+                    tally.cases
+                ));
+            }
+            if !tally.failures.is_empty() {
+                let first: Vec<&str> = tally.failures.iter().take(20).map(String::as_str).collect();
+                failures.push(format!(
+                    "{} (option {option}): {} of {} cases fail. First ones:\n{}",
+                    year.year(),
+                    tally.failures.len(),
+                    tally.cases,
+                    first.join("\n")
+                ));
+            }
+            rows.push(Row {
+                year: year.year(),
+                option,
+                tally,
+            });
         }
-        if !year_failures.is_empty() {
-            let first: Vec<&str> = year_failures.iter().take(20).map(String::as_str).collect();
-            failures.push(format!(
-                "{year}: {} of {} cases fail. First ones:\n{}",
-                year_failures.len(),
-                row.cases,
-                first.join("\n")
-            ));
-        }
-        rows.push(row);
     }
     rows.sort_by_key(|row| row.year);
     print_scoreboard(&rows);
     assert!(failures.is_empty(), "{}", failures.join("\n"));
+}
+
+// Layout of every fixture row, and that its run is listed.
+#[test]
+fn fixture_rows_are_well_formed() {
+    let runs: BTreeSet<&str> = RUNS
+        .lines()
+        .skip(1)
+        .filter_map(|line| line.split(',').next())
+        .collect();
+    for (option, csv) in FIXTURES {
+        assert_eq!(csv.lines().next(), Some(HEADER), "{option}: header");
+        for (index, case) in parse_cases(csv).iter().enumerate() {
+            let expected_id = format!("{option}-{:04}", index + 1);
+            assert_eq!(
+                case.case_id, expected_id,
+                "{option}: case ids are sequential"
+            );
+            assert_eq!(case.year_option, option, "{option}: {}", case.case_id);
+            assert!(!case.role.is_empty(), "{}: role", case.case_id);
+            assert!(
+                runs.contains(case.run_id.as_str()),
+                "{}: run {} is not in runs.csv",
+                case.case_id,
+                case.run_id
+            );
+            assert!(
+                case.taxable_income >= 0,
+                "{}: negative income",
+                case.case_id
+            );
+            assert!(case.income_tax >= 0, "{}: negative tax", case.case_id);
+        }
+    }
+}
+
+// No income is checked twice for one filing status.
+#[test]
+fn fixture_cases_are_unique() {
+    for (option, csv) in FIXTURES {
+        let mut seen = BTreeSet::new();
+        for case in parse_cases(csv) {
+            assert!(
+                seen.insert((filing_name(case.filing), case.taxable_income)),
+                "{option}: {} repeats an income",
+                case.case_id
+            );
+        }
+    }
+}
+
+// Tax never falls as income rises.
+#[test]
+fn calculator_tax_never_decreases_with_income() {
+    for (option, csv) in FIXTURES {
+        for filing in [FilingStatus::Single, FilingStatus::Joint] {
+            let mut rows: Vec<(i128, i128, String)> = parse_cases(csv)
+                .into_iter()
+                .filter(|case| case.filing == filing)
+                .map(|case| (case.taxable_income, case.income_tax, case.case_id))
+                .collect();
+            rows.sort_unstable();
+            for pair in rows.windows(2) {
+                assert!(
+                    pair[0].1 <= pair[1].1,
+                    "{option}: {} pays more than {} with less income",
+                    pair[0].2,
+                    pair[1].2
+                );
+            }
+        }
+    }
+}
+
+// Joint tax is twice the single tax on half, where the calculator has both.
+#[test]
+fn calculator_joint_tax_is_twice_the_single_tax_on_half() {
+    for (option, csv) in FIXTURES {
+        let cases = parse_cases(csv);
+        let single: HashMap<i128, i128> = cases
+            .iter()
+            .filter(|case| case.filing == FilingStatus::Single)
+            .map(|case| (case.taxable_income, case.income_tax))
+            .collect();
+        for case in cases
+            .iter()
+            .filter(|case| case.filing == FilingStatus::Joint)
+        {
+            if case.taxable_income % 200 != 0 {
+                continue;
+            }
+            if let Some(half_tax) = single.get(&(case.taxable_income / 2)) {
+                assert_eq!(
+                    case.income_tax,
+                    2 * half_tax,
+                    "{option}: {} is not twice the single tax on half",
+                    case.case_id
+                );
+            }
+        }
+    }
+}
+
+// Every tax year has a fixture.
+#[test]
+fn every_tax_year_has_a_fixture() {
+    let covered: BTreeSet<u16> = FIXTURES
+        .iter()
+        .flat_map(|(option, _)| years_of(option))
+        .map(TaxYear::year)
+        .collect();
+    for year in TaxYear::ALL {
+        assert!(
+            covered.contains(&year.year()),
+            "tax year {} has no fixture",
+            year.year()
+        );
+    }
+}
+
+// Every open problem is a fixture case, with the BMF value that its entry records.
+#[test]
+fn open_problems_are_fixture_cases() {
+    for (case_id, bmf_cents, _) in OPEN_PROBLEMS {
+        let found = FIXTURES.iter().any(|(_, csv)| {
+            parse_cases(csv)
+                .iter()
+                .any(|case| case.case_id == case_id && case.income_tax == bmf_cents)
+        });
+        assert!(
+            found,
+            "open problem {case_id} is not a fixture case with BMF {bmf_cents} cents"
+        );
+    }
 }

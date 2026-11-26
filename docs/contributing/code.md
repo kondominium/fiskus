@@ -101,7 +101,7 @@ Tests do not hold the figures of a year. They read the rule data through the API
 
 | Change | Steps |
 |---|---|
-| New basic allowance value or zone for an existing year | 1. Change the value, the coefficients and the citation in `rules/<year>.toml`. 2. Check the change against the source, and the references README. 3. Update the guide and formula pages that quote it, if they quote it. `make test-guide` shows which. |
+| New basic allowance value or zone for an existing year | 1. Change the value, the coefficients and the citation in `rules/<year>.toml`. 2. Check the change against the source, and the references README. 3. Update the guide and formula pages that quote it, if they quote it. `make test-all` shows which. |
 | New tax year | 1. Create `rules/<year>.toml` with `[basic_allowance]`, and `[source]` and `[[zone]]` if the tariff is known. 2. Add the year to `YEARS` in `build.rs`. 3. Add a variant to `TaxYear` and to `ALL`, and the `year()` arm. The compiler checks the rest. 4. Update the year count in `tests/public_api.rs` only if a test pins it. 5. Update the docs that state the range, and add the year's sources to `docs/references/README.md`. |
 
 Keep `/build.rs` and `/rules/**/*.toml` in the `include` list of `Cargo.toml`, or the packaged crate cannot build. Check the list with `cargo package --list`. `docs/references` is not packaged, and the build does not read it.

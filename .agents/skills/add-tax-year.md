@@ -116,7 +116,7 @@ Run `make gates` (lint, test-all, test-coverage, docs). All must pass. Check the
 - `make test-unit`: the property tests over `TaxYear::ALL`, and `every_year_is_zero_up_to_its_basic_allowance` and `every_zone_joins_the_previous_one_within_one_euro`.
 - `make test-api`: `listed_years_are_contiguous_and_round_trip` and `years_outside_the_listed_range_are_not_supported`.
 - `make test-proofs`: the Kani harnesses pass. The tariff harness is bounded to 10^12 euros.
-- `make test-guide`: `parameter_references_exist`, `parameter_values_appear_on_the_page_that_cites_them`, the chart drift check and the chapter checks. The guide checks must actually read the rules. If a check reports zero parameters, it is broken, not passing.
+- `make test-all` runs the guide checks: `parameter_references_exist`, `parameter_values_appear_on_the_page_that_cites_them`, the chart drift check and the chapter checks. The guide checks must actually read the rules. If a check reports zero parameters, it is broken, not passing.
 - `make test-doc`: the doc examples compile.
 - Coverage stays at 90% or above.
 - `make bench` compiles and runs when the bench inputs changed.

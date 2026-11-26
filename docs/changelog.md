@@ -12,7 +12,7 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 - Income tax tariff under § 32a Abs. 1 EStG for 2004 to 2026, for single and for joint filing.
 - `explain`, which returns the tariff zone, the unrounded tax, the average and marginal rates, and the source of the year's tariff.
 - Solidarity surcharge (Solidaritätszuschlag) under § 4 SolZG for 2024 to 2026, with the free threshold of § 3 Abs. 3 SolZG.
-- Conformance tests against the income tax calculator of the Federal Ministry of Finance (BMF), with 500 results for each euro year option from 2002 to 2026. Run them with `make test-conformance`. `make gates` runs them too, but a failing case does not fail the gate yet.
+- Conformance tests against the income tax calculator of the Federal Ministry of Finance (BMF), with 500 results for each euro year option from 2002 to 2026. Run them with `make test-conformance`. `make gates` runs them too, and a case that differs from the calculator fails the gate, unless it is one of two open problems listed in the test.
 - Property tests that run for every listed year, and Kani proofs of the tariff's arithmetic over stated bounds.
 - Build-time checks of each rules file, so a bad value fails the build.
 

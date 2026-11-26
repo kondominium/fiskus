@@ -1,7 +1,7 @@
 <!-- Hand-drawn illustration, not generated from code. Shows the test layers, not measured data. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" font-family="Fira Sans, system-ui, sans-serif" role="img">
 <title>Illustration: the test layers, static checks at the base and conformance with the law at the top, with cost to run rising towards the top</title>
-<polygon points="200,30 226.7,80 173.3,80" stroke-width="1.5" style="fill: none; stroke: var(--chart-ink, #0f3d2e); stroke-dasharray: 4 3"/>
+<polygon points="200,30 226.7,80 173.3,80" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
 <polygon points="173.3,80 226.7,80 253.3,130 146.7,130" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
 <polygon points="146.7,130 253.3,130 280,180 120,180" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
 <polygon points="120,180 280,180 306.7,230 93.3,230" stroke-width="1.5" style="fill: var(--chart-zone, #f3f0e8); stroke: var(--chart-ink, #0f3d2e)"/>
@@ -14,7 +14,7 @@
 <path d="M324 255 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
 <path d="M351 305 H392" style="stroke: var(--chart-ink, #0f3d2e); stroke-opacity: 0.5; stroke-dasharray: 3 4; fill: none"/>
 <text x="400" y="51" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Conformance with the law</text>
-<text x="400" y="69" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">BMF results, not yet in fiskus</text>
+<text x="400" y="69" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">BMF results, every case and every tax year</text>
 <text x="400" y="101" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Kani proofs</text>
 <text x="400" y="119" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">formulas, every input in bounds</text>
 <text x="400" y="151" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Property tests</text>
@@ -25,7 +25,7 @@
 <text x="400" y="269" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">named cases, written with the design</text>
 <text x="400" y="301" font-size="15" style="fill: var(--chart-ink, #0f3d2e)">Static checks</text>
 <text x="400" y="319" font-size="13" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">compiles, lints, best practice</text>
-<text x="20" y="350" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">Illustration: the shape shows the idea, not the number of tests. Dashed: not yet in fiskus.</text>
+<text x="20" y="350" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">Illustration: the shape shows the idea, not the number of tests.</text>
 <path d="M28 326 V52" stroke-width="1.5" style="stroke: var(--chart-ink, #0f3d2e); fill: none"/>
 <polygon points="28,40 24,52 32,52" style="fill: var(--chart-ink, #0f3d2e)"/>
 <text x="0" y="0" transform="translate(12 189) rotate(-90)" text-anchor="middle" font-size="12" style="fill: var(--chart-ink, #0f3d2e); fill-opacity: 0.75">cost to run</text>

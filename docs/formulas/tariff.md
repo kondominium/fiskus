@@ -73,7 +73,7 @@ The tests check behaviour for every listed year, not fixed figures. See [How fis
 - Each explanation's zone contains its basis, and its unrounded tax floors to the rounded tax.
 - Any `i128` income returns `Ok` or `Err` and never panics.
 
-Fixed figures per year are the job of the conformance layer, which is planned work and not yet in fiskus.
+The conformance layer checks the figures of every year against the BMF calculator. See [conformance](../internal/testing/README.md).
 
 ## Not yet in fiskus
 

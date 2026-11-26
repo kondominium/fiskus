@@ -15,7 +15,7 @@ Ask: does this change add or alter a rule, a parameter, a zone, an error, or how
 
 1. The updated page in `docs/guide/`, and its entry in `coverage.toml` if it cites a new section.
 2. Regenerated charts, with `make charts`. Commit the SVG files.
-3. `make test-guide` passing. It runs the guide tests and the chart drift check.
+3. `make test-all` passing. It runs the guide tests and the chart drift check.
 
 If no, say why in the handover.
 
@@ -28,7 +28,7 @@ A release is complete when `make gates` passes on it. The guide tests and the ch
 - `scripts/guide/charts.rs` draws the charts from the public API (`assess`, `explain`, `tariff_zones`, `solidarity_surcharge`), so each chart shows what the code does. Charts use the latest listed year, and inputs scaled to its basic allowance, so they follow the rule files without edits.
 - Each chart is one SVG in `docs/guide/assets/charts/`, with no background. Its ink and zone colors are CSS variables (`--chart-ink`, `--chart-zone`) set per theme in `docs/theme/fiskus.css`, so it follows the book's light and navy themes. Colors come from [design](design.md), with `signal` used once per chart as the highlight.
 - Pages pull each chart in with `\{{#include assets/charts/<name>.svg}}`, so the SVG is inlined and picks up the theme. Do not link it with `<img>`: an image cannot read the page's variables.
-- `make test-guide` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG, or the generated tariff table in `docs/formulas/tariff-coefficients.md`, differs from what the code and `rules/` produce.
+- `make test-all` runs `cargo run --example guide_charts -- --check` and fails if a committed SVG, or the generated tariff table in `docs/formulas/tariff-coefficients.md`, differs from what the code and `rules/` produce.
 
 ## Illustrations
 
@@ -40,7 +40,7 @@ The guide has no illustrations. Every figure a chart shows is drawn from the cod
 - Icons come from [Lucide](https://lucide.dev), fetched from `lucide-static`, not drawn by hand. Keep Lucide's license comment at the top of each file.
 - Icons are 24-unit line icons. Each file sets `width` and `height` to 32, keeps `stroke="currentColor"`, and sets `style="color: var(--chart-ink, #0f3d2e)"` on the root `<svg>`, so the icon follows the theme.
 - The Lucide notice lives in `docs/guide/assets/icons/LICENSE-LUCIDE.txt`. Keep it when icons are added or removed.
-- `make test-guide` fails if a page does not have exactly one icon, or if the icon file is missing.
+- `make test-all` fails if a page does not have exactly one icon, or if the icon file is missing.
 
 ## Page layout
 
@@ -57,7 +57,7 @@ Read this section before touching `docs/guide/`, `scripts/guide/charts.rs`, or `
 3. Add a `[[chapter]]` entry to `docs/guide/coverage.toml`. List each cited article by number only (`"32a"`, `"26b"`). Only list sections the code cites in `src/` or `rules/`.
 4. Add the page to `docs/SUMMARY.md` under `# Guide`, in order.
 5. If a chapter quotes a parameter, write its citation verbatim and its value as `12 348 €`, as it appears in `rules/`.
-6. Run `make test-guide`.
+6. Run `make test-all`.
 
 **Add a chart**
 
@@ -66,7 +66,7 @@ Read this section before touching `docs/guide/`, `scripts/guide/charts.rs`, or `
 3. Register it in the `charts` array in `run()`.
 4. Run `make charts`, then commit the SVG.
 5. Embed it on the page with `\{{#include assets/charts/<name>.svg}}` on its own line, with a blank line before and after.
-6. Run `make test-guide`.
+6. Run `make test-all`.
 
 **Never**
 

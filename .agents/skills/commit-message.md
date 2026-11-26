@@ -17,7 +17,7 @@ Steps:
    - Nothing from `.agents/research/` or `.agents/plans/` is staged. Both are git-ignored, so a staged file there means the ignore rule was bypassed. Stop and report it.
    - If the slice changes anything a user can notice, `docs/changelog.md` is staged and has a line under `Unreleased`. Stop and report it if not. An internal-only slice needs no line, but the handover says so.
 4. Run `make gates` and record its exit code. If it fails, stop and report the failing gate. Do not draft a message for a failing slice.
-5. Draft the title and body as the workflow section describes:
+5. Draft the title and body as the workflow section describes. Then check the draft with `grep -n -i -E 'slice [0-9]|phase [0-9]|checkpoint [0-9]' <draft>`. It must print nothing, and the draft must not refer to planning notes or planning status.
    - Title: imperative, verb first, 72 characters or fewer, no type prefix. Check the length with `printf '%s' "<title>" | wc -c`.
    - Body: wrapped at 72 characters. Check with `awk 'length > 72'` on the draft. Say what changed and why. Do not list the diff.
    - Name the decisions the reviewer should check, and anything not done in this slice.

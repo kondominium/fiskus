@@ -14,7 +14,7 @@ fiskus is an independent reference engine for German income tax (Einkommensteuer
 |---|---|
 | Tax years | Every year in `TaxYear::ALL`. The list is the source, not this page |
 | Implemented | The tariff of § 32a EStG, for single and joint filing, for each year with tariff zones. The basic allowance for every listed year. Average and marginal rates. The solidarity surcharge, with the free threshold of each year that has its statute archived (VZ 2024 to 2026 so far) |
-| Not yet in fiskus | Income types, allowances and special expenses, child allowances, widowed filers, tariff exceptions, church tax (Kirchensteuer), the solidarity surcharge for years before VZ 2024, conformance with the BMF calculator |
+| Not yet in fiskus | Income types, allowances and special expenses, child allowances, widowed filers, tariff exceptions, church tax (Kirchensteuer), the solidarity surcharge for years before VZ 2024, conformance of the solidarity surcharge with the BMF calculator |
 | Test coverage | At least 90% of lines, enforced by `make test-coverage` |
 
 ## Read

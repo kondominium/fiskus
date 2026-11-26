@@ -514,7 +514,7 @@ fn tax_by_income() -> Result<String> {
     ))
 }
 
-/// The basic allowance of every listed year, as steps.
+/// The basic allowance of every listed year, as one bar per assessment year.
 fn allowance_history() -> Result<String> {
     let first = TaxYear::ALL.first().ok_or("no year is listed")?.year();
     let last = TaxYear::ALL.last().ok_or("no year is listed")?.year();
@@ -527,14 +527,22 @@ fn allowance_history() -> Result<String> {
         x: (f64::from(first), f64::from(last) + 1.0),
         y: (0.0, max as f64),
     };
-    let mut points = Vec::new();
-    for (index, &(year, eur)) in steps.iter().enumerate() {
-        let next = steps.get(index + 1).map_or(year + 1, |&(next, _)| next);
-        points.push((plot.px(year as f64), plot.py(eur as f64)));
-        points.push((plot.px(next as f64), plot.py(eur as f64)));
+    // Each year fills its own slot, with a small gap either side so the bars stay apart.
+    let bottom = plot.py(0.0);
+    let mut body = axes();
+    for &(year, eur) in &steps {
+        let left = plot.px(year as f64) + 3.0;
+        let right = plot.px((year + 1) as f64) - 3.0;
+        let top = plot.py(eur as f64);
+        // The title child shows the value when the reader hovers over the bar.
+        let _ = writeln!(
+            body,
+            "<rect x=\"{left:.1}\" y=\"{top:.1}\" width=\"{:.1}\" height=\"{:.1}\" style=\"fill: {INK}\"><title>{year}: {}</title></rect>",
+            right - left,
+            bottom - top,
+            euros(eur)
+        );
     }
-
-    let mut body = axes() + &polyline(&points, INK, 2.5);
     body += &y_ticks(&plot, max as f64, &|value| euros(value as i128));
     body += &(i128::from(first)..=i128::from(last))
         .filter(|year| year % 5 == 0)
@@ -549,7 +557,10 @@ fn allowance_history() -> Result<String> {
         })
         .collect::<String>();
     body += &axis_titles("Assessment year (VZ)", "Basic allowance in euros");
-    Ok(document("The basic allowance has risen in steps", &body))
+    Ok(document(
+        "The basic allowance of each assessment year",
+        &body,
+    ))
 }
 
 /// Slope of the solidarity surcharge in tax terms at `tax_eur`: how much of each extra euro of

@@ -14,6 +14,6 @@ The basic allowance is not a deduction from income. It sets where the zero zone 
 
 Above the zero zone, the progressive zones of § 32a Abs. 1 EStG apply. They are on the [tariff](05-tariff.md) page. Each year's allowance is in `rules/` and returned by `basic_allowance_eur`.
 
-The allowance has changed over the years. The chart shows each listed year's figure, as a step at the start of each assessment year.
+The allowance has changed over the years. The chart shows each listed year's figure as one bar. Hover over a bar to see its value.
 
 {{#include assets/charts/allowance-history.svg}}

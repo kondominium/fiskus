@@ -52,7 +52,7 @@ Measured on 2026-11-25 on an Apple M2 Pro (12 cores, 32 GB memory, macOS 26.6.2)
 
 fiskus must keep its performance steady while it grows. Each new zone, filing path and tax rule adds work to the calculation, and that cost should be seen before it reaches a release rather than after. Changes with nothing to do with tax rules matter too. A new Rust toolchain, an updated dependency or a refactor can slow a hot path without anyone meaning to.
 
-The plan is to keep the benchmark running over time, add the new paths as they land, and record each change in the figures. Additions and removals can then be checked against the numbers that came before them.
+The benchmark will keep running over time, add the new paths as they land, and record each change in the figures. Additions and removals can then be checked against the numbers that came before them.
 
 Linux and Windows figures are planned. Both platforms matter to people who run fiskus. Getting their figures right takes more work than the macOS numbers, because the machines, the memory measurements and the tooling all differ. They will be added carefully rather than rushed.
 

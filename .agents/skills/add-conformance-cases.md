@@ -5,7 +5,7 @@ description: Add cases from the BMF income tax calculator to fiskus's conformanc
 
 # Add conformance cases
 
-Use this when the task is to fetch results from the BMF income tax calculator into `tests/fixtures/conformance/`. The rules are in `docs/internal/testing/conformance.md`. This page says how to run the scripts, and it does not repeat those rules.
+Use this when the task is to fetch results from the BMF income tax calculator into `tests/fixtures/conformance/`. The rules are in the Rules section below. This page also says how to run the scripts.
 
 ## When to use it
 
@@ -16,9 +16,9 @@ Use this when the task is to fetch results from the BMF income tax calculator in
 
 ## Rules
 
-- The calculator is the **behaviour oracle, not a source of parameters** (D2). Never copy a figure from a result into `rules/`. A parameter comes from the statute, with its citation.
+- The calculator is the **behaviour oracle, not a source of parameters**. Never copy a figure from a result into `rules/`. A parameter comes from the statute, with its citation.
 - Fixtures are **append-only**. Never edit or delete a row by hand. A mismatch is a finding about fiskus or the statute, not a reason to change the fixture.
-- The pace is **one request per second**, and the scripts fix it. Do not change it, rotate IP addresses, or work around protection. If the BMF's terms change, stop and check them before fetching again. Questions go to Steuerrechner@bmf.bund.de, listed in the BMF legal notice (D11).
+- The pace is **one request per second**, and the scripts fix it. Do not change it, rotate IP addresses, or work around protection. If the BMF's terms change, stop and check them before fetching again. Questions go to Steuerrechner@bmf.bund.de, listed in the BMF legal notice.
 - Raw result pages stay in `target/conformance/raw/`, which git ignores. Do not commit them.
 
 ## Setup
@@ -57,11 +57,11 @@ Run `mise install` once. It provides `htmlq` and the other tools the scripts use
    make test-conformance YEARS=2026
    ```
 
-   Read the scoreboard. Passing cases and zone-missing cases are both expected in some years. A mismatch is a finding.
+   Read the scoreboard. Every case should pass, or be one of the open problems listed in the test. A mismatch is a finding.
 6. **Triage a mismatch.** For each failing case, compare the fiskus value with the calculator's, and work out which side is wrong:
    - A zone start or coefficient in `rules/` differs from the statute: that is a rules bug. Fix it in its own slice, with the statute citation.
    - fiskus's formula or rounding differs from the statute: that is a code bug. Write a failing test first, then fix it in its own slice.
-   - The difference is one euro, and the exact value is a whole euro: this is the BMF's floating point. It goes into the deviation register when the register exists (plan slice 4.1). Until then, report it and do not hide it.
+   - The difference is one euro, and the exact value is a whole euro: this may be the BMF's floating point. Do not list it yourself. Report it to the owner with both exact values, and the double-precision model that the conformance section of `docs/internal/testing/README.md` describes. The owner decides whether it goes into `OPEN_PROBLEMS` in `tests/conformance/main.rs`.
    - Never edit the fixture to make a case pass.
 7. **Hand over.** Stage only the fixture files and `runs.csv`:
 
@@ -69,13 +69,13 @@ Run `mise install` once. It provides `htmlq` and the other tools the scripts use
    git add tests/fixtures/conformance
    ```
 
-   Then draft the commit message with the `commit-message` skill, and report the `make gates` result. Gates run conformance, but a failing case does not fail the gate yet, so say how many cases failed.
+   Then draft the commit message with the `commit-message` skill, and report the `make gates` result. Gates run conformance, and a case that differs from the calculator fails the gate unless it is one of the open problems, so say how many cases differ.
 
 ## Adding a year option
 
 1. Add the dropdown value to `scripts/conformance/year-options.csv`, with its first and last year.
 2. Add the year to fiskus with the `add-tax-year` skill. The option maps to one of fiskus's years, so the code needs that year first.
-3. In `tests/conformance/main.rs`, add the option to the `tax_year` match, and to `FIXTURES`, with an empty fixture file that has only the header.
+3. In `tests/conformance/main.rs`, add the option to `FIXTURES`, with an empty fixture file that has only the header. The tax years come from `year-options.csv`.
 4. Fetch the kinks and the samples, as in steps 1 to 4.
 5. Run `make test-conformance YEARS=<option>`, and triage as in step 6.
 
@@ -92,4 +92,4 @@ Run `mise install` once. It provides `htmlq` and the other tools the scripts use
 ## Notes
 
 - A probe for one hand-written case: pipe a line into the fetcher, for example `printf '2026,single,1234900,probe\n' | scripts/conformance/fetch.sh --dry-run`.
-- The 2002 option covers 2002 and 2003, and its kink points use the 2003 rules. Those rules are under review (plan slice 3.2), so do not treat its kinks as verified.
+- The 2002 option covers 2002 and 2003, and its kink points use the 2003 rules, which are cited in `rules/2003.toml`. All 500 of its cases match the calculator.

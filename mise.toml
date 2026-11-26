@@ -35,13 +35,6 @@ run = "cargo test --doc"
 description = "Black-box tests of the public API in tests/public_api.rs"
 run = "cargo test --test public_api"
 
-[tasks.test-guide]
-description = "Guide checks (tests/guide_checks) and the chart drift check"
-run = [
-  "cargo test --test guide_checks",
-  "cargo run --example guide_charts -- --check",
-]
-
 [tasks.test-proofs]
 description = "Kani proof harnesses in src/"
 run = [
@@ -55,7 +48,9 @@ run = [
   "mise run test-unit",
   "mise run test-doc",
   "mise run test-api",
-  "mise run test-guide",
+  "mise run test-conformance",
+  "cargo test --test guide_checks",
+  "cargo run --example guide_charts -- --check",
   "mise run test-proofs",
 ]
 
@@ -69,13 +64,12 @@ run = [
 ]
 
 [tasks.gates]
-description = "Every gate CI runs: lint, test-all, test-coverage, docs, conformance"
+description = "Every gate CI runs: lint, test-all, test-coverage, docs"
 run = [
   "mise run lint",
   "mise run test-all",
   "mise run test-coverage",
   "mise run docs",
-  "mise run test-conformance || true",
 ]
 
 [tasks.bench]
@@ -110,8 +104,8 @@ description = "Run examples/explain_tax.rs"
 run = "cargo run --example explain_tax"
 
 [tasks.test-conformance]
-description = "Conformance tests and scoreboard (tests/conformance). Years via CONFORMANCE_YEARS. Runs in gates, does not fail them yet"
-run = "cargo test --test conformance --features conformance -- --nocapture"
+description = "Conformance tests and scoreboard (tests/conformance). Year options via CONFORMANCE_YEARS, default all"
+run = "cargo test --test conformance -- --nocapture"
 
 [tasks.conformance-cases]
 description = "Fetch BMF results for generated cases: YEAR=2026 KIND=kinks|samples COUNT=50, DRY_RUN=1 to probe without writing"

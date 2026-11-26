@@ -7,7 +7,7 @@
 # scripts/conformance/points.rs writes them. A case whose filing status and income the fixture already has is
 # skipped, so a rerun resumes where it stopped. With --dry-run nothing is written: each case is printed with the
 # calculator's answer, which is how a probe checks a question. Raw result pages go to target/conformance/raw/.
-# The pace is fixed at one request per second (docs/internal/testing/conformance.md, D11).
+# The pace is fixed at one request per second.
 #
 # Usage: cargo run -q --example conformance_points -- <year_option|all> <kinks|samples> | scripts/conformance/fetch.sh [--dry-run]
 set -euo pipefail
@@ -26,7 +26,7 @@ root="$(cd "$(dirname "$0")/../.." && pwd)"
 fixtures="$root/tests/fixtures/conformance"
 runs="$fixtures/runs.csv"
 form_url="https://www.bmf-steuerrechner.de/ekst/eingabeformekst.xhtml"
-pause=1 # D11: at most one request per second. A consent condition, so it is not configurable.
+pause=1 # At most one request per second. A consent condition, so it is not configurable.
 refresh_every=50
 attempts=3
 header="case_id,year_option,filing_status,taxable_income_cents,income_tax_cents,role,run_id"

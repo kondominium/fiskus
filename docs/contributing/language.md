@@ -4,7 +4,7 @@ Applies to humans and agents who write docs, the guide, and doc comments. Code i
 
 ## Docs and doc comments
 
-The guide tests (`make test-guide`) check the rules a program can check, on every prose page in `docs/`, the agent skills and the root README: no `we`, `our` or `us`, no `§§`, euro amounts in the form `12 348 €`, and `fiskus` in lowercase. Code, inline code, URLs, HTML comments and text in double quotes are not checked. Quotes are how a page shows wrong usage, such as "We test every figure."
+The guide tests (run by `make test-all`) check the rules a program can check, on every prose page in `docs/`, the agent skills and the root README: no `we`, `our` or `us`, no `§§`, euro amounts in the form `12 348 €`, and `fiskus` in lowercase. Code, inline code, URLs, HTML comments and text in double quotes are not checked. Quotes are how a page shows wrong usage, such as "We test every figure."
 
 - Write prose in English. Statute citations and quoted statute text stay German.
 - **Term format:** the English term comes first, and the German term follows in parentheses, on first use per page. Example: tax office (Finanzamt). After that, use the English term only.
@@ -17,5 +17,6 @@ The guide tests (`make test-guide`) check the rules a program can check, on ever
 - Say what a rule does, not what the reader should do. The guide gives no tax advice.
 - Name the authority by its role first: the tax office (Finanzamt), the Federal Ministry of Finance (BMF).
 - Say what fiskus implements. Anything it does not implement is marked "not yet in fiskus".
+- Never refer to planning notes in the docs: no slice, phase or checkpoint numbers, and no status of planned work. Planning status goes stale. Say what the code does, in plain words. `make test-all` checks this.
 - Source files start with the English and German disclaimer lines, as in `src/money.rs`.
 - The guide's overview page carries the disclaimer: not official BMF or ELSTER software, and not tax advice.
