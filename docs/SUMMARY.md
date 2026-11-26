@@ -18,9 +18,12 @@
 # Using
 
 - [Usage](usage/README.md)
-- [Formulas](formulas/grundfreibetrag.md)
-- [Tariff](formulas/tariff.md)
-- [Solidarity surcharge](formulas/solidarity-surcharge.md)
+- [Formulas](formulas/README.md)
+  - [Basic allowance](formulas/grundfreibetrag.md)
+  - [Tariff](formulas/tariff.md)
+    - [Table steps](formulas/table-steps.md)
+  - [Tariff coefficients](formulas/tariff-coefficients.md)
+  - [Solidarity surcharge](formulas/solidarity-surcharge.md)
 
 # Project
 
