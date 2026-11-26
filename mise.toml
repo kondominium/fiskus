@@ -83,6 +83,11 @@ description = "Build the docs book into target/book, from a clean output directo
 run = [
   "rm -rf target/book",
   "mdbook build",
+  "RUSTDOCFLAGS=\"-D warnings\" cargo doc --no-deps --all-features",
+  "mkdir -p target/book/api",
+  "cp -R target/doc/. target/book/api/",
+  "test -f target/book/index.html",
+  "test -f target/book/api/fiskus/index.html",
 ]
 
 [tasks.docs-serve]

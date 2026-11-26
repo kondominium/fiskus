@@ -14,3 +14,5 @@ default-theme = "light"
 preferred-dark-theme = "navy"
 theme = "docs/theme"
 additional-css = ["docs/theme/fiskus.css"]
+site-url = "https://opensource.kondominium.app/fiskus/"
+git-repository-url = "https://github.com/kondominium/fiskus"
