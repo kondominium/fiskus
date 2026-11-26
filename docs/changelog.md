@@ -23,6 +23,7 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 - Functions that return a value now carry `#[must_use]`, so ignoring a result is a compiler warning. Results are unchanged.
 - `Explanation` has a new field, `tariff_basis_eur`: the basis after the table step. It equals `basis_eur` for every year except VZ 2003.
 - The `reference` link of every rules file, and of each `[solidarity]` table, points at the GitHub repository. These links were on GitLab. The figures are unchanged.
+- The guide's basic allowance chart shows one bar per year, with the value on hover, instead of a step line.
 
 ### Fixed
 

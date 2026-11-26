@@ -17,6 +17,6 @@ The guide tests (run by `make test-all`) check the rules a program can check, on
 - Say what a rule does, not what the reader should do. The guide gives no tax advice.
 - Name the authority by its role first: the tax office (Finanzamt), the Federal Ministry of Finance (BMF).
 - Say what fiskus implements. Anything it does not implement is marked "not yet in fiskus".
-- Never refer to planning notes in the docs: no slice, phase or checkpoint numbers, and no status of planned work. Planning status goes stale. Say what the code does, in plain words. `make test-all` checks this.
+- Never refer to planning notes in the docs: no slice, phase or checkpoint numbers, and no status of planned work. Planning status goes stale. Say what the code does, in plain words.
 - Source files start with the English and German disclaimer lines, as in `src/money.rs`.
 - The guide's overview page carries the disclaimer: not official BMF or ELSTER software, and not tax advice.

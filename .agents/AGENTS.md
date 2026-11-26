@@ -11,7 +11,7 @@ Read these before you change anything:
 Hard rules:
 
 - Run `make gates` before handover, and report its result. A failing gate is not handed over.
-- Docs and commit messages never refer to planning notes: no slice, phase or checkpoint numbers, and no planning status. `make test-all` checks the docs, and the `commit-message` skill checks the drafts.
+- Docs and commit messages never refer to planning notes: no slice, phase or checkpoint numbers, and no planning status. The `commit-message` skill checks drafts with a grep. No check runs on the docs for this yet.
 - Never commit, push, tag or merge. Hand over the staged files (one slice), a commit message draft and the gate result.
 - Work on `main` and stage there. Run `git pull --ff-only` first, and stop if the tree is not clean before you start. Never create a branch, unless the owner asks for one.
 - If you do work on a branch, branch from `main`, keep it current with `git rebase origin/main`, and never merge `main` into it.
