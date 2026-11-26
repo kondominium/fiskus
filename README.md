@@ -6,10 +6,12 @@
 </p>
 
 <p align="center">
-  Independent reference engine for German income tax (Einkommensteuer).<br>
+  Auditable German Income Tax Calculation (EStG § 32a) in Rust.
 </p>
 
-> Not official software of the Federal Ministry of Finance (BMF) or ELSTER. Not tax advice.
+<p align="center">
+Not official software of the Federal Ministry of Finance (BMF) or ELSTER. Not tax advice.
+</p>
 
 ## Getting Started
 
@@ -24,7 +26,7 @@
 
 ## Contributing
 
-Contributions are welcome. Start with [Contributing](docs/contributing/index.md). The gates are `make gates`.
+Contributions are welcome. Start with [Contributing](docs/contributing/index.md).
 
 ## License
 
