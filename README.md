@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/logos/fiskus-dark-mode.svg">
-    <img src="docs/logos/fiskus-light-mode.svg" alt="fiskus" width="320">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/kondominium/fiskus/main/docs/logos/fiskus-dark-mode.svg">
+    <img src="https://raw.githubusercontent.com/kondominium/fiskus/main/docs/logos/fiskus-light-mode.svg" alt="fiskus" width="320">
   </picture>
 </p>
 
@@ -25,14 +25,14 @@ Not official software of the Federal Ministry of Finance (BMF) or ELSTER. Not ta
 
 ## Documentation
 
-- [How are taxes calculated?](https://fiskus.kondominium.app/guides/how-income-taxes-are-calculated-in-germany/): how the tax is worked out, step by step.
-- [Using fiskus](https://fiskus.kondominium.app/usage/): calling the crate from Rust.
-- [Formulas](https://fiskus.kondominium.app/formulas/grundfreibetrag/): formulas and boundaries, with citations.
-- [Internal](https://fiskus.kondominium.app/internal/build/): build, testing, benchmarks.
+- [How are taxes calculated?](https://fiskus.kondominium.app/guides/how-income-taxes-are-calculated-in-germany/?utm_source=github): how the tax is worked out, step by step.
+- [Using fiskus](https://fiskus.kondominium.app/usage/?utm_source=github): calling the crate from Rust.
+- [Formulas](https://fiskus.kondominium.app/formulas/grundfreibetrag/?utm_source=github): formulas and boundaries, with citations.
+- [Internal](https://fiskus.kondominium.app/internal/build/?utm_source=github): build, testing, benchmarks.
 
 ## Contributing
 
-Contributions are welcome. Start with [Contributing](https://fiskus.kondominium.app/contributing/).
+Contributions are welcome. Start with [Contributing](https://fiskus.kondominium.app/contributing/?utm_source=github).
 
 ## License
 
