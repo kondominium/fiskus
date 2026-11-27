@@ -4,7 +4,14 @@ This page is for developers and agents who call fiskus from Rust. It describes w
 
 ## Status
 
-fiskus is not on crates.io yet. Depend on it by path or git:
+fiskus is not on crates.io yet. Once 0.1.0 is published, install it with:
+
+```toml
+[dependencies]
+fiskus = "0.1"
+```
+
+Until then, depend on it by path or git:
 
 ```toml
 [dependencies]
