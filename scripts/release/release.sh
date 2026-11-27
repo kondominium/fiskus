@@ -9,7 +9,7 @@ if [ -z "$VERSION" ]; then
     echo "VERSION is required: make release VERSION=x.y.z" >&2
     exit 1
 fi
-if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
     echo "VERSION must be x.y.z" >&2
     exit 1
 fi
@@ -41,8 +41,8 @@ fi
 current_base="${current_version%%-*}"
 version_base="${VERSION%%-*}"
 if [ "$current_base" = "$version_base" ]; then
-    if [[ "$current_version" == *-* && ! "$VERSION" =~ - ]]; then
-        : # release after its own dev version
+    if [[ "$current_version" == *-* ]]; then
+        : # a dev or pre-release base may move to any release or pre-release of the same base
     else
         echo "VERSION must be greater than the current version" >&2
         exit 1

@@ -37,13 +37,13 @@ check() {
         if [ "$line" = "## [Unreleased]" ]; then
             continue
         fi
-        if [[ ! $line =~ ^##\ \[([0-9]+\.[0-9]+\.[0-9]+)\]\ -\ ([0-9]{4}-[0-9]{2}-[0-9]{2})$ ]]; then
+        if [[ ! $line =~ ^##\ \[([0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?)\]\ -\ ([0-9]{4}-[0-9]{2}-[0-9]{2})$ ]]; then
             echo "changelog check: bad released section heading: $line" >&2
             errors=1
             continue
         fi
         ver="${BASH_REMATCH[1]}"
-        date="${BASH_REMATCH[2]}"
+        date="${BASH_REMATCH[3]}"
         if ! valid_date "$date"; then
             echo "changelog check: invalid ISO date in heading: $line" >&2
             errors=1
@@ -130,7 +130,7 @@ check() {
 
 stamp() {
     local version="$1"
-    if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
         echo "version must be x.y.z" >&2
         exit 1
     fi
@@ -153,7 +153,7 @@ stamp() {
 
     # Collect released versions in document order.
     local versions
-    versions="$(grep -E '^## \[[0-9]+\.[0-9]+\.[0-9]+\] - ' "$FILE" | sed -E 's/^## \[([^]]+)\].*/\1/')"
+    versions="$(grep -E '^## \[[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?\] - ' "$FILE" | sed -E 's/^## \[([^]]+)\].*/\1/')"
 
     # Remove all compare links.
     grep -v -E '^\[[^]]+\]: ' "$FILE" | trim_trailing_blanks > "$FILE.body"
