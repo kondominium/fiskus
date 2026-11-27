@@ -130,7 +130,7 @@ fn every_guide_page_is_listed_and_every_listed_page_exists() {
         .unwrap()
         .map(|entry| entry.unwrap().path())
         .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("md"))
-        .map(|path| format!("guide/{}", path.file_name().unwrap().to_string_lossy()))
+        .map(|path| format!("guides/{}", path.file_name().unwrap().to_string_lossy()))
         .collect();
     let listed: BTreeSet<String> = coverage().chapter.into_iter().map(|c| c.file).collect();
     assert_eq!(on_disk, listed);

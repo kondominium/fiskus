@@ -85,10 +85,10 @@ Update the range only where a page claims it. Do not copy the range from this fi
 
 - `README.md` and `docs/README.md`: the implemented range.
 - `docs/roadmap.md`: the range in the intro, and the "Done" paragraph of milestone 4.
-- `docs/guide/README.md`: the range and the `TaxYear` variants.
-- `docs/guide/README.md`: only if the zero-tax figures change, which they do for a new basic allowance. Recompute them from the code and check the page against `make charts`.
-- `docs/guide/glossary.md`: register every new German term before a page uses it, under its first letter.
-- `docs/guide/coverage.toml`: if a guide page cites a new `§`, list it for that page.
+- `docs/guides/README.md`: the range and the `TaxYear` variants.
+- `docs/guides/README.md`: only if the zero-tax figures change, which they do for a new basic allowance. Recompute them from the code and check the page against `make charts`.
+- `docs/guides/glossary.md`: register every new German term before a page uses it, under its first letter.
+- `docs/guides/coverage.toml`: if a guide page cites a new `§`, list it for that page.
 - `docs/usage/README.md`: the range, and the example values.
 - `docs/formulas/grundfreibetrag.md`: the sample data is not a year, so it does not change.
 - `docs/references/README.md`: the sources table, and the tariff section if the new year has a tariff.

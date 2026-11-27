@@ -78,7 +78,8 @@ fn run() -> Result<ExitCode> {
         .map(|(name, render)| {
             render().map(|svg| {
                 (
-                    docs.join("guide/assets/charts").join(format!("{name}.svg")),
+                    docs.join("guides/assets/charts")
+                        .join(format!("{name}.svg")),
                     svg,
                 )
             })
@@ -89,11 +90,11 @@ fn run() -> Result<ExitCode> {
         tariff_coefficients()?,
     ));
     rendered.push((
-        docs.join("guide/assets/tables/tax-by-income.md"),
+        docs.join("guides/assets/tables/tax-by-income.md"),
         tax_by_income_table()?,
     ));
     rendered.push((
-        docs.join("guide/assets/tables/solidarity-breakdown.md"),
+        docs.join("guides/assets/tables/solidarity-breakdown.md"),
         solidarity_breakdown_table()?,
     ));
 
