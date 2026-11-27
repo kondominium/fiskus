@@ -6,6 +6,8 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 
 ## [Unreleased]
 
+## [0.1.0-beta1] - 2026-11-27
+
 ### Added
 
 - Basic allowance (Grundfreibetrag) under § 32a Abs. 1 Satz 2 Nr. 1 EStG for every year from 2003 to 2026, each with its citation and archived source.
@@ -30,4 +32,6 @@ fiskus has no release yet. Its version is `0.1.0-dev` until 0.1.0 is cut.
 
 - The basic allowance for VZ 2003 is 7 235 €, not 7 426 €. The 7 426 € stage was postponed to VZ 2004 by the Flutopfersolidaritätsgesetz (BGBl. 2002 I S. 3651). No computed tax changes, because the 2003 tariff is not in fiskus yet.
 
-[Unreleased]: https://github.com/kondominium/fiskus/commits/main
+[Unreleased]: https://github.com/kondominium/fiskus/compare/v0.1.0-beta1...HEAD
+[0.1.0-beta1]: https://github.com/kondominium/fiskus/releases/tag/v0.1.0-beta1
+
