@@ -9,7 +9,7 @@ The guide tests (run by `make test-all`) check the rules a program can check, on
 - Write prose in English. Statute citations and quoted statute text stay German.
 - **Term format:** the English term comes first, and the German term follows in parentheses, on first use per page. Example: tax office (Finanzamt). After that, use the English term only.
 - **Statute names:** the English name, then the German name in parentheses, then the abbreviation. Example: Income Tax Act (Einkommensteuergesetz, EStG).
-- **Glossary:** every term used in the guide is registered in the [glossary](../guide/glossary.md), under the first letter of its English name. Add a term there before using it on a page.
+- **Glossary:** every term used in the guide is registered in the [glossary](../guides/glossary.md), under the first letter of its English name. Add a term there before using it on a page.
 - Write `fiskus` in lowercase, including at the start of a sentence.
 - Do not write "we", "our" or "us". Make `fiskus` the subject. Bad: "We test every figure." Good: "fiskus tests every figure." Why: the docs describe the project, and a project reads as more professional than a team talking about itself.
 - Cite one section per citation, in the form `§ 32a Abs. 1 Satz 2 Nr. 1 EStG`. Do not use `§§` lists. The guide tests check this.

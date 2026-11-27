@@ -99,7 +99,7 @@ description = "Remove the docs book (target/book)"
 run = "rm -rf target/book"
 
 [tasks.charts]
-description = "Regenerate the guide charts in docs/guide/assets/charts and the tariff tables in docs/formulas"
+description = "Regenerate the guide charts in docs/guides/assets/charts and the tariff tables in docs/formulas"
 run = "cargo run --example guide_charts"
 
 [tasks.run-example-income-tax]

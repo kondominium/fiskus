@@ -4,8 +4,8 @@
 
 # Guide
 
-- [How income taxes are calculated in Germany](guide/README.md)
-- [Glossary](guide/glossary.md)
+- [How income taxes are calculated in Germany](guides/how-income-taxes-are-calculated-in-germany.md)
+- [Glossary](guides/glossary.md)
 
 # Using
 

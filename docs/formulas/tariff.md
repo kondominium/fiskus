@@ -52,7 +52,7 @@ $$
 m(x) = \frac{2\,a\,t + b}{s}
 $$
 
-`explain` reports both as ratios of one. They are `f64`, and they never feed back into a tax. The rates are described on the [rates and surcharge](../guide/README.md#rates-and-surcharge-steuersatz-und-solidaritätszuschlag) section.
+`explain` reports both as ratios of one. They are `f64`, and they never feed back into a tax. The rates are described on the [rates and surcharge](../guides/how-income-taxes-are-calculated-in-germany.md#rates-and-surcharge-steuersatz-und-solidaritätszuschlag) section.
 
 ## Coefficients by year
 

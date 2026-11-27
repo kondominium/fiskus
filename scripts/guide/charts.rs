@@ -1,6 +1,6 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
-//! Draws the charts of the guide (`docs/guide/assets/charts`) from the public API.
+//! Draws the charts of the guide (`docs/guides/assets/charts`) from the public API.
 //!
 //! The charts use the latest listed year and inputs scaled to its basic allowance, so they follow
 //! the rule files. `cargo run --example guide_charts` writes the SVG files. With `-- --check` it

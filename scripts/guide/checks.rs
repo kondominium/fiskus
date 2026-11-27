@@ -1,6 +1,6 @@
 // Disclaimer: independent reference engine, not official BMF or ELSTER software, not tax advice.
 // Haftungsausschluss: unabhängige Referenzimplementierung, keine offizielle Software des BMF oder von ELSTER, keine Steuerberatung.
-//! Keeps the guide in `docs/guide` in step with the code. See `docs/contributing/guide.md`.
+//! Keeps the guide in `docs/guides` in step with the code. See `docs/contributing/guide.md`.
 
 #![expect(
     clippy::panic,
@@ -67,7 +67,7 @@ fn latest_rule_file() -> PathBuf {
 }
 
 fn coverage() -> Coverage {
-    let path = root().join("docs/guide/coverage.toml");
+    let path = root().join("docs/guides/coverage.toml");
     toml::from_str(&read(&path)).unwrap_or_else(|error| panic!("{}: {error}", path.display()))
 }
 
@@ -126,7 +126,7 @@ fn euros(value: i128) -> String {
 
 #[test]
 fn every_guide_page_is_listed_and_every_listed_page_exists() {
-    let on_disk: BTreeSet<String> = fs::read_dir(root().join("docs/guide"))
+    let on_disk: BTreeSet<String> = fs::read_dir(root().join("docs/guides"))
         .unwrap()
         .map(|entry| entry.unwrap().path())
         .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("md"))
@@ -249,7 +249,7 @@ fn every_guide_page_has_exactly_one_icon() {
             "{}: the icon must sit above the H1 so it floats left of the title",
             chapter.file
         );
-        let icon = root().join("docs/guide/assets/icons").join(icons[0]);
+        let icon = root().join("docs/guides/assets/icons").join(icons[0]);
         assert!(
             icon.exists(),
             "{}: missing {}",
@@ -279,7 +279,7 @@ fn every_illustration_is_labelled_as_one() {
             else {
                 continue;
             };
-            let svg = read(&root().join("docs/guide/assets/illustrations").join(name));
+            let svg = read(&root().join("docs/guides/assets/illustrations").join(name));
             assert!(
                 svg.contains("<title>Illustration"),
                 "{}: {name} must be titled as an illustration",

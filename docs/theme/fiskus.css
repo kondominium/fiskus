@@ -65,11 +65,15 @@
 }
 
 .logo-dark,
-.navy .logo-light {
+.navy .logo-light,
+.dark .logo-light,
+.theme-dark .logo-light {
   display: none;
 }
 
-.navy .logo-dark {
+.navy .logo-dark,
+.dark .logo-dark,
+.theme-dark .logo-dark {
   display: inline;
 }
 

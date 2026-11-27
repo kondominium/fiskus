@@ -28,4 +28,4 @@ The real boundaries of a year follow from its zones, and `explain` shows the zon
 
 ## Joint filers
 
-The splitting tariff applies the zone to half of the income. The joint zero zone is therefore about twice the single zone, plus the few euros of rounding. The guide's [basic allowance section](../guide/README.md#the-basic-allowance-grundfreibetrag) shows the latest year's figures.
+The splitting tariff applies the zone to half of the income. The joint zero zone is therefore about twice the single zone, plus the few euros of rounding. The guide's [basic allowance section](../guides/how-income-taxes-are-calculated-in-germany.md#the-basic-allowance-grundfreibetrag) shows the latest year's figures.

@@ -21,7 +21,7 @@ fiskus is an independent reference engine for German income tax (Einkommensteuer
 
 | Page | Read it for |
 |---|---|
-| [Guide](guide/README.md) | How the tax is worked out, one step at a time |
+| [Guide](guides/how-income-taxes-are-calculated-in-germany.md) | How the tax is worked out, one step at a time |
 | [Using fiskus](usage/README.md) | Calling the crate from Rust |
 | [Formulas](formulas/grundfreibetrag.md) | The formulas and boundaries, with citations |
 | [Internal](internal/build/README.md) | How fiskus is built, tested and measured: [Build](internal/build/README.md), [Testing](internal/testing/README.md), [Benchmarks](internal/benchmarks.md) |

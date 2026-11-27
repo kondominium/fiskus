@@ -21,18 +21,18 @@ Not official software of the Federal Ministry of Finance (BMF) or ELSTER. Not ta
 
 ## Getting Started
 
-`fiskus` is a Rust crate. See [Using fiskus](https://kondominium.github.io/fiskus/usage/README.md) for the API and a quick start.
+`fiskus` is a Rust crate. See [Using fiskus](https://fiskus.kondominium.app/usage/) for the API and a quick start.
 
 ## Documentation
 
-- [How are taxes calculated?](https://kondominium.github.io/fiskus/guide/README.md): how the tax is worked out, step by step.
-- [Using fiskus](https://kondominium.github.io/fiskus/usage/README.md): calling the crate from Rust.
-- [Formulas](https://kondominium.github.io/fiskus/formulas/grundfreibetrag.md): formulas and boundaries, with citations.
-- [Internal](https://kondominium.github.io/fiskus/internal/build/README.md): build, testing, benchmarks.
+- [How are taxes calculated?](https://fiskus.kondominium.app/guides/how-income-taxes-are-calculated-in-germany/): how the tax is worked out, step by step.
+- [Using fiskus](https://fiskus.kondominium.app/usage/): calling the crate from Rust.
+- [Formulas](https://fiskus.kondominium.app/formulas/grundfreibetrag/): formulas and boundaries, with citations.
+- [Internal](https://fiskus.kondominium.app/internal/build/): build, testing, benchmarks.
 
 ## Contributing
 
-Contributions are welcome. Start with [Contributing](https://kondominium.github.io/fiskus/contributing/index.md).
+Contributions are welcome. Start with [Contributing](https://fiskus.kondominium.app/contributing/).
 
 ## License
 

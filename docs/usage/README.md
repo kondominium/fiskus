@@ -1,6 +1,6 @@
 # Using fiskus
 
-This page is for developers and agents who call fiskus from Rust. It describes what the crate does today, and how to call it. For the reasoning behind the figures, read the [guide](../guide/README.md). For the formulas, read [Formulas](../formulas/grundfreibetrag.md).
+This page is for developers and agents who call fiskus from Rust. It describes what the crate does today, and how to call it. For the reasoning behind the figures, read the [guide](../guides/how-income-taxes-are-calculated-in-germany.md). For the formulas, read [Formulas](../formulas/grundfreibetrag.md).
 
 ## Status
 
@@ -135,7 +135,7 @@ let surcharge = solidarity_surcharge(year, FilingStatus::Single, Cents::from_eur
 println!("{:?}", surcharge.map(|cents| cents.whole_euros()));
 ```
 
-The threshold of the year comes from its rule file. For a year without one, the result is `None`. See the [rates and surcharge](../guide/README.md#rates-and-surcharge-steuersatz-und-solidaritätszuschlag) section.
+The threshold of the year comes from its rule file. For a year without one, the result is `None`. See the [rates and surcharge](../guides/how-income-taxes-are-calculated-in-germany.md#rates-and-surcharge-steuersatz-und-solidaritätszuschlag) section.
 
 ## What is not in fiskus yet
 

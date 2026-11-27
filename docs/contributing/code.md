@@ -15,7 +15,7 @@ Run `make gates` before handover. It runs every gate CI runs, and CI runs the sa
 
 - A change is not handed over with a failing gate. Hand over the result with the change.
 - Scratch: research, drafts and plans go in `.agents/research/` and `.agents/plans/`. Both are git-ignored and never committed.
-- Guide: a change that adds or alters a rule, parameter, zone or error updates `docs/guide/` in the same diff. See [guide](guide.md).
+- Guide: a change that adds or alters a rule, parameter, zone or error updates `docs/guides/` in the same diff. See [guide](guide.md).
 
 ## Rules
 

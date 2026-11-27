@@ -1,11 +1,11 @@
 # Guide pages and the statute sections each one may cite, by article number (32a for § 32a).
-# scripts/guide/checks.rs enforces: every page is listed, pages cite only their listed sections, listed
+# scripts/guides/checks.rs enforces: every page is listed, pages cite only their listed sections, listed
 # sections are cited in src/ or rules/, and each parameter value appears on the page citing it.
 
 [[chapter]]
-file = "guide/README.md"
+file = "guides/how-income-taxes-are-calculated-in-germany.md"
 sections = ["2", "3", "4", "26", "26b", "32a"]
 
 [[chapter]]
-file = "guide/glossary.md"
+file = "guides/glossary.md"
 sections = ["2", "3", "26", "26b", "32a"]
