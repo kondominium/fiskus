@@ -1,0 +1,90 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-release:
+    name: verify tag and changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: verify the tag matches Cargo.toml
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)"
+          test "$tag" = "v$version"
+      - name: verify the tagged commit is on main
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git merge-base --is-ancestor origin/main "$GITHUB_SHA"
+      - name: check the changelog
+        run: ./scripts/release/changelog.sh check
+      - name: verify the version has a changelog section
+        run: ./scripts/release/changelog.sh notes "${GITHUB_REF_NAME#v}" >/dev/null
+
+  run-gates:
+    name: run gates and package check
+    needs: verify-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - run: make gates
+      - run: make package-check
+
+  build-platforms:
+    name: build on ${{ matrix.os }}
+    needs: verify-release
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - run: cargo build --all-targets
+
+  publish-crate:
+    name: publish to crates.io
+    needs: [run-gates, build-platforms]
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: mise exec -- cargo publish
+
+  create-github-release:
+    name: create GitHub release
+    needs: publish-crate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            --title "fiskus $version" \
+            --notes-file <(./scripts/release/changelog.sh notes "$version")
